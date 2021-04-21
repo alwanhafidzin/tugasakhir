@@ -70,7 +70,7 @@
                 </div>
                 <div class="form-group">
                     <label for="tanggallahir">Tanggal Lahir</label>
-                    <input type="" id="datepicker" autocomplete="off" class="form-control" name="tanggallahir" placeholder="Masukkan Tanggal Lahir">
+                    <input type="" id="tanggallahird" autocomplete="off" class="form-control" name="tanggallahir" placeholder="Masukkan Tanggal Lahir">
                 </div>
                 <div class="form-group">
                     <label for="tahunmasuk">Tahun Masuk</label>
@@ -175,7 +175,7 @@
           var datepicker = $.fn.datepicker.noConflict();
           $.fn.bootstrapDP = datepicker;
         }
-        $("#datepicker").datepicker({
+        $("#tanggallahird").datepicker({
           monthNames: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
             'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'],
           dayNamesMin: ['Min', 'Sen', 'Sel', 'Rab', 'Ka', 'Jum', 'Sab'],
