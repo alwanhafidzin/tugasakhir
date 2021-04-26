@@ -53,7 +53,7 @@
             <div class="col-lg-12">
                 <div class="form-group">
                     <label for="nis">NIS</label>
-                    <input type="text" autocomplete="off"class="form-control" name="nis" placeholder="Masukkan NIS">
+                    <input type="text" autocomplete="off"disabled='disabled' class="form-control" name="nis" placeholder="Masukkan NIS">
                 </div>
                 <div class="form-group">
                     <label for="nama">Nama Lengkap</label>
@@ -74,7 +74,7 @@
                 </div>
                 <div class="form-group">
                     <label for="tahunmasuk">Tahun Masuk</label>
-                    <input type="year"  autocomplete="off" class="form-control" name="tahunmasuk" placeholder="Masukkan Tanggal Lahir">
+                    <input type="year" id="date-tahunmasuk-edit" autocomplete="off" class="form-control" name="tahunmasuk" placeholder="Masukkan Tanggal Lahir">
                 </div>
                 <div class="form-group">
                   <label>Agama</label>
@@ -185,8 +185,16 @@
           changeYear: true,
           yearRange: "-30:+0", 
          });
-        $('.select2').select2({
+         $('.select2').select2({
          theme: 'bootstrap4'
+          });
+          $("#date-tahunmasuk-edit").bootstrapDP({
+            format: "yyyy",
+            viewMode: "years", 
+            minViewMode: "years",
+            endDate: '+1d'
+          }).on('changeDate', function(e){
+             $(this).bootstrapDP('hide');
           });
         });
 

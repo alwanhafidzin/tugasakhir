@@ -98,7 +98,7 @@
                 </div>
                 <div class="form-group">
                     <label for="tahunmasuk">Tahun Masuk</label>
-                    <input type="year"  autocomplete="off" class="form-control" name="tahunmasuk" placeholder="Masukkan Tanggal Lahir">
+                    <input type="year"  autocomplete="off" class="form-control" id="date-tahunmasuk" name="tahunmasuk" placeholder="Masukkan Tanggal Lahir">
                 </div>
                 <div class="form-group">
                   <label>Agama</label>

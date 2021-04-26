@@ -60,6 +60,8 @@
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <link rel="stylesheet" href="/resources/demos/style.css">
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.css" rel="stylesheet"/>
 <script>
   //change value
   //  $("input").on("change", function() {
@@ -88,6 +90,14 @@
   });
   $('.select2').select2({
       theme: 'bootstrap4'
+  });
+  $("#date-tahunmasuk").bootstrapDP({
+    format: "yyyy",
+    viewMode: "years", 
+    minViewMode: "years",
+    endDate: '+2d'
+  }).on('changeDate', function(e){
+    $(this).bootstrapDP('hide');
   });
   // $(".datepicker").bootstrapDP({});
 });

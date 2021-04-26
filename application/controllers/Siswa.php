@@ -36,7 +36,7 @@ class Siswa extends CI_Controller {
 		if ($mode == 'insert') {
 				$config['upload_path']          = './uploads/siswa';
 				$config['allowed_types']        = 'gif|jpg|png';
-				$config['max_size']             = 1024;
+				$config['max_size']             = 10240;
 				$config['width']                = 300;
                 $config['height']               = 400;
 				$filename = $this->input->post('nis');
@@ -70,7 +70,7 @@ class Siswa extends CI_Controller {
 		}
 		else if ($mode == 'update') {
 			if ($this->input->is_ajax_request()) {
-				$id = $this->input->post('nis');	
+				$id = $this->input->post('nis');
 				$data = array(
 					'nis' => $this->input->post('nis'),
 					'nama' => $this->input->post('nama'),
@@ -85,19 +85,17 @@ class Siswa extends CI_Controller {
 					// $data['foto']=harus null biar bisa diinsert
 				}
 				else
-				{
-					$foto = $this->db->get_where('siswa',$id);
-					if($foto->num_rows()>0){
-					  $pros=$foto->row();
-					  $name=$pros->foto;
-					  
-					  if(file_exists($lok=FCPATH.'/uploads/siswa/'.$name)){
-						unlink($lok);
+				{	
+					$patch = $this->db->get_where('siswa',['nis' => $id])->row();
+					if($patch){
+					  if(file_exists("uploads/siswa/".$patch->foto)){
+						unlink("uploads/siswa/".$patch->foto);
+					  }else{
 					  }
-					}
+				    }
 					$config['upload_path']          = './uploads/siswa';
 					$config['allowed_types']        = 'gif|jpg|png';
-					$config['max_size']             = 1024;
+					$config['max_size']             = 10240;
 					$config['width']                = 300;
 					$config['height']               = 400;
 					$filename = $this->input->post('nis');
@@ -134,15 +132,7 @@ class Siswa extends CI_Controller {
 		$id = $this->input->get('id');
 		$data = $this->SiswaModel->get_by_id($id);
 		echo json_encode($data);
-	}
-	public function transformDate($value, $format = 'Y-m-d')
-    {
-    try {
-        return \Carbon\Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($value));
-    } catch (\ErrorException $e) {
-        return \Carbon\Carbon::createFromFormat($format, $value);
-    }
-    }  
+	} 
 	public function importExcel(){
         $fileName = time().'-'.$_FILES['excel']['name']; 
         $config['upload_path'] = './uploads/excel/'; //path upload

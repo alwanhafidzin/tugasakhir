@@ -16,12 +16,18 @@ class SiswaModel extends CI_Model {
 
 	public function delete($id)
 	{
-		$_id = $this->db->get_where('siswa',['nis' => $id])->row();
-		$query = $this->db->delete('siswa',['nis'=>$id]);
-		if($query){
-			return unlink("uploads/siswa/".$_id->foto);
-		}
-		// return $this->db->delete($this->table, array('nis' => $id));
+		$get_siswa = $this->db->get_where('siswa',['nis' => $id])->row();
+        if ($get_siswa){
+           if ($get_siswa->foto == NULL) {
+		      $query = $this->db->delete('siswa',['nis'=>$id]);
+		   }
+           else {
+			  $query = $this->db->delete('siswa',['nis'=>$id]);
+			  if($query){
+				return unlink("uploads/siswa/".$get_siswa->foto);
+			}
+		  }
+        }
 	}
 	public function get_all(){
         $this->db->select('s.nis,s.nama,s.j_kelamin,s.tempat_lahir,s.tanggal_lahir,s.tahun_masuk,s.foto,a.agama');
