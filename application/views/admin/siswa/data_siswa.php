@@ -3,6 +3,7 @@
     transform: scale(5.5);
 }
 </style>
+
 <table id="siswa" class="table table-bordered table-striped">
     <thead>
        <tr>
@@ -78,7 +79,7 @@
                 </div>
                 <div class="form-group">
                   <label>Agama</label>
-                  <select class="form-control select2" name="agama" id="agama" style="width: 100%;">
+                  <select class="form-control select2" name="agama" id="agamaedit" style="width: 100%;">
                      <?php foreach($agama as $row) : ?>
                       <option value="<?php echo $row->id ?>"><?php echo $row->agama ?></option>
                      <?php endforeach ?>
@@ -86,7 +87,7 @@
                 </div>
                 <div class="form-group">
                   <label>Jenis Kelamin</label>
-                  <select class="form-control select2" name="jkelamin" id="jkelamin" style="width: 100%;">
+                  <select class="form-control select2" name="jkelamin" id="jkelaminedit" style="width: 100%;">
                       <option value="L">Laki-Laki</option>
                       <option value="P">Perempuan</option>
                   </select>
@@ -185,9 +186,6 @@
           changeYear: true,
           yearRange: "-30:+0", 
          });
-         $('.select2').select2({
-         theme: 'bootstrap4'
-          });
           $("#date-tahunmasuk-edit").bootstrapDP({
             format: "yyyy",
             viewMode: "years", 

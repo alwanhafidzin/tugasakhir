@@ -16,6 +16,8 @@ class Siswa extends CI_Controller {
 	{
 		$agama = $this->SiswaModel->get_agama();
 		$data['agama'] = $agama;
+		$tahunmasuk = $this->SiswaModel->get_tahun();
+		$data['tahunmasuk'] = $tahunmasuk;
         $this->load->view('templates/dashboard/header.php');
         $this->load->view('templates/dashboard/navbar.php');
         $this->load->view('templates/dashboard/sidebar.php');

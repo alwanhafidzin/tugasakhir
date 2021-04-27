@@ -1,4 +1,9 @@
 <script>
+    $(document).ready(function() {
+        $('.js-example-basic-multiple').select2();
+    });
+</script>
+<script>
     function refresh_table() {
     $.ajax({
         type: 'POST',
@@ -56,6 +61,32 @@
       }
      })
     });
+    $('#jkelamintbh').select2({
+      theme: 'bootstrap4',
+    });
+    $('#agamatbh').select2({
+      theme: 'bootstrap4'
+    });
+    $('#jkelaminedit').select2({
+      theme: 'bootstrap4'
+    });
+    $('#agamaedit').select2({
+      theme: 'bootstrap4'
+    });
+    $('#filter_agama').select2({
+      theme: 'bootstrap4',
+      width: 'resolve',
+      placeholder: "Filter Agama",
+      bindEvents: false
+    });
+    $('#filter_j_kelamin').select2({
+      theme: 'bootstrap4',
+      placeholder: "Filter Jenis Kelamin"
+    });
+    $('#filter_tahunmasuk').select2({
+      theme: 'bootstrap4',
+      placeholder: "Filter Tahun Masuk"
+      });
 </script>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <link rel="stylesheet" href="/resources/demos/style.css">
@@ -88,9 +119,6 @@
     changeYear: true,
     yearRange: "-30:+0", 
   });
-  $('.select2').select2({
-      theme: 'bootstrap4'
-  });
   $("#date-tahunmasuk").bootstrapDP({
     format: "yyyy",
     viewMode: "years", 
@@ -116,3 +144,4 @@
   display:none;
 }
 </style> -->
+

@@ -1,8 +1,4 @@
-  <!-- Select2 -->
-  <link rel="stylesheet" href="<?=base_url()?>assets/admin_lte/plugins/select2/css/select2.min.css">
-  <link rel="stylesheet" href="<?=base_url()?>assets/admin_lte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
-<!-- Select2 -->
-<script src="<?=base_url()?>assets/admin_lte/plugins/select2/js/select2.full.min.js"></script>
+
 <script>
     function refresh_table() {
     var id_jurusan = $('#filter_jurusan').val();

@@ -21,8 +21,6 @@
   <link rel="stylesheet" href="<?=base_url()?>assets/admin_lte/dist/css/adminlte.min.css">
   <!-- overlayScrollbars -->
   <link rel="stylesheet" href="<?=base_url()?>assets/admin_lte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-  <!-- Daterange picker -->
-  <link rel="stylesheet" href="<?=base_url()?>assets/admin_lte/plugins/daterangepicker/daterangepicker.css">
   <!-- summernote -->
   <link rel="stylesheet" href="<?=base_url()?>assets/admin_lte/plugins/summernote/summernote-bs4.min.css">
   <!-- daterange picker -->
@@ -31,11 +29,10 @@
   <link rel="stylesheet" href="<?=base_url()?>assets/admin_lte/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
   <!-- Bootstrap Color Picker -->
   <link rel="stylesheet" href="<?=base_url()?>assets/admin_lte/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css">
-  <!-- Tempusdominus Bootstrap 4 -->
-  <link rel="stylesheet" href="<?=base_url()?>assets/admin_lte/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
   <!-- Select2 -->
   <link rel="stylesheet" href="<?=base_url()?>assets/admin_lte/plugins/select2/css/select2.min.css">
   <link rel="stylesheet" href="<?=base_url()?>assets/admin_lte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+
   <!-- Bootstrap4 Duallistbox -->
   <link rel="stylesheet" href="<?=base_url()?>assets/admin_lte/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
   <!-- BS Stepper -->
@@ -50,8 +47,6 @@
   <script src="https://lipis.github.io/bootstrap-sweetalert/dist/sweetalert.js"></script>
   <link rel="stylesheet" href="https://lipis.github.io/bootstrap-sweetalert/dist/sweetalert.css" />
 
-  <!-- iCheck for checkboxes and radio inputs -->
-  <link rel="stylesheet" href="<?=base_url()?>assets/admin_lte/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">

@@ -1,6 +1,6 @@
 <!-- Datepicker styling default -->
 <style>
-  input {
+  /* input {
         position: relative;
         width: 150px; height: 20px;
         color: white;
@@ -24,7 +24,12 @@
         right: 0;
         color: black;
         opacity: 1;
+    } */
+    div.space {
+      margin-right: 20px;
+      margin-bottom:10px;
     }
+  
 </style>
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
@@ -57,8 +62,38 @@
                 <button class="btn btn-primary"data-toggle="modal" data-target="#modal-tambah"><i class="fa fa-plus"></i> Tambah Data</button>
                 <button class="btn btn-warning"data-toggle="modal" data-target="#modal-upload"><i class="fa fa-file-import"></i> Import Excel</button>
                 <button class="btn btn-danger"data-toggle="modal" data-target="#modal-multiple"><i class="fa fa-file-upload"></i> Upload Multiple Foto</button>
-              </br></br>
+               </br></br>
+            <div class="row">
+              <div class="col-md-2"><b>Filter Data:</b></div>
+              <div class="col-md-3 form-group">
+                  <select class="form-control select2" name="filter_tahunmasuk" id="filter_tahunmasuk" style="width: 100%;">
+                    <option value="">Filter Tahun Masuk</option>
+                    <option value="0">Perlihatkan Semua</option>
+                    <?php foreach($tahunmasuk as $row) : ?>
+                      <option value="<?php echo $row->tahun_masuk ?>"><?php echo $row->tahun_masuk ?></option>
+                    <?php endforeach ?>
+                  </select>
+                 </div>
+                 <div class="col-md-3 form-group">
+                  <select class="form-control select2" name="filter_agama" id="filter_agama" style="width: 100%;">
+                    <option value="">Filter Agama</option>
+                    <option value="0">Perlihatkan Semua</option>
+                    <?php foreach($agama as $row) : ?>
+                      <option value="<?php echo $row->id ?>"><?php echo $row->agama ?></option>
+                    <?php endforeach ?>
+                  </select>
+                 </div>
+                 <div class="col-md-3 form-group">
+                  <select class="form-control select2" name="filter_j_kelamin" id="filter_j_kelamin" style="width: 100%;">
+                    <option value="">Filter Jenis Kelamin</option>
+                    <option value="0">Perlihatkan Semua</option>
+                    <option value="L">Laki-Laki</option>
+                    <option value="P">Perempuan</option>
+                  </select>
+                 </div>
+            </div>
                 <div id="tampil">
+               
                 <!-- Data tampil disini -->
                 </div>
               </div>
@@ -102,7 +137,7 @@
                 </div>
                 <div class="form-group">
                   <label>Agama</label>
-                  <select class="form-control select2" name="agama" id="agama" style="width: 100%;">
+                  <select class="form-control select2" name="agama" id="agamatbh" style="width: 100%;">
                      <?php foreach($agama as $row) : ?>
                       <option value="<?php echo $row->id ?>"><?php echo $row->agama ?></option>
                      <?php endforeach ?>
@@ -110,7 +145,7 @@
                 </div>
                 <div class="form-group">
                   <label>Jenis Kelamin</label>
-                  <select class="form-control select2" name="jkelamin" id="jkelamin" style="width: 100%;">
+                  <select class="form-control select2" name="jkelamin" id="jkelamintbh" style="width: 100%;">
                       <option value="L">Laki-Laki</option>
                       <option value="P">Perempuan</option>
                   </select>

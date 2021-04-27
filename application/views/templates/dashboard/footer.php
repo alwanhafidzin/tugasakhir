@@ -61,19 +61,17 @@
 <script src="<?=base_url()?>assets/admin_lte/plugins/datatables-buttons/js/buttons.print.min.js"></script>
 <script src="<?=base_url()?>assets/admin_lte/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 <!-- Page specific script -->
-<!-- Select2 -->
-<script src="<?=base_url()?>assets/admin_lte/plugins/select2/js/select2.full.min.js"></script>
 <!-- Bootstrap4 Duallistbox -->
 <script src="<?=base_url()?>assets/admin_lte/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
 <!-- InputMask -->
 <script src="<?=base_url()?>assets/admin_lte/plugins/moment/moment.min.js"></script>
 <script src="<?=base_url()?>assets/admin_lte/plugins/inputmask/jquery.inputmask.min.js"></script>
-<!-- date-range-picker -->
-<script src="<?=base_url()?>assets/admin_lte/plugins/daterangepicker/daterangepicker.js"></script>
 <!-- bootstrap color picker -->
 <script src="<?=base_url()?>assets/admin_lte/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
 <!-- Bootstrap Switch -->
 <script src="<?=base_url()?>assets/admin_lte/plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+<!-- Select2 -->
+<script src="<?=base_url()?>assets/admin_lte/plugins/select2/js/select2.full.min.js"></script>
 
 </body>
 </html>

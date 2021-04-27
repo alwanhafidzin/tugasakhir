@@ -41,6 +41,11 @@ class SiswaModel extends CI_Model {
 		$this->db->from('agama');
 		return $this->db->get()->result();
 	}
+	public function get_tahun(){
+		$this->db->select('Distinct(tahun_masuk)');
+		$this->db->from('siswa');
+		return $this->db->get()->result();
+	}
 	public function get_by_id($id)
 	{
 		$this->db->select('s.nis,s.nama,s.foto,s.j_kelamin,s.tempat_lahir,s.id_agama,s.tahun_masuk,s.tanggal_lahir,a.agama');
