@@ -1,43 +1,25 @@
-<!-- Datepicker styling default -->
 <style>
-  /* input {
-        position: relative;
-        width: 150px; height: 20px;
-        color: white;
-    }
-
-    input:before {
-        position: absolute;
-        top: 3px; left: 3px;
-        content: attr(data-date);
-        display: inline-block;
-        color: black;
-    }
-
-    input::-webkit-datetime-edit, input::-webkit-inner-spin-button, input::-webkit-clear-button {
-        display: none;
-    }
-
-    input::-webkit-calendar-picker-indicator {
-        position: absolute;
-        top: 3px;
-        right: 0;
-        color: black;
-        opacity: 1;
-    } */
     div.space {
       margin-right: 20px;
       margin-bottom:10px;
     }
-    button.bottom {
-      margin-right:5px;
-      margin-bottom:5px;
-    }
-    table.center-all td,th{
+    .left-col {
+    float: left;
+    width: 25%;
+}
+ 
+.center-col {
+    float: left;
+    width: 50%;
+}
+ 
+.right-col {
+    float: left;
+    width: 25%;
+}
+table.center-all td,th{
     text-align :center;
 }
-
-  
 </style>
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
@@ -46,12 +28,11 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Data Siswa SMAN 1 SOOKO</h1>
+            <h1>Data Guru SMAN 1 SOOKO</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Data Sekolah</a></li>
-              <li class="breadcrumb-item active">Kelas</li>
+              <li class="breadcrumb-item"><a href="#">Data Guru</a></li>
             </ol>
           </div>
         </div>
@@ -67,21 +48,12 @@
             <div class="card card-primary card-outline">
               <!-- /.card-header -->
               <div class="card-body">
-                <button class="btn btn-primary bottom col-sm-12 col-md-3"data-toggle="modal" data-target="#modal-tambah"><i class="fa fa-plus"></i> Tambah Data</button>
-                <button class="btn btn-warning bottom col-sm-12 col-md-3"data-toggle="modal" data-target="#modal-upload"><i class="fa fa-file-import"></i> Import Excel</button>
-                <button class="btn btn-danger bottom col-sm-12 col-md-3"data-toggle="modal" data-target="#modal-multiple"><i class="fa fa-file-upload"></i> Upload Multiple Foto</button>
+                <button class="btn btn-primary"data-toggle="modal" data-target="#modal-tambah"><i class="fa fa-plus"></i> Tambah Data</button>
+                <button class="btn btn-warning"data-toggle="modal" data-target="#modal-upload"><i class="fa fa-file-import"></i> Import Excel</button>
+                <button class="btn btn-danger"data-toggle="modal" data-target="#modal-multiple"><i class="fa fa-file-upload"></i> Upload Multiple Foto</button>
                </br></br>
             <div class="row">
-              <div class="col-md-2"><b>Filter Data:</b></div>
-              <div class="col-md-3 form-group">
-                  <select class="form-control select2" name="filter_tahunmasuk" id="filter_tahunmasuk" style="width: 100%;">
-                    <option value="">Filter Tahun Masuk</option>
-                    <option value="0">Perlihatkan Semua</option>
-                    <?php foreach($tahunmasuk as $row) : ?>
-                      <option value="<?php echo $row->tahun_masuk ?>"><?php echo $row->tahun_masuk ?></option>
-                    <?php endforeach ?>
-                  </select>
-                 </div>
+                <div class="col-md-2"><b>Filter Data:</b></div>
                  <div class="col-md-3 form-group">
                   <select class="form-control select2" name="filter_agama" id="filter_agama" style="width: 100%;">
                     <option value="">Filter Agama</option>
@@ -92,27 +64,25 @@
                   </select>
                  </div>
                  <div class="col-md-3 form-group">
-                  <select class="form-control select2" name="filter_j_kelamin" id="filter_j_kelamin" style="width: 100%;">
-                    <option value="">Filter Jenis Kelamin</option>
+                  <select class="form-control select2" name="filter_gender" id="filter_gender" style="width: 100%;">
+                    <option value="">Filter Gender</option>
                     <option value="0">Perlihatkan Semua</option>
-                    <option value="L">Laki-Laki</option>
-                    <option value="P">Perempuan</option>
+                    <option value="P">Pria</option>
+                    <option value="W">Wanita</option>
                   </select>
                  </div>
             </div>
                 <div id="tampil">
-               
                 <!-- Data tampil disini -->
                 </div>
               </div>
               <!-- /.card-body -->
             </div>
-
       <div class="modal fade" id="modal-tambah">
           <div class="modal-dialog modal-lg">
           <div class="modal-content">
             <div class="modal-header">
-              <h4 class="modal-title">Tambah Data Siswa</h4>
+              <h4 class="modal-title">Tambah Data Guru</h4>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -120,8 +90,8 @@
             <form id="form-tambah" method="post">
             <div class="col-lg-12">
                 <div class="form-group">
-                    <label for="nis">NIS</label>
-                    <input type="text" autocomplete="off"class="form-control" name="nis" placeholder="Masukkan NIS">
+                    <label for="nip">NIP</label>
+                    <input type="text" autocomplete="off"class="form-control" name="nip" placeholder="Masukkan NIP">
                 </div>
                 <div class="form-group">
                     <label for="nama">Nama Lengkap</label>
@@ -132,16 +102,8 @@
                     <input type="file" autocomplete="off"class="form-control" name="foto" placeholder="Pilih Foto">
                 </div>
                 <div class="form-group">
-                    <label for="tempatlahir">Tempat Lahir</label>
-                    <input type="text" autocomplete="off"class="form-control" name="tempatlahir" placeholder="Masukkan Tempat Lahir">
-                </div>
-                <div class="form-group">
-                    <label for="tanggallahir">Tanggal Lahir</label>
-                    <input type="" id="datepicker" autocomplete="off" class="form-control" name="tanggallahir" placeholder="Masukkan Tanggal Lahir">
-                </div>
-                <div class="form-group">
-                    <label for="tahunmasuk">Tahun Masuk</label>
-                    <input type="year"  autocomplete="off" class="form-control" id="date-tahunmasuk" name="tahunmasuk" placeholder="Masukkan Tanggal Lahir">
+                    <label for="email">Email</label>
+                    <input type="email" autocomplete="off"class="form-control" name="email" placeholder="Masukkan Email Aktif">
                 </div>
                 <div class="form-group">
                   <label>Agama</label>
@@ -152,10 +114,10 @@
                   </select>
                 </div>
                 <div class="form-group">
-                  <label>Jenis Kelamin</label>
-                  <select class="form-control select2" name="jkelamin" id="jkelamintbh" style="width: 100%;">
-                      <option value="L">Laki-Laki</option>
-                      <option value="P">Perempuan</option>
+                  <label>Gender</label>
+                  <select class="form-control select2" name="gender" id="gendertbh" style="width: 100%;">
+                      <option value="P">Pria</option>
+                      <option value="W">Wanita</option>
                   </select>
                 </div>
             </div>

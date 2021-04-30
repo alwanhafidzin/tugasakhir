@@ -1,25 +1,113 @@
 <script>
-    $(document).ready(function() {
-        $('.js-example-basic-multiple').select2();
-    });
-</script>
-<script>
     function refresh_table() {
+    var agama = $('#filter_agama').val();
+    var tahunmasuk = $('#filter_tahunmasuk').val();
+    var jkelamin = $('#filter_j_kelamin').val();
     $.ajax({
-        type: 'POST',
-        url: "<?php echo base_url(); ?>/siswa/get_all",
-        cache: false,
+        url: "<?= base_url('siswa/get_all') ?>",
+        data: {
+          agama : agama,
+          tahunmasuk : tahunmasuk,
+          jkelamin : jkelamin
+        },
         success: function(data) {
           $("#tampil").html(data);
           $('#siswa').DataTable({
-          columnDefs: [
+            "responsive": true, "lengthChange": true, "autoWidth": false,
+            "initComplete": function (settings, json) {  
+            $("#siswa").wrap("<div style='overflow:auto; width:100%;position:relative;'></div>");            
+            },
+            columnDefs: [
             {
               targets: 3,
               className: 'zoom'
+            },
+            { responsivePriority: 1, targets: 0 },
+            { responsivePriority: 2, targets: -1 },
+            {
+                "targets": [ 4 ,5],
+                "visible": false,
+                "searchable": false
+            },
+            {
+                targets: [4,5],
+                className: 'noVis'
             }
           ],
-          "responsive": true, "lengthChange": true, "autoWidth": false
-          });
+          dom: 
+          "<'row'<'col-sm-12 col-md-3'l><'col-sm-12 col-md-6'B><'col-sm-12 col-md-3'f>>" +
+          "<'row'<'col-sm-12'tr>>" +
+          "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+          // "<'row'<'col-sm-3'l><'col-sm-6 text-center'B><'col-sm-3'f>>" +
+          // "<'row'<'col-sm-12'tr>>" +
+          // "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+          buttons: [{
+            extend: 'pdf',
+            title: 'Data Siswa SMAN 1 SOOKO',
+            filename: 'customized_pdf_file_name', 
+            pageSize: 'A4',
+            // customize: function (doc) {
+            //                doc.defaultStyle.fontSize = 10; //2, 3, 4,etc
+            //                doc.styles.tableHeader.fontSize = 10; //2, 3, 4, etc
+            //                doc.content[1].table.widths = [ '14%',  '14%', '14%', '0%', '14%', 
+            //                                                '15%', '15%', '15%'];
+            //            },
+            exportOptions: {
+                stripHtml: false,
+                columns: [0,1,2,6,7,8,9,10] 
+            },
+            customize: function(doc) {
+              doc.styles.tableBodyEven.alignment = 'center';
+              doc.styles.tableBodyOdd.alignment = 'center'; 
+             }  
+            }, {
+            extend: 'excel',
+            title: 'Data Siswa SMAN 1 SOOKO',
+            filename: 'data_siswa',
+            exportOptions: {
+                columns: [0,1,2,4,5,6,7,8,9],
+            },
+            customize: function(xlsx) {
+            var sheet = xlsx.xl.worksheets['sheet1.xml'];
+            // Loop over the cells
+            $('row c', sheet).each(function() {
+            //select the index of the row
+            var angka=$(this).parent().index() ;
+            var residu = angka%2;
+            if (angka==1){           
+                $(this).attr('s','22');//22 - Bold, blue background
+            }
+            // else if (angka>1){
+            //     if(residu ==0  ){//'is t',
+            //     $(this).attr('s','25');//25 - Normal text, fine black border
+            //     }else{
+            //     $(this).attr('s','32');//32 - Bold, gray background, fine black border
+            //     }
+            // }
+        });
+        },
+
+          }, {
+            extend: 'csv',
+            filename: 'Data Siswa SMAN 1 SOOKO',
+            exportOptions: {
+                columns: [0,1,2,4,5,6,7,8,9] 
+            }
+          },{
+            extend: 'print',
+            title: '<center>Data Siswa SMAN 1 SOOKO</center>',
+            text: 'Cetak',
+            exportOptions: 
+            {
+              stripHtml: false,
+              columns: [0, 1, 2, 5, 6, 7, 8, 9, 10] 
+            }
+          },{
+            extend: 'colvis',
+            text: 'Tampilan kolom',
+            columns: ':not(.noVis)'
+          }]
+          }).buttons().container().appendTo( '#example_wrapper .col-md-6:eq(0)' );
         }
       });
     };
@@ -87,6 +175,47 @@
       theme: 'bootstrap4',
       placeholder: "Filter Tahun Masuk"
       });
+      $(document).ready(function() {
+        $('#filter_agama').change(function() {
+          filter_siswa();
+        });
+        $('#filter_j_kelamin').change(function() {
+         filter_siswa();
+        });
+        $('#filter_tahunmasuk').change(function() {
+          filter_siswa();
+        });
+      });
+      
+    function filter_siswa() {
+    var agama = $('#filter_agama').val();
+    var tahunmasuk = $('#filter_tahunmasuk').val();
+    var jkelamin = $('#filter_j_kelamin').val();
+    $.ajax({
+      url: "<?= base_url('siswa/get_all') ?>",
+      data: {
+        agama : agama,
+        tahunmasuk : tahunmasuk,
+        jkelamin : jkelamin
+      },
+      success: function(data) {
+        $('#siswa').DataTable().clear().destroy();
+        $("#tampil").html(data);
+        $('#siswa').DataTable({
+          columnDefs: [
+            {
+              targets: 3,
+              className: 'zoom'
+            }
+          ],
+          "responsive": true, "lengthChange": true, "autoWidth": false
+        });
+      },
+      error: function (request, status, error) {
+        alert(request.responseText);
+    }
+    });
+  }
 </script>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <link rel="stylesheet" href="/resources/demos/style.css">

@@ -29,12 +29,16 @@ class SiswaModel extends CI_Model {
 		  }
         }
 	}
-	public function get_all(){
-        $this->db->select('s.nis,s.nama,s.j_kelamin,s.tempat_lahir,s.tanggal_lahir,s.tahun_masuk,s.foto,a.agama');
-        $this->db->from('siswa s');
-        $this->db->join('agama a', 's.id_agama = a.id');
-		$this->db->order_by('s.nis', 'ASC');
-		return $this->db->get();
+	public function get_all($tahun_masuk,$id_agama,$j_kelamin){
+		$sql ='select s.nis,s.nama,s.j_kelamin,s.tempat_lahir,s.tanggal_lahir,s.tahun_masuk,s.foto,a.agama,s.id_agama FROM siswa s INNER JOIN agama a ON 
+		s.id_agama = a.id WHERE s.tahun_masuk = IFNULL(?,s.tahun_masuk) AND s.id_agama= IFNULL(?,s.id_agama) AND s.j_kelamin= IFNULL(?,s.j_kelamin) ORDER BY s.nis ASC';
+		return $this->db->query($sql, array($tahun_masuk ,$id_agama, $j_kelamin));
+        // $this->db->select('s.nis,s.nama,s.j_kelamin,s.tempat_lahir,s.tanggal_lahir,s.tahun_masuk,s.foto,a.agama');
+        // $this->db->from('siswa s');
+        // $this->db->join('agama a', 's.id_agama = a.id');
+		// $this->db->order_by('s.nis', 'ASC');
+		// return $this->db->get();
+		// harus urut antara controller dan model supaya tidak tertukar
 	}
 	public function get_agama(){
 		$this->db->select('*');
