@@ -5,7 +5,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Data Kelas SMAN 1 SOOKO</h1>
+            <h1>Data Mapel SMAN 1 SOOKO</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -34,7 +34,7 @@
                  <div class="form-group">
                   <select class="form-control select2" name="filter_jurusan" id="filter_jurusan" style="width: 100%;">
                     <option value="">Filter Jurusan</option>
-                    <option value="null">Perlihatkan Semua</option>
+                    <option value="0">Perlihatkan Semua</option>
                     <?php foreach($jurusan as $row) : ?>
                       <option value="<?php echo $row->kode_jurusan ?>"><?php echo $row->jurusan ?></option>
                     <?php endforeach ?>
@@ -43,11 +43,11 @@
               </div>
               <div class="col-md-3">
               <div class="form-group">
-                  <select class="form-control select2" id="filter_tingkat" name="filter_tingkat" style="width: 100%;">
-                     <option value="">Filter Kelas</option>
-                     <option value="null">Perlihatkan Semua</option>
-                     <?php foreach($tingkat_kelas as $row) : ?>
-                      <option value="<?php echo $row->kode_tingkat ?>"><?php echo $row->tingkatan ?></option>
+                  <select class="form-control select2" id="filter_kelompok_mapel" name="filter_kelompok_mapel" style="width: 100%;">
+                     <option value="">Filter Kelompok Mapel</option>
+                     <option value="0">Perlihatkan Semua</option>
+                     <?php foreach($kelompok_mapel as $row) : ?>
+                      <option value="<?php echo $row->id ?>"><?php echo $row->kelompok_mapel ?></option>
                      <?php endforeach ?>
                   </select>
                 </div>
@@ -64,7 +64,7 @@
           <div class="modal-dialog modal-lg">
           <div class="modal-content">
             <div class="modal-header">
-              <h4 class="modal-title">Tambah Data Kelas</h4>
+              <h4 class="modal-title">Tambah Data Mapel</h4>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -72,24 +72,26 @@
             <form id="form-tambah" method="post">
             <div class="col-lg-12">
                 <div class="form-group">
-                    <label for="kode_kelas">Kode Kelas</label>
-                    <input type="text" autocomplete="off"class="form-control" name="kode_kelas" placeholder="Masukkan Kode Jurusan">
+                    <label for="kode_mapel">Kode Mapel</label>
+                    <input type="text" autocomplete="off"class="form-control" name="kode_mapel" placeholder="Masukkan Kode Mapel">
                 </div>
                 <div class="form-group">
-                    <label for="nama_kelas">Nama Kelas</label>
-                    <input type="text" autocomplete="off"class="form-control" name="nama_kelas" placeholder="Masukkan Nama ">
+                    <label for="mapel">Nama Mapel</label>
+                    <input type="text" autocomplete="off"class="form-control" name="mapel" placeholder="Masukkan Nama Mapel">
                 </div>
                 <div class="form-group">
-                  <label>Tingkatan Kelas</label>
-                  <select class="form-control select2" id="kode_tingkat" name="kode_tingkat" style="width: 100%;">
-                     <?php foreach($tingkat_kelas as $row) : ?>
-                      <option value="<?php echo $row->kode_tingkat ?>"><?php echo $row->tingkatan ?></option>
+                  <label>Kelompok Mapel</label>
+                  <select class="form-control select2" id="kelompok_mapel_sl2_tbh" name="kelompok_mapel" style="width: 100%;">
+                    <option value="">Pilih Kelompok Mapel</option>
+                     <?php foreach($kelompok_mapel as $row) : ?>
+                      <option value="<?php echo $row->id ?>"><?php echo $row->kelompok_mapel ?></option>
                      <?php endforeach ?>
                   </select>
                 </div>
                 <div class="form-group">
                   <label>Jurusan</label>
-                  <select class="form-control select2" name="kode_jurusan" id="kode_jurusan" style="width: 100%;">
+                  <select class="form-control select2" name="jurusan" id="jurusan_sl2_tbh" style="width: 100%;">
+                    <option value="">Pilih Jurusan</option>
                     <?php foreach($jurusan as $row) : ?>
                       <option value="<?php echo $row->kode_jurusan ?>"><?php echo $row->jurusan ?></option>
                     <?php endforeach ?>

@@ -1,17 +1,17 @@
-  <!-- Select2 -->
-  <link rel="stylesheet" href="<?=base_url()?>assets/admin_lte/plugins/select2/css/select2.min.css">
-  <link rel="stylesheet" href="<?=base_url()?>assets/admin_lte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
-<!-- Select2 -->
-<script src="<?=base_url()?>assets/admin_lte/plugins/select2/js/select2.full.min.js"></script>
+
 <script>
     function refresh_table() {
+    var id_jurusan = $('#filter_jurusan').val();
+    var id_kelompok_mapel = $('#filter_kelompok_mapel').val();
     $.ajax({
-        type: 'POST',
-        url: "<?php echo base_url(); ?>/kelas/get_all",
-        cache: false,
+        url: "<?= base_url('mapel/get_all') ?>",
+        data: {
+        jurusan : id_jurusan,
+        kelompok_mapel : id_kelompok_mapel
+        },
         success: function(data) {
           $("#tampil").html(data);
-          $('#kelas').DataTable({
+          $('#mapel').DataTable({
           "responsive": true, "lengthChange": true, "autoWidth": false
           });
         }
@@ -23,7 +23,7 @@
       modal_tambah = $("#modal-tambah");
       form = $(this);
       $.ajax({
-       url: '<?=site_url('kelas/crud/insert')?>',
+       url: '<?=site_url('mapel/crud/insert')?>',
        type: 'POST',
        dataType: 'json',
        data: form.serialize(),
@@ -31,29 +31,25 @@
         alert('success!');
         modal_tambah.modal('hide');
         form[0].reset();
-        $('#kelas').DataTable().clear().destroy();
+        $('#mapel').DataTable().clear().destroy();
         refresh_table();
-        $("#kode_jurusan").select2({
-          theme: 'bootstrap4'
-        });
-        $("#kode_tingkat").select2({
-          theme: 'bootstrap4'
-        });
       },
       error: function(response){
           alert(response);
       }
      })
     });
-    $('#kode_tingkat').select2({
-      theme: 'bootstrap4'
-    });
-    $('#kode_jurusan').select2({
-      theme: 'bootstrap4'
-    });
-    $('#filter_tingkat').select2({
+    $('#kelompok_mapel_sl2_tbh').select2({
       theme: 'bootstrap4',
-      placeholder: "Filter Kelas"
+      placeholder: "Pilih Kelompok Mapel"
+    });
+    $('#jurusan_sl2_tbh').select2({
+      theme: 'bootstrap4',
+      placeholder: "Pilih Jurusan"
+    });
+    $('#filter_kelompok_mapel').select2({
+      theme: 'bootstrap4',
+      placeholder: "Filter Kelompok Mapel"
     });
     $('#filter_jurusan').select2({
       theme: 'bootstrap4',
@@ -61,25 +57,25 @@
     });
     $(document).ready(function() {
       $('#filter_jurusan').change(function() {
-        filter_jurusan();
+        filter_mapel();
        });
       });
-      $('#filter_tingkat').change(function() {
-        filter_jurusan();
+      $('#filter_kelompok_mapel').change(function() {
+        filter_mapel();
        });
-    function filter_jurusan() {
+    function filter_mapel() {
     var id_jurusan = $('#filter_jurusan').val();
-    var id_kelas = $('#filter_tingkat').val();
+    var id_kelompok_mapel = $('#filter_kelompok_mapel').val();
     $.ajax({
-      url: "<?= base_url('kelas/get_all') ?>",
+      url: "<?= base_url('mapel/get_all') ?>",
       data: {
         jurusan : id_jurusan,
-        kelas : id_kelas
+        kelompok_mapel : id_kelompok_mapel
       },
       success: function(data) {
-        $('#kelas').DataTable().clear().destroy();
+        $('#mapel').DataTable().clear().destroy();
         $("#tampil").html(data);
-        $('#kelas').DataTable({
+        $('#mapel').DataTable({
           "responsive": true, "lengthChange": true, "autoWidth": false
         });
       },

@@ -1,7 +1,7 @@
 <?php 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class KelasModel extends CI_Model {
+class MapelModel extends CI_Model {
 	public $table = 'mapel';
 
 	public function insert($data)
@@ -11,12 +11,12 @@ class KelasModel extends CI_Model {
 
 	public function update($data, $id)
 	{
-		return $this->db->update($this->table, $data, array('kode_kelas' => $id));
+		return $this->db->update($this->table, $data, array('kode_mapel' => $id));
 	}
 
 	public function delete($id)
 	{
-		return $this->db->delete($this->table, array('kode_kelas' => $id));
+		return $this->db->delete($this->table, array('kode_mapel' => $id));
 	}
 	public function get_all($id_jurusan,$id_k_mapel){
 		$sql ='select m.kode_mapel,m.mapel,m.id_k_mapel,m.kode_jurusan,k.kelompok_mapel,j.jurusan from mapel m INNER JOIN kelompok_mapel k ON 
@@ -36,10 +36,8 @@ class KelasModel extends CI_Model {
 	}
 	public function get_by_id($id)
 	{
-		$this->db->select('m.kode_mapel,m.mapel,m.id_k_mapel,m.kode_jurusan,k.kelompok_mapel,j.jurusan');
+		$this->db->select('*');
 		$this->db->from('mapel m');
-        $this->db->join('kelompok_mapel k', 'k.id = m.id_k_mapel');
-        $this->db->join('jurusan j', 'm.kode_jurusan = j.kode_jurusan');
 		$query = $this->db->get_where($this->table, array('m.kode_mapel' => $id));
 		$data['object'] = $query->row();
 		$data['array'] = $query->row_array();
