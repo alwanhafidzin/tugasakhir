@@ -40,7 +40,7 @@
               <div class="col-lg-12">
                <div class="form-group">
                     <label for="kode_kelas">Kode Kelas</label>
-                    <input type="text" autocomplete="off"class="form-control" name="kode_kelas" placeholder="Masukkan Kode Jurusan">
+                    <input type="text" autocomplete="off"class="form-control" name="kode_kelas" placeholder="Masukkan Kode Kelas">
                 </div>
                 <div class="form-group">
                     <label for="nama_kelas">Nama Kelas</label>

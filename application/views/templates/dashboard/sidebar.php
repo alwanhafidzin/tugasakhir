@@ -31,7 +31,8 @@
       </div>
       <?php 
 			$page = $this->uri->segment(1);
-			$data_sekolah = ["tahunakademik","jurusan", "tingkatkelas", "mapel", "kelompokmapel", "dosen", "mahasiswa", "agama"];
+			$data_sekolah = ["tahunakademik","jurusan", "tingkatkelas", "dosen", "mahasiswa", "agama"];
+      $data_mapel = ["kelompokmapel", "mapel"];
 			$relasi = ["kelasdosen", "jurusanmatkul"];
 			$users = ["users"];
 			?>
@@ -87,31 +88,48 @@
               </li>
               <li class="nav-item">
                 <a href="<?=base_url('jurusan')?>" class="nav-link <?= $page === 'jurusan' ? "active" : "" ?>">
-                  <i class="fas fa-list-alt nav-icon"></i>
+                  <i class="fas fa-map-signs nav-icon"></i>
                   <p>Jurusan</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="<?=base_url('tingkatkelas')?>" class="nav-link <?= $page === 'tingkatkelas' ? "active" : "" ?>">
-                  <i class="fas fa-list-alt nav-icon"></i>
+                  <i class="fas fa-network-wired nav-icon"></i>
                   <p>Tingkat Kelas</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="<?=base_url('kelas')?>" class="nav-link <?= $page === 'kelas' ? "active" : "" ?>">
-                  <i class="fas fa-list-alt nav-icon"></i>
+                  <i class="fas fa-chalkboard nav-icon"></i>
                   <p>Kelas</p>
                 </a>
               </li>
               <li class="nav-item">
+                <a href="<?=base_url('kelassiswa')?>" class="nav-link <?= $page === 'kelassiswa' ? "active" : "" ?>">
+                  <i class="fas fa-user-friends nav-icon"></i>
+                  <p>Kelas Siswa</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item <?= in_array($page, $data_mapel)  ? "active menu-open" : ""  ?>">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-book"></i>
+              <p>
+                Data Mapel
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
                 <a href="<?=base_url('kelompokmapel')?>" class="nav-link <?= $page === 'kelompokmapel' ? "active" : "" ?>">
-                  <i class="fas fa-list-alt nav-icon"></i>
+                  <i class="fas fa-project-diagram nav-icon"></i>
                   <p>Kelompok Mapel</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="<?=base_url('mapel')?>" class="nav-link <?= $page === 'mapel' ? "active" : "" ?>">
-                  <i class="fas fa-list-alt nav-icon"></i>
+                  <i class="fas fa-book-open nav-icon"></i>
                   <p>Mapel</p>
                 </a>
               </li>

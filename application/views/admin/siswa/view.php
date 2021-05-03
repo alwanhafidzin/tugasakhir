@@ -73,7 +73,7 @@
                </br></br>
             <div class="row">
               <div class="col-md-2"><b>Filter Data:</b></div>
-              <div class="col-md-3 form-group">
+                 <div class="col-md-3 form-group">
                   <select class="form-control select2" name="filter_tahunmasuk" id="filter_tahunmasuk" style="width: 100%;">
                     <option value="">Filter Tahun Masuk</option>
                     <option value="0">Perlihatkan Semua</option>
