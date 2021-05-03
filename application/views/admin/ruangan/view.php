@@ -51,7 +51,7 @@
                     <input type="text" autocomplete="off"class="form-control" name="kode_ruangan" placeholder="Masukkan Kode Ruangan">
                 </div>
                 <div class="form-group">
-                    <label for="ruaangan">Nama Ruangan</label>
+                    <label for="ruangan">Nama Ruangan</label>
                     <input type="text" autocomplete="off"class="form-control" name="ruangan" placeholder="Masukkan Nama Ruangan">
                 </div>
             </div>

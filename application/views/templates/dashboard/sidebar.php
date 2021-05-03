@@ -33,8 +33,7 @@
 			$page = $this->uri->segment(1);
 			$data_sekolah = ["tahunakademik","jurusan", "tingkatkelas", "dosen", "mahasiswa", "agama"];
       $data_mapel = ["kelompokmapel", "mapel"];
-			$relasi = ["kelasdosen", "jurusanmatkul"];
-			$users = ["users"];
+			$data_ruangan = ["ruangan", "ruangansiswa"];
 			?>
       <!-- Sidebar Menu -->
       <nav class="mt-2">
@@ -108,6 +107,29 @@
                 <a href="<?=base_url('kelassiswa')?>" class="nav-link <?= $page === 'kelassiswa' ? "active" : "" ?>">
                   <i class="fas fa-user-friends nav-icon"></i>
                   <p>Kelas Siswa</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item <?= in_array($page, $data_ruangan)  ? "active menu-open" : ""  ?>">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-hotel"></i>
+              <p>
+                Data Ruangan
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="<?=base_url('ruangan')?>" class="nav-link <?= $page === 'ruangan' ? "active" : "" ?>">
+                  <i class="fab fa-buromobelexperte nav-icon"></i>
+                  <p>Ruangan</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="<?=base_url('ruangkelas')?>" class="nav-link <?= $page === 'ruangkelas' ? "active" : "" ?>">
+                  <i class="fas fa-sitemap nav-icon"></i>
+                  <p>Ruang Kelas</p>
                 </a>
               </li>
             </ul>
