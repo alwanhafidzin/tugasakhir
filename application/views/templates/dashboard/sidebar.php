@@ -158,7 +158,7 @@
             </ul>
           </li>
           <li class="nav-item">
-            <a href="<?=base_url('wali_kelas')?>" class="nav-link <?= $page === 'wali_kelas' ? "active" : "" ?>">
+            <a href="<?=base_url('walikelas')?>" class="nav-link <?= $page === 'walikelas' ? "active" : "" ?>">
               <i class="nav-icon fas fa-user-tie"></i>
               <p>
                 Wali Kelas

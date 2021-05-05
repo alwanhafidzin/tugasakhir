@@ -6,7 +6,7 @@
     display: none;
 }
 </style>
-<table id="ruangkelas" class="table table-bordered table-striped">
+<table id="walikelas" class="table table-bordered table-striped">
     <thead>
        <tr>
          <th class="text-center">No</th>
@@ -16,27 +16,27 @@
     </thead>
     <tbody>
         <?php $no = 1; ?>
-        <?php foreach($ruangkelas->result() as $result) : ?>
+        <?php foreach($walikelas->result() as $result) : ?>
         <tr>
             <td class="text-center"><?php echo $no++ ?></td>
             <td class="text-center"><?php echo $result->nama_kelas ?></td>
             <td>
                 <div class="form-group">
                   <select class="form-control select2 item<?php echo $result->id ?> drop_sl2" onchange="myFunction('<?php echo $result->id ?>')" name="ruangan_sl2" style="width: 100%;">
-                     <?php if ($result->kode_ruangan == '0') { ?>
-                        <option value="0">Belum Memilih Ruangan</option>
+                     <?php if ($result->nip == '0') { ?>
+                        <option value="0">Belum Memilih Wali Kelas</option>
                      <?php } ?>
-                     <?php if ($result->kode_ruangan != '0') { ?>
-                       <?php foreach($ruangan2 as $row2) : ?>
-                         <option value="<?php echo $row2->kode_ruangan ?>"<?php if ($row2->kode_ruangan == $result->kode_ruangan) {
-                         echo "selected";}?><?php if ($row2->kode_ruangan != $result->kode_ruangan) {
-                          echo "disabled";}?>><?php echo $row2->ruangan ?></option>
+                     <?php if ($result->nip != '0') { ?>
+                       <?php foreach($guru2 as $row2) : ?>
+                         <option value="<?php echo $row2->nip ?>"<?php if ($row2->nip == $result->nip) {
+                         echo "selected";}?><?php if ($row2->nip != $result->nip) {
+                          echo "disabled";}?>><?php echo $row2->nama ?></option>
                          <?php endforeach ?>
                      <?php } ?>
                      <option value="1">Default</option>
-                     <?php foreach($ruangan as $row) : ?>
-                       <option value="<?php echo $row->kode_ruangan ?>"<?php if ($row->kode_ruangan == $result->kode_ruangan) {
-                       echo "selected";}?>><?php echo $row->ruangan ?></option>
+                     <?php foreach($guru as $row) : ?>
+                       <option value="<?php echo $row->nip ?>"<?php if ($row->nip == $result->nip) {
+                       echo "selected";}?>><?php echo $row->nama ?></option>
                      <?php endforeach ?>
                   </select>
                 </div>
@@ -57,12 +57,12 @@
     });
     function myFunction(id)
     { 
-      let kode_ruangan = $(".item"+id).val();
+      let nip_guru = $(".item"+id).val();
       $.ajax({
-      url: '<?=site_url('ruangkelas/crud/update')?>',
+      url: '<?=site_url('walikelas/crud/update')?>',
       data: {
              id: id,
-             kode_ruangan :kode_ruangan
+             nip :nip_guru
             },
       success: function(data){ 
         refresh_table();

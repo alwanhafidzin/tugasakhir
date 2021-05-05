@@ -4,14 +4,14 @@
     var id_jurusan = $('#filter_jurusan').val();
     var id_kelas = $('#filter_tingkat').val();
     $.ajax({
-        url: "<?= base_url('ruangkelas/get_all') ?>",
+        url: "<?= base_url('walikelas/get_all') ?>",
         data: {
         jurusan : id_jurusan,
         kelas : id_kelas
         },
         success: function(data) {
           $("#tampil").html(data);
-          $('#ruangkelas').DataTable({
+          $('#walikelas').DataTable({
             "responsive": true, "lengthChange": true, "autoWidth": false
           });
         }
@@ -49,17 +49,17 @@
     });
     $(document).ready(function() {
       $('#filter_jurusan').change(function() {
-        filter_ruangkelas();
+        filter_walikelas();
        });
       });
       $('#filter_tingkat').change(function() {
-        filter_ruangkelas();
+        filter_walikelas();
        });
-    function filter_ruangkelas() {
+    function filter_walikelas() {
     var id_jurusan = $('#filter_jurusan').val();
     var id_kelas = $('#filter_tingkat').val();
     $.ajax({
-      url: "<?= base_url('ruangkelas/get_all') ?>",
+      url: "<?= base_url('walikelas/get_all') ?>",
       data: {
         jurusan : id_jurusan,
         kelas : id_kelas
@@ -67,7 +67,7 @@
       success: function(data) {
         $('#ruangkelas').DataTable().clear().destroy();
         $("#tampil").html(data);
-        $('#ruangkelas').DataTable({
+        $('#walikelas').DataTable({
           "responsive": true, "lengthChange": true, "autoWidth": false
         });
       },
