@@ -39,7 +39,7 @@ class Ruangan extends CI_Controller {
 		}
 		else if ($mode == 'update') {
 			if ($this->input->is_ajax_request()) {
-				$id = $this->input->post('kode_ruangan');
+				$id = $this->input->post('id');
 				$data = array(
 					'kode_ruangan' => $this->input->post('kode_ruangan'),
 					'ruangan' => $this->input->post('ruangan')

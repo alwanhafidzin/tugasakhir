@@ -32,6 +32,7 @@
               </button>
             </div>
             <form id="form-edit">
+            <input type="hidden" name="id">
             <div class="col-lg-12">
                 <div class="form-group">
                     <label for="kode_ruangan">Kode Ruangan</label>
@@ -65,6 +66,7 @@
         data: {id: id},
       })
       .done(function(data) {
+        $("#form-edit input[name='id']").val(data.object.kode_ruangan);
         $("#form-edit input[name='kode_ruangan']").val(data.object.kode_ruangan);
         $("#form-edit input[name='ruangan']").val(data.object.ruangan);
         modal_edit.modal('show').on('shown.bs.modal', function(e) {

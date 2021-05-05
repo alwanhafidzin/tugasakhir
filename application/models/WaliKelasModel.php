@@ -7,9 +7,9 @@ class WaliKelasModel extends CI_Model {
 		 	$kelas = $this->db->get('kelas');
 		 	foreach ($kelas->result() as $row) {
 		 		$walikelas = array(
-		 			'id_guru'				=> '0',
+		 			'nip'			     	=> '0',
 		 			'id_tahun_akademik'		=> $id_tahun_akademik,
-		 			'kode_kelas'				=> $row->kode_kelas
+		 			'kode_kelas'			=> $row->kode_kelas
 		 		);
 		 		$this->db->insert('wali_kelas', $walikelas);
 		 	}

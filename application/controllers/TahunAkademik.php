@@ -10,6 +10,7 @@ class TahunAkademik extends CI_Controller {
 		$this->load->helper('form');
 		$this->load->model('TahunAkademikModel');
 		$this->load->model('WaliKelasModel');
+		$this->load->model('RuangKelasModel');
 		$this->load->database();
 	}
 	public function index()
@@ -38,6 +39,7 @@ class TahunAkademik extends CI_Controller {
 				$result =$this->TahunAkademikModel->insert($data);
 				$id_tahun_akademik = $this->db->insert_id();
 				$this->WaliKelasModel->insert_walikelas($id_tahun_akademik);
+				$this->RuangKelasModel->insert_ruangkelas($id_tahun_akademik);
 				echo json_encode($result);
 			}
 		}
