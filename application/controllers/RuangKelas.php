@@ -16,6 +16,8 @@ class RuangKelas extends CI_Controller {
 		$data['tingkat_kelas'] = $tingkat_kelas;
 		$jurusan = $this->RuangKelasModel->get_jurusan();
 		$data['jurusan'] = $jurusan;
+		$tahun_aktif = $this->RuangKelasModel->get_tahun_aktif();
+		$data['tahun_aktif'] = $tahun_aktif;
         $this->load->view('templates/dashboard/header.php');
         $this->load->view('templates/dashboard/navbar.php');
         $this->load->view('templates/dashboard/sidebar.php');

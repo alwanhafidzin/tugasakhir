@@ -10,7 +10,7 @@ class RuangKelasModel extends CI_Model {
 	}
 	public function get_all($id_jurusan,$id_kelas){
 		$sql ='select r.id,r.kode_kelas,r.kode_ruangan,r.id_tahun_akademik,k.nama_kelas,t.tahun_akademik from ruangan_siswa r INNER JOIN kelas k ON r.kode_kelas=k.kode_kelas INNER JOIN tahun_akademik t ON r.id_tahun_akademik=t.id INNER JOIN tingkat_kelas t2 ON k.kode_tingkat=t2.kode_tingkat INNER JOIN jurusan j ON k.kode_jurusan=j.kode_jurusan
-        WHERE k.kode_jurusan = IFNULL(?,k.kode_jurusan) AND k.kode_tingkat= IFNULL(?,k.kode_tingkat) ORDER BY r.kode_kelas';
+        WHERE k.kode_jurusan = IFNULL(?,k.kode_jurusan) AND k.kode_tingkat= IFNULL(?,k.kode_tingkat) AND t.is_aktif="Y" ORDER BY r.kode_kelas';
 		return $this->db->query($sql, array($id_jurusan, $id_kelas));
 	}
 	public function get_tingkat_kelas(){
@@ -39,6 +39,12 @@ class RuangKelasModel extends CI_Model {
 		$this->db->join('ruangan_siswa rs','r.kode_ruangan=rs.kode_ruangan');
 		$this->db->order_by('r.kode_ruangan','ASC');
 		return $this->db->get()->result();
+	}
+	public function get_tahun_aktif(){
+		$this->db->select('*');
+		$this->db->from('tahun_akademik');
+		$this->db->where('is_aktif','Y');
+		return $this->db->get();
 	}
 	public function get_by_id($id)
 	{
