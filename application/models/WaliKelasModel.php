@@ -58,6 +58,5 @@ class WaliKelasModel extends CI_Model {
 		 		$this->db->insert('wali_kelas', $walikelas);
 		 	}
 		 }
-
-}
+   }
 ?>

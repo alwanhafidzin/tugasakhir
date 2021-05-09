@@ -32,7 +32,7 @@
       <?php 
 			$page = $this->uri->segment(1);
 			$data_sekolah = ["tahunakademik","jurusan", "tingkatkelas", "dosen", "mahasiswa", "agama"];
-      $data_mapel = ["kelompokmapel", "mapel"];
+      $data_mapel = ["kelompokmapel", "mapel", "mapelmingguan"];
 			$data_ruangan = ["ruangan", "ruangansiswa"];
 			?>
       <!-- Sidebar Menu -->
@@ -153,6 +153,18 @@
                 <a href="<?=base_url('mapel')?>" class="nav-link <?= $page === 'mapel' ? "active" : "" ?>">
                   <i class="fas fa-book-open nav-icon"></i>
                   <p>Mapel</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="<?=base_url('gurumapel')?>" class="nav-link <?= $page === 'gurumapel' ? "active" : "" ?>">
+                  <i class="fas fa-book-reader nav-icon"></i>
+                  <p>Guru Mapel</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="<?=base_url('mapelmingguan')?>" class="nav-link <?= $page === 'mapelmingguan' ? "active" : "" ?>">
+                  <i class="fas fa-calendar-plus nav-icon"></i>
+                  <p>Jadwal Per-Minggu</p>
                 </a>
               </li>
             </ul>
