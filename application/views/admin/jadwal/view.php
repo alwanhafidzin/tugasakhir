@@ -111,6 +111,15 @@
                     <?php endforeach ?>
                   </select>
                  </div>
+                 <div class="col-md-3 form-group">
+                  <select class="form-control select2" name="filter_mapel" id="filter_mapel" style="width: 100%;">
+                    <option value="">Filter Mapel</option>
+                    <option value="0">Perlihatkan Semua</option>
+                    <?php foreach($mapel as $row) : ?>
+                      <option value="<?php echo $row->kode_mapel ?>"><?php echo $row->kode_mapel ?>(<?php echo $row->mapel ?>)</option>
+                    <?php endforeach ?>
+                  </select>
+                 </div>
             </div>
                 <div id="tampil">
                 <!-- Data tampil disini -->

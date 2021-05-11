@@ -56,7 +56,7 @@
             </td>
             <td>
                 <div class="form-group">
-                    <input class="jam2<?php echo $result->id ?>" type="time"  onchange="jamSelesai('<?php echo $result->id ?>')" <?php if($result->jam_selesai == "00:00:00"){ echo "value=''"; } elseif($result->jam_selesai != '00:00:00') {echo "value='$result->jam_mulai'"; } ?>>
+                    <input class="jam2<?php echo $result->id ?>" type="time"  onchange="jamSelesai('<?php echo $result->id ?>')" <?php if($result->jam_selesai == "00:00:00"){ echo "value=''"; } elseif($result->jam_selesai != '00:00:00') {echo "value='$result->jam_selesai'"; } ?>>
                 </div>
             </td>
         </tr>

@@ -8,10 +8,10 @@ class JadwalModel extends CI_Model {
 	{
 		return $this->db->update($this->table, $data, array('id' => $id));
 	}
-	public function get_all($kode_kelas,$nip_guru){
+	public function get_all($kode_kelas,$nip_guru,$kode_mapel){
 		$sql ='SELECT j.id,j.nip,k.nama_kelas,ju.jurusan,tk.tingkatan,m.mapel,km.kelompok_mapel,mp.kode_mapel,j.id_hari,j.jam_mulai,j.jam_selesai FROM jadwal j INNER JOIN kelas k ON j.kode_kelas=k.kode_kelas INNER JOIN jurusan ju ON ju.kode_jurusan = k.kode_jurusan INNER JOIN tingkat_kelas tk ON tk.kode_tingkat=k.kode_tingkat INNER JOIN mapel_perminggu mp ON mp.id=j.id_m_perminggu INNER JOIN mapel m ON mp.kode_mapel=m.kode_mapel INNER JOIN tahun_akademik t ON t.id=mp.id_t_akademik LEFT JOIN guru g ON j.nip=g.nip INNER JOIN kelompok_mapel km ON km.id=m.id_k_mapel
-        WHERE j.kode_kelas = IFNULL(?,j.kode_kelas) AND j.nip= IFNULL(?,j.nip) AND t.is_aktif="Y" AND t.semester=mp.semester ORDER BY j.kode_kelas';
-		return $this->db->query($sql, array($kode_kelas, $nip_guru));
+        WHERE j.kode_kelas = IFNULL(?,j.kode_kelas) AND j.nip= IFNULL(?,j.nip) AND mp.kode_mapel= IFNULL(?,mp.kode_mapel) AND t.is_aktif="Y" AND t.semester=mp.semester ORDER BY j.kode_kelas';
+		return $this->db->query($sql, array($kode_kelas, $nip_guru, $kode_mapel));
 	}
     public function get_nip(){
         $this->db->select('*');

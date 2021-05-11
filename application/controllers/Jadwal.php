@@ -10,6 +10,7 @@ class Jadwal extends CI_Controller {
 		$this->load->model('WaliKelasModel');
         $this->load->model('JadwalModel');
 		$this->load->model('KelasSiswaModel');
+		$this->load->model('GuruMapelModel');
 		$this->load->database();
 	}
 	public function index()
@@ -20,6 +21,8 @@ class Jadwal extends CI_Controller {
 		$data['nip'] = $nip;
 		$kelas = $this->KelasSiswaModel->get_kelas();
 		$data['kelas'] = $kelas;
+		$mapel = $this->GuruMapelModel->get_mapel();
+		$data['mapel'] = $mapel;
         $this->load->view('templates/dashboard/header.php');
         $this->load->view('templates/dashboard/navbar.php');
         $this->load->view('templates/dashboard/sidebar.php');
@@ -29,26 +32,86 @@ class Jadwal extends CI_Controller {
 	}
 	public function get_all()
 	{
-		if(!empty($_GET['kelas']) && empty($_GET['guru']) ){
+		if(!empty($_GET['kelas']) && empty($_GET['guru']) && empty($_GET['mapel']) ){
 			$kode_kelas= $_GET['kelas'];
-			$nip_guru= null;
-			$jadwal = $this->JadwalModel->get_all($kode_kelas,$nip_guru);
-		}else if(empty($_GET['kelas']) && !empty($_GET['guru']) ){
+			$nip_guru = null;
+			$kode_mapel = null;
+			$jadwal = $this->JadwalModel->get_all($kode_kelas,$nip_guru,$kode_mapel);
+		}else if(empty($_GET['kelas']) && !empty($_GET['guru']) && empty($_GET['mapel']) ){
 			$kode_kelas= null;
-			$nip_guru= $_GET['guru'];
-			$jadwal = $this->JadwalModel->get_all($kode_kelas,$nip_guru);
-		}else if(!empty($_GET['kelas']) && !empty($_GET['guru']) ){
+			$nip_guru = $_GET['guru'];
+			$kode_mapel = null;
+			$jadwal = $this->JadwalModel->get_all($kode_kelas,$nip_guru,$kode_mapel);
+		}else if(empty($_GET['kelas']) && empty($_GET['guru']) && !empty($_GET['mapel']) ){
+			$kode_kelas= null;
+			$nip_guru = null;
+			$kode_mapel =  $_GET['mapel'];
+			$jadwal = $this->JadwalModel->get_all($kode_kelas,$nip_guru,$kode_mapel);
+		}else if(!empty($_GET['kelas']) && !empty($_GET['guru']) && !empty($_GET['mapel']) ){
 			$kode_kelas= $_GET['kelas'];
-			$nip_guru= $_GET['guru'];
-			$jadwal = $this->JadwalModel->get_all($kode_kelas,$nip_guru);
-		}else if(empty($_GET['kelas']) && empty($_GET['guru']) ){
+			$nip_guru = $_GET['guru'];
+			$kode_mapel =  $_GET['mapel'];
+			$jadwal = $this->JadwalModel->get_all($kode_kelas,$nip_guru,$kode_mapel);
+		}else if(!empty($_GET['kelas']) && !empty($_GET['guru']) && empty($_GET['mapel']) ){
+			$kode_kelas= $_GET['kelas'];
+			$nip_guru = $_GET['guru'];
+			$kode_mapel = null;
+			$jadwal = $this->JadwalModel->get_all($kode_kelas,$nip_guru,$kode_mapel);
+		}else if(!empty($_GET['kelas']) && empty($_GET['guru']) && !empty($_GET['mapel']) ){
+			$kode_kelas= $_GET['kelas'];
+			$nip_guru = null;
+			$kode_mapel = $_GET['mapel'];
+			$jadwal = $this->JadwalModel->get_all($kode_kelas,$nip_guru,$kode_mapel);
+		}else if(empty($_GET['kelas']) && !empty($_GET['guru']) && !empty($_GET['mapel']) ){
 			$kode_kelas= null;
-			$nip_guru= null;
-			$jadwal = $this->JadwalModel->get_all($kode_kelas,$nip_guru);
-		}else if($_GET['kelas']==0 && $_GET['guru']==0 ){
+			$nip_guru = $_GET['guru'];
+			$kode_mapel =  $_GET['mapel'];
+			$jadwal = $this->JadwalModel->get_all($kode_kelas,$nip_guru,$kode_mapel);
+		}else if($_GET['kelas']==0 && $_GET['guru']==0 && $_GET['mapel']==0 ){
 			$kode_kelas= null;
-			$nip_guru= null;
-			$jadwal = $this->JadwalModel->get_all($kode_kelas,$nip_guru);
+			$nip_guru = null;
+			$kode_mapel =  null;
+			$jadwal = $this->JadwalModel->get_all($kode_kelas,$nip_guru,$kode_mapel);
+		}else if($_GET['kelas']==0 && $_GET['guru']==0 && !empty($_GET['mapel']) ){
+			$kode_kelas= null;
+			$nip_guru = null;
+			$kode_mapel = $_GET['mapel'];
+			$jadwal = $this->JadwalModel->get_all($kode_kelas,$nip_guru,$kode_mapel);
+		}else if($_GET['kelas']==0 && !empty($_GET['guru']) && $_GET['mapel']==0 ){
+			$kode_kelas= null;
+			$nip_guru = $_GET['guru'];
+			$kode_mapel =  null;
+			$jadwal = $this->JadwalModel->get_all($kode_kelas,$nip_guru,$kode_mapel);
+		}else if(!empty($_GET['kelas']) && $_GET['guru']==0 && $_GET['mapel']==0 ){
+			$kode_kelas= $_GET['kelas'];
+			$nip_guru = null;
+			$kode_mapel =  null;
+			$jadwal = $this->JadwalModel->get_all($kode_kelas,$nip_guru,$kode_mapel);
+		}else if($_GET['kelas']==0 && $_GET['guru']==0 && !empty($_GET['mapel']) ){
+			$kode_kelas= null;
+			$nip_guru = null;
+			$kode_mapel =  $_GET['mapel'];
+			$jadwal = $this->JadwalModel->get_all($kode_kelas,$nip_guru,$kode_mapel);
+		}else if($_GET['kelas']==0 && !empty($_GET['guru']) && $_GET['mapel']==0 ){
+			$kode_kelas= null;
+			$nip_guru =  $_GET['guru'];
+			$kode_mapel = null;
+			$jadwal = $this->JadwalModel->get_all($kode_kelas,$nip_guru,$kode_mapel);
+		}else if(!empty($_GET['kelas']) && !empty($_GET['guru']) && $_GET['mapel']==0 ){
+			$kode_kelas= $_GET['kelas'];
+			$nip_guru = null;
+			$kode_mapel =  null;
+			$jadwal = $this->JadwalModel->get_all($kode_kelas,$nip_guru,$kode_mapel);
+		}else if($_GET['kelas']==0 && !empty($_GET['guru']) && !empty($_GET['mapel']) ){
+			$kode_kelas= $_GET['kelas'];
+			$nip_guru = null;
+			$kode_mapel =  null;
+			$jadwal = $this->JadwalModel->get_all($kode_kelas,$nip_guru,$kode_mapel);
+		}else if(!empty($_GET['kelas']) && $_GET['guru']==0 && !empty($_GET['mapel']) ){
+			$kode_kelas= $_GET['kelas'];
+			$nip_guru = null;
+			$kode_mapel =  null;
+			$jadwal = $this->JadwalModel->get_all($kode_kelas,$nip_guru,$kode_mapel);
 		}
 		$data['jadwal'] = $jadwal;
         $data['guru_mapel'] = $this->JadwalModel->get_guru_mapel();
