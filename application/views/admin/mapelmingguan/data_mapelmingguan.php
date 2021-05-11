@@ -182,7 +182,7 @@
           $("#mapel_sl2_edit").prop("disabled", false); 
           $.each(response,function(index,data){
            $('#mapel_sl2_edit').append('<option value="'+data['kode_mapel']+'">'+data['kode_mapel']+"("+data['mapel']+")"+'</option>');
-         });
+          });
         },
         error: function (request, status, error) {
           alert('data Mapel Untuk Jurusan Ini Kosong');

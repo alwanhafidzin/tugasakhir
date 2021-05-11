@@ -31,9 +31,9 @@
       </div>
       <?php 
 			$page = $this->uri->segment(1);
-			$data_sekolah = ["tahunakademik","jurusan", "tingkatkelas", "dosen", "mahasiswa", "agama"];
-      $data_mapel = ["kelompokmapel", "mapel", "mapelmingguan"];
-			$data_ruangan = ["ruangan", "ruangansiswa"];
+			$data_sekolah = ["tahunakademik","jurusan", "tingkatkelas", "agama", "kelas", "kelassiswa"];
+      $data_mapel = ["kelompokmapel", "mapel", "mapelmingguan", "gurumapel"];
+			$data_ruangan = ["ruangan", "ruangkelas"];
 			?>
       <!-- Sidebar Menu -->
       <nav class="mt-2">

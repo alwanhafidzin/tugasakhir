@@ -16,7 +16,8 @@ class MapelPermingguModel extends CI_Model {
 		foreach ($kelas->result() as $row) {
 			$jadwal = array(
 				'kode_kelas'			=> $row->kode_kelas,
-				'id_m_perminggu'        => $id_mapel_perminggu
+				'id_m_perminggu'        => $id_mapel_perminggu,
+				'id_hari'               =>1
 			);
 			for ($i=0; $i<$jumlah; $i++){
 				$this->db->insert('jadwal', $jadwal);

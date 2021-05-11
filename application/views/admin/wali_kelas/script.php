@@ -65,7 +65,7 @@
         kelas : id_kelas
       },
       success: function(data) {
-        $('#ruangkelas').DataTable().clear().destroy();
+        $('#walikelas').DataTable().clear().destroy();
         $("#tampil").html(data);
         $('#walikelas').DataTable({
           "responsive": true, "lengthChange": true, "autoWidth": false
