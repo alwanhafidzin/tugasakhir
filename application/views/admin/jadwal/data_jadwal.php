@@ -51,12 +51,12 @@
             </td>
             <td>
                 <div class="form-group">
-                    <input type="time" value="<?php echo $result->jam_mulai ?>">
+                    <input class="jam1<?php echo $result->id ?>" type="time" onchange="jamMulai('<?php echo $result->id ?>')" <?php if($result->jam_mulai == "00:00:00"){ echo "value=''"; } elseif($result->jam_mulai != '00:00:00') {echo "value='$result->jam_mulai'"; } ?>>
                 </div>
             </td>
             <td>
                 <div class="form-group">
-                    <input type="time">
+                    <input class="jam2<?php echo $result->id ?>" type="time"  onchange="jamSelesai('<?php echo $result->id ?>')" <?php if($result->jam_selesai == "00:00:00"){ echo "value=''"; } elseif($result->jam_selesai != '00:00:00') {echo "value='$result->jam_mulai'"; } ?>>
                 </div>
             </td>
         </tr>
@@ -100,6 +100,38 @@
       data: {
              id: id,
              hari :id_hari
+            },
+      success: function(data){ 
+      },
+      error: function(response){
+          alert(response);
+      }
+     })
+    }
+    function jamMulai(id)
+    { 
+      let jam_mulai = $(".jam1"+id).val();
+      $.ajax({
+      url: '<?=site_url('jadwal/crud/update_jam_mulai')?>',
+      data: {
+             id: id,
+             jam_mulai :jam_mulai
+            },
+      success: function(data){ 
+      },
+      error: function(response){
+          alert(response);
+      }
+     })
+    }
+    function jamSelesai(id)
+    { 
+      let jam_selesai = $(".jam2"+id).val();
+      $.ajax({
+      url: '<?=site_url('jadwal/crud/update_jam_selesai')?>',
+      data: {
+             id: id,
+             jam_selesai :jam_selesai
             },
       success: function(data){ 
       },

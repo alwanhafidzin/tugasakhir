@@ -77,6 +77,26 @@ class Jadwal extends CI_Controller {
 				echo json_encode($result);
 			}
 		}
+		else if ($mode == 'update_jam_mulai') {
+			if ($this->input->is_ajax_request()) {
+				$id = $_GET['id'];
+				$data = array(
+					'jam_mulai' => $_GET['jam_mulai']
+				);
+				$result = $this->JadwalModel->update($data, $id);
+				echo json_encode($result);
+			}
+		}
+		else if ($mode == 'update_jam_selesai') {
+			if ($this->input->is_ajax_request()) {
+				$id = $_GET['id'];
+				$data = array(
+					'jam_selesai' => $_GET['jam_selesai']
+				);
+				$result = $this->JadwalModel->update($data, $id);
+				echo json_encode($result);
+			}
+		}
 	}
 	public function get_guru_mapel() {
         $kode_mapel = $_GET['kode_mapel'];
