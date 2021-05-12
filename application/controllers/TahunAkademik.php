@@ -47,9 +47,9 @@ class TahunAkademik extends CI_Controller {
 			if ($this->input->is_ajax_request()) {
 				$id = $this->input->post('id');
 				$data = array(
-					'agama' => $this->input->post('agama')
+					'semester' => $this->input->post('semester')
 				);
-				$result = $this->AgamaModel->update($data, $id);
+				$result = $this->TahunAkademikModel->update($data, $id);
 				echo json_encode($result);
 			}
 		}

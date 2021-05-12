@@ -99,7 +99,7 @@
     e.preventDefault();
     form = $(this);
     $.ajax({
-      url: '<?=site_url('agama/crud/update')?>',
+      url: '<?=site_url('tahunakademik/crud/update')?>',
       type: 'POST',
       dataType: 'json',
       data: form.serialize(),
@@ -107,7 +107,7 @@
         form[0].reset();
         alert('success!');
         modal_edit.modal('hide');
-        $('#agama').DataTable().clear().destroy();
+        $('#tahunakademik').DataTable().clear().destroy();
         refresh_table();
       },
       error: function(response){
@@ -150,5 +150,8 @@
           alert(response);
           }
       })
+    });
+    $('#semester').select2({
+      theme: 'bootstrap4',
     });
 </script>

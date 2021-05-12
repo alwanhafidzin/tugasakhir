@@ -65,7 +65,7 @@ class MapelPermingguModel extends CI_Model {
 	}
 	public function get_all($id_jurusan,$id_kelas){
 		$sql ='select mp.id,mp.jumlah,m.mapel,m.kode_jurusan,k.kelompok_mapel,j.jurusan,tk.tingkatan,j.jurusan from mapel_perminggu mp INNER JOIN mapel m ON mp.kode_mapel=m.kode_mapel INNER JOIN kelompok_mapel k ON 
-		m.id_k_mapel = k.id INNER JOIN jurusan j ON m.kode_jurusan = j.kode_jurusan INNER JOIN tahun_akademik t ON mp.id_t_akademik=t.id INNER JOIN tingkat_kelas tk ON tk.kode_tingkat=mp.kode_tingkat WHERE m.kode_jurusan = IFNULL(?,m.kode_jurusan) AND mp.kode_tingkat = IFNULL(?,mp.kode_tingkat) AND t.is_aktif="Y" ORDER BY m.kode_mapel';
+		m.id_k_mapel = k.id INNER JOIN jurusan j ON m.kode_jurusan = j.kode_jurusan INNER JOIN tahun_akademik t ON mp.id_t_akademik=t.id INNER JOIN tingkat_kelas tk ON tk.kode_tingkat=mp.kode_tingkat WHERE m.kode_jurusan = IFNULL(?,m.kode_jurusan) AND mp.kode_tingkat = IFNULL(?,mp.kode_tingkat) AND t.is_aktif="Y"  AND t.semester=mp.semester ORDER BY m.kode_mapel';
 		return $this->db->query($sql, array($id_jurusan,$id_kelas));
 	}
 	public function get_mapel(){
