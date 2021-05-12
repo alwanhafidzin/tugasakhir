@@ -1,6 +1,6 @@
 <script src="<?=base_url()?>assets/admin_lte/plugins/ckeditor5/ckeditor.js"></script>
-<script src="https://ckeditor.com/apps/ckfinder/3.5.0/ckfinder.js"></script>
-<script src="<?=base_url()?>assets/admin_lte/plugins/ckfinder/ckfinder.js"></script>
+<!-- <script src="https://ckeditor.com/apps/ckfinder/3.5.0/ckfinder.js"></script> -->
+<script src="<?=base_url()?>assets/admin_lte/plugins/ckfinder2/ckfinder.js"></script>
 <script>
 DecoupledEditor
 		.create( document.querySelector( '#editor' ), {
@@ -16,7 +16,7 @@ DecoupledEditor
         'code', 'codeBlock', '|',
         'insertTable', '|',
         'outdent', 'indent', '|',
-        'ckfinder', 'blockQuote', '|',
+        'ckFinder', 'uploadImage' ,'blockQuote', '|',
         'undo', 'redo'
     ],
 			 ckfinder: {

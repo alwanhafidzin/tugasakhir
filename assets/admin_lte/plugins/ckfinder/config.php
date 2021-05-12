@@ -26,14 +26,14 @@ $config = array();
 // https://ckeditor.com/docs/ckfinder/ckfinder3-php/configuration.html#configuration_options_authentication
 
 $config['authentication'] = function () {
-    return false;
+    return true;
 };
 
 /*============================ License Key ============================================*/
 // https://ckeditor.com/docs/ckfinder/ckfinder3-php/configuration.html#configuration_options_licenseKey
 
-$config['licenseName'] = '';
-$config['licenseKey']  = '';
+$config['licenseName'] = 'http://localhost/tugasakhir/materi';
+$config['licenseKey']  = '*J?L-*1**-H**5-*J**-*S**-F*S*-A**R';
 
 /*============================ CKFinder Internal Directory ============================*/
 // https://ckeditor.com/docs/ckfinder/ckfinder3-php/configuration.html#configuration_options_privateDir
@@ -65,8 +65,11 @@ $config['images'] = array(
 
 $config['backends'][] = array(
     'name'         => 'default',
-    'adapter'      => 'local',
-    'baseUrl'      => '/ckfinder/userfiles/',
+    'adapter'      => 'dropbox',
+    'username'    => 'mediakucerdas@gmail.com',
+    'token'        => 'sabOkUuXBA8AAAAAAAAAAXJ4pJDhldBeqvsmd639rkj2C3sNNcMGRxi4518RbIFS',
+    // 'baseUrl'      => FCPATH .'uploads/ckfinder/',
+    'root'         => '/my/ckfinder/files',
 //  'root'         => '', // Can be used to explicitly set the CKFinder user files directory.
     'chmodFiles'   => 0777,
     'chmodFolders' => 0755,
