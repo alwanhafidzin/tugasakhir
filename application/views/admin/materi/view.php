@@ -152,9 +152,9 @@ main .content-container #editor {
 	border-top-left-radius: 0;
 	border-top-right-radius: 0;
 
-	width: 22cm;
+	width: 23cm;
 	min-height: 8cm;
-    max-height:10cm;
+    max-height:12cm;
 	padding: 1cm 1cm 2cm;
 	margin: 0 auto;
 	box-shadow: 2px 2px 1px rgba(0,0,0,.05);
@@ -192,11 +192,9 @@ main .content-container #editor {
               <div class="card-body">
               <main>
 	<div class="centered">
-		<div class="document-editor">
-                <div id="tampil">
-                <!-- Data tampil disini -->
-                </div>
-              </div>
+	<div class="row">
+				<div class="document-editor__toolbar"></div>
+			</div>
               <main>
 			<div class="toolbar-container"></div>
 			<div class="content-container">
