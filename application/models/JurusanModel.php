@@ -13,7 +13,7 @@ class JurusanModel extends CI_Model {
 	{
 		return $this->db->update($this->table, $data, array('kode_jurusan' => $id));
 	}
-
+	
 	public function delete($id)
 	{
 		return $this->db->delete($this->table, array('kode_jurusan' => $id));

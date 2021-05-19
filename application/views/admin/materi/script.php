@@ -1,4 +1,4 @@
-<script src="<?=base_url()?>assets/admin_lte/plugins/ckeditor5.2/build/ckeditor.js"></script>
+<script src="<?=base_url()?>assets/admin_lte/plugins/ckeditor14/build/ckeditor.js"></script>
 <!-- <script src="https://ckeditor.com/apps/ckfinder/3.5.0/ckfinder.js"></script> -->
 <script src="<?=base_url()?>assets/admin_lte/plugins/ckfinder2/ckfinder.js"></script>
 <!-- <script>
@@ -66,13 +66,12 @@ DecoupledEditor
 		watchdog.on( 'error', handleError );
 		
 		watchdog
-			.create( document.querySelector( '#editor' ), {
+			.create( document.querySelector( '.editor' ), {
 				
 				toolbar: {
 					items: [
 						'heading',
 						'|',
-                        'ckFinder',
 						'fontSize',
 						'fontFamily',
 						'|',
@@ -80,12 +79,12 @@ DecoupledEditor
 						'fontBackgroundColor',
 						'|',
 						'bold',
-						'pageBreak',
 						'italic',
 						'underline',
 						'strikethrough',
 						'subscript',
 						'superscript',
+						'specialCharacters',
 						'|',
 						'alignment',
 						'|',
@@ -98,24 +97,26 @@ DecoupledEditor
 						'todoList',
 						'link',
 						'blockQuote',
-                        'ckFinder',
-						'imageUpload',
+						'CKFinder',
+						'imageInsert',
 						'insertTable',
 						'mediaEmbed',
+						'highlight',
 						'|',
 						'undo',
 						'redo',
-						'codeBlock',
-						'highlight',
-						'htmlEmbed',
-						'removeFormat',
 						'restrictedEditingException',
-						'specialCharacters',
+						'textPartLanguage',
+						'codeBlock',
+						'horizontalLine',
+						'htmlEmbed',
+						'pageBreak',
 						'code',
-						'horizontalLine'
+						'removeFormat',
+						'imageUpload'
 					]
 				},
-				language: 'en-gb',
+				language: 'en',
 				image: {
 					toolbar: [
 						'imageTextAlternative',
@@ -134,18 +135,17 @@ DecoupledEditor
 					]
 				},
 				licenseKey: '',
-                 ckfinder: {
-                 uploadUrl: '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files&responseType=json'
-               },	
+				ckfinder: {
+                  uploadUrl: '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files&responseType=json'
+                },
 			} )
 			.catch( handleError );
 		
 		function handleError( error ) {
 			console.error( 'Oops, something went wrong!' );
 			console.error( 'Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:' );
-			console.warn( 'Build id: nn5r3xq6dj2x-e22cdvy6reov' );
+			console.warn( 'Build id: j4n5lovjciwu-9g53zugngdh2' );
 			console.error( error );
 		}
 		
 	</script>
-</script>
