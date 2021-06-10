@@ -5,8 +5,12 @@ class Dashboard extends CI_Controller {
 
 	public function __construct(){
 		parent::__construct();
+		$this->load->library('ion_auth');
         $this->load->helper('url');
 		$this->load->database();
+		if (!$this->ion_auth->logged_in()){
+			redirect('auth/login');
+		}
 		// if (!$this->ion_auth->logged_in()){
 		// 	redirect('auth');
 		// }

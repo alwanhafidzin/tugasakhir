@@ -5,6 +5,10 @@ class Siswa extends CI_Controller {
 
 	public function __construct(){
 		parent::__construct();
+		$this->load->library('ion_auth');
+		if (!$this->ion_auth->logged_in()){
+			redirect('auth/login');
+		}
         $this->load->helper('url');
 		$this->load->helper('form');
 		$this->load->model('SiswaModel');

@@ -40,6 +40,8 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
+          <?php if($this->ion_auth->is_admin()) : ?>
+          <?php if( $this->ion_auth->in_group('admin') ) : ?>
           <li class="nav-item">
             <a href="<?=base_url('dashboard')?>" class="nav-link <?= $page === 'dashboard' ? "active" : "" ?>">
               <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -209,6 +211,8 @@
               </p>
             </a>
           </li>
+          <?php endif; ?>
+          <?php if( $this->ion_auth->in_group('tes') ) : ?>
           <li class="nav-item">
             <a href="<?=base_url('ujian')?>" class="nav-link <?= $page === 'ujian' ? "active" : "" ?>">
               <i class="nav-icon fas fa-columns"></i>
@@ -217,6 +221,8 @@
               </p>
             </a>
           </li>
+          <?php endif; ?>
+          <?php endif; ?>
         </ul>
       </nav>
       <!-- /.sidebar-menu -->

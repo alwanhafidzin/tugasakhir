@@ -81,7 +81,7 @@ class Auth extends CI_Controller
 				//if the login is successful
 				//redirect them back to the home page
 				$this->session->set_flashdata('message', $this->ion_auth->messages());
-				redirect('dashboard', 'refresh');
+				redirect('/', 'refresh');
 			}
 			else
 			{
@@ -101,18 +101,13 @@ class Auth extends CI_Controller
 				'name' => 'identity',
 				'id' => 'identity',
 				'type' => 'text',
-				'placeholder' => 'Email',
-			    'autofocus'	=> 'autofocus',
-			    'class' => 'form-control',
-			    'autocomplete'=>'off'
+				'value' => $this->form_validation->set_value('identity'),
 			];
 
 			$this->data['password'] = [
 				'name' => 'password',
 				'id' => 'password',
 				'type' => 'password',
-                'placeholder' => 'Password',
-			    'class' => 'form-control',
 			];
 
 			$this->_render_page('auth' . DIRECTORY_SEPARATOR . 'login', $this->data);
@@ -270,8 +265,39 @@ class Auth extends CI_Controller
 			if ($forgotten)
 			{
 				// if there were no errors
-				$this->session->set_flashdata('message', $this->ion_auth->messages());
-				redirect("auth/login", 'refresh'); //we should display a confirmation page here instead of the login page
+				// $this->session->set_flashdata('message', $this->ion_auth->messages());
+				// redirect("auth/login", 'refresh');
+				 //we should display a confirmation page here instead of the login page
+				 $config = [
+					'protocol' => 'smtp',
+					'smtp_host' => 'ssl://smtp.googlemail.com',
+					'smtp_port' => 465,
+					'smtp_user' => 'mediakucerdas@gmail.com',
+					'smtp_pass' => '53907373',
+					'mailtype' => 'html'
+				];
+				$data = array(
+					'identity'=>$forgotten['identity'],
+					'forgotten_password_code' => $forgotten['forgotten_password_code'],
+				);
+				$this->load->library('email');
+				$this->email->initialize($config);
+				$this->load->helpers('url');
+				$this->email->set_newline("\r\n");
+
+				$this->email->from('mediakucerdas@gmail.com');
+				$this->email->to("alwanhafidzin@gmail.com");
+				$this->email->subject("Lupa Kata Sandi SVL");
+				$body = $this->load->view('auth/email/forgot_password.tpl.php',$data,TRUE);
+				$this->email->message($body);
+				if ($this->email->send()) {
+					$this->session->set_flashdata('success','Email Send sucessfully');
+					return redirect('auth/login');
+				} 
+				else {
+					echo "Email not send .....";
+					show_error($this->email->print_debugger());
+				}
 			}
 			else
 			{
@@ -507,7 +533,8 @@ class Auth extends CI_Controller
 				'phone' => $this->input->post('phone'),
 			];
 		}
-		if ($this->form_validation->run() === TRUE && $this->ion_auth->register($identity, $password, $email, $additional_data))
+		$group = array('1');
+		if ($this->form_validation->run() === TRUE && $this->ion_auth->register($identity, $password, $email, $additional_data,$group))
 		{
 			// check to see if we are creating the user
 			// redirect them back to the admin page
