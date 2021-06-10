@@ -194,6 +194,14 @@
             </a>
           </li>
           <li class="nav-item">
+            <a href="<?=base_url('absensipermapel')?>" class="nav-link <?= $page === 'absensipermapel' ? "active" : "" ?>">
+              <i class="nav-icon far fa-calendar-check"></i>
+              <p>
+                Absensi Permapel
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
             <a href="<?=base_url('pengguna')?>" class="nav-link <?= $page === 'pengguna' ? "active" : "" ?>">
               <i class="nav-icon fas fa-users-cog"></i>
               <p>

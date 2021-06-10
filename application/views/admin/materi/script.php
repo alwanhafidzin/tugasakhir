@@ -1,151 +1,58 @@
-<script src="<?=base_url()?>assets/admin_lte/plugins/ckeditor14/build/ckeditor.js"></script>
-<!-- <script src="https://ckeditor.com/apps/ckfinder/3.5.0/ckfinder.js"></script> -->
-<script src="<?=base_url()?>assets/admin_lte/plugins/ckfinder2/ckfinder.js"></script>
-<!-- <script>
-DecoupledEditor
-		.create( document.querySelector( '#editor' ), {
-	// 		toolbar: [ 'heading', '|', 'bold', 'italic', 'link' ]
-	// 		toolbar : [
-    //     'heading', '|',
-    //     'alignment', '|',
-    //     'bold', 'italic', 'strikethrough', 'underline', 'subscript', 'superscript', '|',
-    //     'link', '|',
-    //     'bulletedList', 'numberedList', 'todoList',
-    //     '-', // break point
-    //     'fontfamily', 'fontsize', 'fontColor', 'fontBackgroundColor', '|',
-    //     'code', 'codeBlock', '|',
-    //     'insertTable', '|',
-    //     'outdent', 'indent', '|',
-    //     'ckFinder', 'uploadImage' ,'blockQuote', '|',
-    //     'undo', 'redo'
-    // ],
-			//  ckfinder: {
-            //      uploadUrl: '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files&responseType=json'
-            //  },
-		} )
-		.then( editor => {
-			const toolbarContainer = document.querySelector( '.toolbar-container' );
-
-			toolbarContainer.prepend( editor.ui.view.toolbar.element );
-
-			window.editor = editor;
-		} )
-		.catch( err => {
-			console.error( err.stack );
-		} );
-
-	</script> -->
-    <script>
-		const watchdog = new CKSource.Watchdog();
-		
-		window.watchdog = watchdog;
-		
-		watchdog.setCreator( ( element, config ) => {
-			return CKSource.Editor
-				.create( element, config )
-				.then( editor => {
-					
-					
-					
-		
-					// Set a custom container for the toolbar.
-					document.querySelector( '.document-editor__toolbar' ).appendChild( editor.ui.view.toolbar.element );
-					document.querySelector( '.ck-toolbar' ).classList.add( 'ck-reset_all' );
-		
-					return editor;
-				} )
-		} );
-		
-		watchdog.setDestructor( editor => {
-			// Set a custom container for the toolbar.
-			document.querySelector( '.document-editor__toolbar' ).removeChild( editor.ui.view.toolbar.element );
-		
-			return editor.destroy();
-		} );
-		
-		watchdog.on( 'error', handleError );
-		
-		watchdog
-			.create( document.querySelector( '.editor' ), {
-				
-				toolbar: {
-					items: [
-						'heading',
-						'|',
-						'fontSize',
-						'fontFamily',
-						'|',
-						'fontColor',
-						'fontBackgroundColor',
-						'|',
-						'bold',
-						'italic',
-						'underline',
-						'strikethrough',
-						'subscript',
-						'superscript',
-						'specialCharacters',
-						'|',
-						'alignment',
-						'|',
-						'numberedList',
-						'bulletedList',
-						'|',
-						'outdent',
-						'indent',
-						'|',
-						'todoList',
-						'link',
-						'blockQuote',
-						'CKFinder',
-						'imageInsert',
-						'insertTable',
-						'mediaEmbed',
-						'highlight',
-						'|',
-						'undo',
-						'redo',
-						'restrictedEditingException',
-						'textPartLanguage',
-						'codeBlock',
-						'horizontalLine',
-						'htmlEmbed',
-						'pageBreak',
-						'code',
-						'removeFormat',
-						'imageUpload'
-					]
-				},
-				language: 'en',
-				image: {
-					toolbar: [
-						'imageTextAlternative',
-						'imageStyle:full',
-						'imageStyle:side',
-						'linkImage'
-					]
-				},
-				table: {
-					contentToolbar: [
-						'tableColumn',
-						'tableRow',
-						'mergeTableCells',
-						'tableCellProperties',
-						'tableProperties'
-					]
-				},
-				licenseKey: '',
-				ckfinder: {
-                  uploadUrl: '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files&responseType=json'
-                },
-			} )
-			.catch( handleError );
-		
-		function handleError( error ) {
-			console.error( 'Oops, something went wrong!' );
-			console.error( 'Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:' );
-			console.warn( 'Build id: j4n5lovjciwu-9g53zugngdh2' );
-			console.error( error );
-		}
-		
-	</script>
+<script>
+    function refresh_table() {
+    $.ajax({
+        type: 'POST',
+        url: "<?php echo base_url(); ?>/materi/get_all",
+        cache: false,
+        success: function(data) {
+          $("#tampil").html(data);
+          $('#materi').DataTable({
+          "responsive": true, "lengthChange": true, "autoWidth": false
+          });
+        }
+      });
+    };
+    refresh_table();
+    $("#form-tambah").submit(function(e) {
+      e.preventDefault();
+      modal_tambah = $("#modal-tambah");
+      modal_tambah.modal('hide');
+      Swal1();
+      form = $(this);
+      $.ajax({
+       url: '<?=site_url('materi/upload_dropbox')?>',
+       type: 'POST',
+       data:new FormData(this),
+       processData:false,
+       contentType:false,
+       cache:false,
+       async:true,
+      success: function(){ 
+        swal("Berhasil!", "Materi Baru Berhasil diupload.", "success");
+        form[0].reset();
+        $('#materi').DataTable().clear().destroy();
+        refresh_table();
+      },
+      error: function(response){
+          swal.close();
+          alert(response);
+      }
+     })
+    });
+    function Swal1(){
+    swal({
+     title: "Status!",
+     text: "File Sedang diupload.Harap Tunggu...",
+     type: "warning",
+     showConfirmButton: false
+    });
+    }
+    function Swal2(){
+    swal({
+     title: "Status!",
+     text: "File Sedang dihapus.Harap Tunggu...",
+     type: "warning",
+     showConfirmButton: false
+    });
+    }
+</script>

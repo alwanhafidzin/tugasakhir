@@ -28,6 +28,7 @@
             <td class="text-center"><?php echo $no++ ?></td>
             <td class="text-center"><?php echo $result->nis ?></td>
             <td class="text-center"><?php echo $result->nama ?></td>
+            <!-- <td class="text-center"><img width="35" src="https://www.dropbox.com/s/ovenli30cicbeiv/profile.jpg?raw=1" /></td> -->
             <td class="text-center"><img width="35" src="<?php echo base_url()?>uploads/siswa/<?php echo $result->foto; ?>" /></td>
             <td class="text-center"><?php echo $result->foto ?></td>
             <td class="text-center"><img width="90" src="<?php echo base_url()?>uploads/siswa/<?php echo $result->foto; ?>" /></td>

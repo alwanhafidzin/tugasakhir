@@ -41,7 +41,7 @@
   <link rel="stylesheet" href="<?=base_url()?>assets/admin_lte/plugins/dropzone/min/dropzone.min.css">
   <!-- DataTables -->
   <link rel="stylesheet" href="<?=base_url()?>assets/admin_lte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
-  <link rel="stylesheet" href="<?=base_url()?>assets/admin_lte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+  <link rel="stylesheet" href="<?=base_url()?>assets/admin_lte/plugins/datatables-responsive2/css/responsive.bootstrap4.min.css">
   <link rel="stylesheet" href="<?=base_url()?>assets/admin_lte/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
   <!-- Sweet Alert -->
   <script src="https://lipis.github.io/bootstrap-sweetalert/dist/sweetalert.js"></script>
@@ -49,7 +49,7 @@
 
   <script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
   <link rel="stylesheet" href="https://printjs-4de6.kxcdn.com/print.min.css" />
-
+  <link rel="stylesheet" href="<?=base_url()?>assets/admin_lte/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.css">
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">

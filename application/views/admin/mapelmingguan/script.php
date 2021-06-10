@@ -102,8 +102,9 @@
         data: {id_jurusan: id_jurusan},
         success: function(response) {
           $("#tingkatkelas_sl2_tbh").prop("disabled", false); 
-          $("#mapel_sl2_tbh").prop("disabled", false); 
+          $("#mapel_sl2_tbh").prop("disabled", false).empty(); 
           $.each(response,function(index,data){
+           $("#mapel_sl2_tbh").append(new Option("Pilih Mapel", ""));
            $('#mapel_sl2_tbh').append('<option value="'+data['kode_mapel']+'">'+data['kode_mapel']+"("+data['mapel']+")"+'</option>');
          });
         },

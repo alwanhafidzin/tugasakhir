@@ -50,8 +50,8 @@
 <!-- DataTables  & Plugins -->
 <script src="<?=base_url()?>assets/admin_lte/plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="<?=base_url()?>assets/admin_lte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-<script src="<?=base_url()?>assets/admin_lte/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-<script src="<?=base_url()?>assets/admin_lte/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="<?=base_url()?>assets/admin_lte/plugins/datatables-responsive2/js/dataTables.responsive.min.js"></script>
+<script src="<?=base_url()?>assets/admin_lte/plugins/datatables-responsive2/js/responsive.bootstrap4.min.js"></script>
 <script src="<?=base_url()?>assets/admin_lte/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
 <script src="<?=base_url()?>assets/admin_lte/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
 <script src="<?=base_url()?>assets/admin_lte/plugins/jszip/jszip.min.js"></script>
@@ -72,6 +72,9 @@
 <script src="<?=base_url()?>assets/admin_lte/plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
 <!-- Select2 -->
 <script src="<?=base_url()?>assets/admin_lte/plugins/select2/js/select2.full.min.js"></script>
-
+<script src="<?=base_url()?>assets/admin_lte/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script src="<?=base_url()?>assets/admin_lte/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+<script src="<?=base_url()?>assets/admin_lte/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.id.min.js"></script>
+<script src="<?=base_url()?>assets/admin_lte/plugins/print.js-1.5.0/src/js/print.js"></script>
 </body>
 </html>

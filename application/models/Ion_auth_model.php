@@ -822,7 +822,6 @@ class Ion_auth_model extends CI_Model
 			$this->set_error('account_creation_missing_default_group');
 			return FALSE;
 		}
-
 		// check if the default set in config exists in database
 		$query = $this->db->get_where($this->tables['groups'], ['name' => $this->config->item('default_group', 'ion_auth')], 1)->row();
 		if (!isset($query->id) && empty($groups))
