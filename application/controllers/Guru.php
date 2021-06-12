@@ -11,6 +11,10 @@ class Guru extends CI_Controller {
 		$this->load->library('upload');
 		$this->load->library('Excel'); 
 		$this->load->database();
+		$this->load->library('ion_auth');
+		if (!$this->ion_auth->logged_in()){
+			redirect('auth/login');
+		}
 	}
 	public function index()
 	{

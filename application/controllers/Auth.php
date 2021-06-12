@@ -77,11 +77,18 @@ class Auth extends CI_Controller
 			// check to see if the user is logging in
 			// check for "remember me"
 			$remember = (bool)$this->input->post('remember');
-
-			if ($this->ion_auth->login($this->input->post('identity'), $this->input->post('password'), $remember))
+			$login = $this->ion_auth->login($this->input->post('identity'), $this->input->post('password'), $remember);
+			if ($login)
 			{
 				//if the login is successful
 				//redirect them back to the home page
+				$this->session->set_flashdata('message', $this->ion_auth->messages());
+				redirect('dashboard', 'refresh');
+			}
+			if(! $login) { // username is not successful
+				$this->ion_auth_model->identity_column = 'email';
+				// check for email
+				$login = $this->ion_auth->login($this->input->post('identity'), $this->input->post('password'), $remember);
 				$this->session->set_flashdata('message', $this->ion_auth->messages());
 				redirect('dashboard', 'refresh');
 			}

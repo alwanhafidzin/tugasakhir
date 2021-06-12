@@ -12,6 +12,10 @@ class TahunAkademik extends CI_Controller {
 		$this->load->model('WaliKelasModel');
 		$this->load->model('RuangKelasModel');
 		$this->load->database();
+		$this->load->library('ion_auth');
+		if (!$this->ion_auth->logged_in()){
+			redirect('auth/login');
+		}
 	}
 	public function index()
 	{
