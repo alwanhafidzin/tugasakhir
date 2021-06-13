@@ -95,10 +95,11 @@ thead {
             <div class="card card-primary card-outline">
               <!-- /.card-header -->
               <div class="card-body">
-              <button type="button" onclick="printJS({ printable: 'jadwal_siswa', type: 'html', header: 'PrintJS - Form Element Selection' })">
-                Print Form with Header
+              <button type="button" onclick="printJS({ printable: 'jadwal_guru', type: 'html',  targetStyles: ['*'] })">
+                Print Jadwal
               </button>
-              <table class="table table-sm table-bordered" id="jadwal_siswa">
+              <!-- <button id="btn-print">Print me</button> -->
+              <table style="border:5px double black;width:100%;" class="table table-sm table-bordered" id="jadwal_guru">
                 <thead>
                   <tr>
                     <th class="text-center">Hari</th>
@@ -115,7 +116,7 @@ thead {
                         <td class="text-center"><?php echo $result->hari ?></td>
                         <td class="text-center"><?php echo $result->mapel ?></td>
                         <td class="text-center"><?php echo $result->nama_kelas ?></td>
-                        <td class="text-center"><?php echo $result->ruangan ?></td>
+                        <td class="text-center"><?php if($result->ruangan==null){echo('-');}else{echo($result->ruangan);} ?></td>
                         <td class="text-center"><?php echo $result->jam_mulai ?>-<?php echo $result->jam_selesai ?></td>
                     </tr>
                     <?php endforeach;?>

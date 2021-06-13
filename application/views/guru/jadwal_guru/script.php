@@ -1,5 +1,5 @@
 <script>
-const table = document.getElementById("jadwal_siswa");
+const table = document.getElementById("jadwal_guru");
 
 let headerCell = null;
 
@@ -12,4 +12,16 @@ for (let row of table.rows) {
     firstCell.remove();
   }
 }
+
+// function printData()
+// {
+//    var divToPrint=document.getElementById("jadwal_guru");
+//    newWin= window.open("");
+//    newWin.document.write(divToPrint.outerHTML);
+//    newWin.print();
+//    newWin.close();
+// }
+// $('#btn-print').on('click',function(){
+// printData();
+// })
 </script>
