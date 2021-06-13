@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 10 Jun 2021 pada 12.38
+-- Waktu pembuatan: 13 Jun 2021 pada 13.12
 -- Versi server: 10.4.18-MariaDB
 -- Versi PHP: 7.4.16
 
@@ -213,15 +213,16 @@ CREATE TABLE `guru` (
   `gender` enum('P','W') NOT NULL,
   `id_agama` int(11) NOT NULL,
   `email` varchar(50) NOT NULL,
-  `foto` text NOT NULL
+  `foto` text NOT NULL,
+  `status` enum('active','tidak_active') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data untuk tabel `guru`
 --
 
-INSERT INTO `guru` (`nip`, `nama`, `gender`, `id_agama`, `email`, `foto`) VALUES
-('3509176412630001', 'Guru Smansasoo.spd', 'P', 1, 'guru1@gmail.com', 'alwan.jpg');
+INSERT INTO `guru` (`nip`, `nama`, `gender`, `id_agama`, `email`, `foto`, `status`) VALUES
+('3509176412630001', 'Guru Smansasoo.spd', 'P', 1, 'alwanhafidzin@student.ub.ac.id', 'alwan.jpg', 'active');
 
 -- --------------------------------------------------------
 
@@ -522,6 +523,20 @@ CREATE TABLE `login_attempts` (
   `login` varchar(100) NOT NULL,
   `time` int(11) UNSIGNED DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data untuk tabel `login_attempts`
+--
+
+INSERT INTO `login_attempts` (`id`, `ip_address`, `login`, `time`) VALUES
+(23, '::1', 'jkdjkd', 1623487711),
+(24, '::1', 'jkdjkd', 1623487711),
+(25, '::1', 'aa', 1623487716),
+(26, '::1', 'aa', 1623487717),
+(27, '::1', 'aa', 1623487722),
+(28, '::1', 'alwanhafidzin2@gmail.com', 1623499329),
+(29, '::1', 'alwanhafidzin2@gmail.com', 1623499330),
+(30, '::1', 'alwanhafidzin2@gmail.com', 1623499346);
 
 -- --------------------------------------------------------
 
@@ -829,7 +844,49 @@ INSERT INTO `ruangan_siswa` (`id`, `kode_kelas`, `kode_ruangan`, `id_tahun_akade
 (123, '12-MIA6', '0', 3),
 (124, '12-MIA7', '0', 3),
 (125, '12-MIA8', '0', 3),
-(126, '12-MIA9', '0', 3);
+(126, '12-MIA9', '0', 3),
+(127, '10-IIS1', '0', 4),
+(128, '10-IIS2', '0', 4),
+(129, '10-IIS3', '0', 4),
+(130, '10-IIS4', '0', 4),
+(131, '10-IIS5', '0', 4),
+(132, '10-MIA1', '0', 4),
+(133, '10-MIA2', '0', 4),
+(134, '10-MIA3', '0', 4),
+(135, '10-MIA4', '0', 4),
+(136, '10-MIA5', '0', 4),
+(137, '10-MIA6', '0', 4),
+(138, '10-MIA7', '0', 4),
+(139, '10-MIA8', '0', 4),
+(140, '10-MIA9', '0', 4),
+(141, '11-IIS1', '0', 4),
+(142, '11-IIS2', '0', 4),
+(143, '11-IIS3', '0', 4),
+(144, '11-IIS4', '0', 4),
+(145, '11-IIS5', '0', 4),
+(146, '11-MIA1', '0', 4),
+(147, '11-MIA2', '0', 4),
+(148, '11-MIA3', '0', 4),
+(149, '11-MIA4', '0', 4),
+(150, '11-MIA5', '0', 4),
+(151, '11-MIA6', '0', 4),
+(152, '11-MIA7', '0', 4),
+(153, '11-MIA8', '0', 4),
+(154, '11-MIA9', '0', 4),
+(155, '12-IIS1', '0', 4),
+(156, '12-IIS2', '0', 4),
+(157, '12-IIS3', '0', 4),
+(158, '12-IIS4', '0', 4),
+(159, '12-IIS5', '0', 4),
+(160, '12-MIA1', '0', 4),
+(161, '12-MIA2', '0', 4),
+(162, '12-MIA3', '0', 4),
+(163, '12-MIA4', '0', 4),
+(164, '12-MIA5', '0', 4),
+(165, '12-MIA6', '0', 4),
+(166, '12-MIA7', '0', 4),
+(167, '12-MIA8', '0', 4),
+(168, '12-MIA9', '0', 4);
 
 -- --------------------------------------------------------
 
@@ -840,21 +897,23 @@ INSERT INTO `ruangan_siswa` (`id`, `kode_kelas`, `kode_ruangan`, `id_tahun_akade
 CREATE TABLE `siswa` (
   `nis` varchar(8) NOT NULL,
   `nama` varchar(50) NOT NULL,
+  `email` varchar(100) NOT NULL,
   `j_kelamin` enum('L','P') NOT NULL,
   `tempat_lahir` varchar(30) NOT NULL,
   `tanggal_lahir` date NOT NULL,
   `id_agama` int(11) NOT NULL,
   `tahun_masuk` year(4) NOT NULL,
-  `foto` text NOT NULL
+  `foto` text NOT NULL,
+  `status` enum('active','lulus') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data untuk tabel `siswa`
 --
 
-INSERT INTO `siswa` (`nis`, `nama`, `j_kelamin`, `tempat_lahir`, `tanggal_lahir`, `id_agama`, `tahun_masuk`, `foto`) VALUES
-('1234', 'Alwan Hafidzin', 'L', 'Mojokerto', '2000-02-17', 1, 2018, '1234.png'),
-('21281', 'Alwan3', 'L', 'Mojokerto', '2000-01-11', 1, 2018, '21281.PNG');
+INSERT INTO `siswa` (`nis`, `nama`, `email`, `j_kelamin`, `tempat_lahir`, `tanggal_lahir`, `id_agama`, `tahun_masuk`, `foto`, `status`) VALUES
+('1234', 'Alwan Hafidzin', 'alwanhafidzin@gmail.com', 'L', 'Mojokerto', '2000-02-17', 1, 2018, '1234.png', 'active'),
+('21281', 'Alwan3', 'alwanhfirdaus@gmail.com', 'L', 'Mojokerto', '2000-01-11', 1, 2018, '21281.PNG', 'active');
 
 -- --------------------------------------------------------
 
@@ -875,8 +934,9 @@ CREATE TABLE `tahun_akademik` (
 
 INSERT INTO `tahun_akademik` (`id`, `tahun_akademik`, `is_aktif`, `semester`) VALUES
 (1, '2020/2021', 'Y', 'ganjil'),
-(2, '2030/2049', 'N', 'ganjil'),
-(3, '2030/20476', 'N', 'ganjil');
+(2, '2030/2049', 'N', ''),
+(3, '2030/20476', 'N', 'ganjil'),
+(4, '2091309', 'N', '');
 
 -- --------------------------------------------------------
 
@@ -1087,8 +1147,10 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `email`, `activation_selector`, `activation_code`, `forgotten_password_selector`, `forgotten_password_code`, `forgotten_password_time`, `remember_selector`, `remember_code`, `created_on`, `last_login`, `active`, `nama`) VALUES
-(1, '127.0.0.1', 'administrator', '$2y$10$4iCItprhwu5rzEfUa1yTFek8ipt7bKIEkS4cemNFIcc./ivVYhS/a', 'alwanhafidzin@gmail.com', NULL, '', NULL, NULL, NULL, NULL, NULL, 1268889823, 1623317816, 1, 'Alwan'),
-(2, '::1', NULL, '$2y$10$TSKoIDsOFEgCmlsLgr5G.e.5v97vi1Gp.y6zLwKb.311xsUGW5zgK', 'alwanhafidzin2@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1623306754, NULL, 1, 'Alwan');
+(1, '127.0.0.1', 'administrator', '$2y$10$4iCItprhwu5rzEfUa1yTFek8ipt7bKIEkS4cemNFIcc./ivVYhS/a', 'alwanhafidzin@gmail.com', NULL, '', NULL, NULL, NULL, '8e63ac2f6f1580240231de9f8f02e6c698aede11', '$2y$10$Vq.XXNp3vh4O//KofNxvMeVrd7LdRG8AcwJUWDjSU5vzo8jcWnEZa', 1268889823, 1623487012, 1, 'Alwan'),
+(2, '::1', '3509176412630001', '$2y$10$4iCItprhwu5rzEfUa1yTFek8ipt7bKIEkS4cemNFIcc./ivVYhS/a', 'alwanhafidzin2@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1623306754, 1623499440, 1, 'Alwan'),
+(8, '::1', '3509176412630001', '$2y$10$snvmEENbt/SNLj3nAj.97OM4bCkDCzzk8uhmXaVqL0ncpn3ha4kAO', 'alwanhafidzin@student.ub.ac.id', NULL, NULL, NULL, NULL, NULL, '9c8b78524eccc241e1e1dd8499681942b02bb30e', '$2y$10$AwLktqi/TIve3.FcWASjPeqk2mc1Mx8K2G1ifVX4CFLcvG1EckwO.', 1623486840, 1623486930, 1, 'Guru Smansasoo.spd'),
+(11, '::1', '21281', '$2y$10$4GfAkyE.YAPa4WZSsghq1eCIrGBlntweARSh6Dnvrzz7.DIAMuqdC', 'alwanhfirdaus@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1623487397, NULL, 1, 'Alwan3');
 
 -- --------------------------------------------------------
 
@@ -1108,7 +1170,9 @@ CREATE TABLE `users_groups` (
 
 INSERT INTO `users_groups` (`id`, `user_id`, `group_id`) VALUES
 (11, 1, 1),
-(14, 2, 2);
+(14, 2, 2),
+(20, 8, 2),
+(21, 11, 3);
 
 -- --------------------------------------------------------
 
@@ -1253,7 +1317,49 @@ INSERT INTO `wali_kelas` (`id`, `id_tahun_akademik`, `nip`, `kode_kelas`) VALUES
 (123, 3, '0', '12-MIA6'),
 (124, 3, '0', '12-MIA7'),
 (125, 3, '0', '12-MIA8'),
-(126, 3, '0', '12-MIA9');
+(126, 3, '0', '12-MIA9'),
+(127, 4, '0', '10-IIS1'),
+(128, 4, '0', '10-IIS2'),
+(129, 4, '0', '10-IIS3'),
+(130, 4, '0', '10-IIS4'),
+(131, 4, '0', '10-IIS5'),
+(132, 4, '0', '10-MIA1'),
+(133, 4, '0', '10-MIA2'),
+(134, 4, '0', '10-MIA3'),
+(135, 4, '0', '10-MIA4'),
+(136, 4, '0', '10-MIA5'),
+(137, 4, '0', '10-MIA6'),
+(138, 4, '0', '10-MIA7'),
+(139, 4, '0', '10-MIA8'),
+(140, 4, '0', '10-MIA9'),
+(141, 4, '0', '11-IIS1'),
+(142, 4, '0', '11-IIS2'),
+(143, 4, '0', '11-IIS3'),
+(144, 4, '0', '11-IIS4'),
+(145, 4, '0', '11-IIS5'),
+(146, 4, '0', '11-MIA1'),
+(147, 4, '0', '11-MIA2'),
+(148, 4, '0', '11-MIA3'),
+(149, 4, '0', '11-MIA4'),
+(150, 4, '0', '11-MIA5'),
+(151, 4, '0', '11-MIA6'),
+(152, 4, '0', '11-MIA7'),
+(153, 4, '0', '11-MIA8'),
+(154, 4, '0', '11-MIA9'),
+(155, 4, '0', '12-IIS1'),
+(156, 4, '0', '12-IIS2'),
+(157, 4, '0', '12-IIS3'),
+(158, 4, '0', '12-IIS4'),
+(159, 4, '0', '12-IIS5'),
+(160, 4, '0', '12-MIA1'),
+(161, 4, '0', '12-MIA2'),
+(162, 4, '0', '12-MIA3'),
+(163, 4, '0', '12-MIA4'),
+(164, 4, '0', '12-MIA5'),
+(165, 4, '0', '12-MIA6'),
+(166, 4, '0', '12-MIA7'),
+(167, 4, '0', '12-MIA8'),
+(168, 4, '0', '12-MIA9');
 
 -- --------------------------------------------------------
 
@@ -1653,7 +1759,7 @@ ALTER TABLE `kelompok_mapel`
 -- AUTO_INCREMENT untuk tabel `login_attempts`
 --
 ALTER TABLE `login_attempts`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT untuk tabel `mapel_perminggu`
@@ -1689,13 +1795,13 @@ ALTER TABLE `predikat`
 -- AUTO_INCREMENT untuk tabel `ruangan_siswa`
 --
 ALTER TABLE `ruangan_siswa`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=127;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=169;
 
 --
 -- AUTO_INCREMENT untuk tabel `tahun_akademik`
 --
 ALTER TABLE `tahun_akademik`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT untuk tabel `tipe_ujian`
@@ -1743,19 +1849,19 @@ ALTER TABLE `ujian_detail_soal`
 -- AUTO_INCREMENT untuk tabel `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT untuk tabel `users_groups`
 --
 ALTER TABLE `users_groups`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT untuk tabel `wali_kelas`
 --
 ALTER TABLE `wali_kelas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=127;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=169;
 
 --
 -- AUTO_INCREMENT untuk tabel `warna`
