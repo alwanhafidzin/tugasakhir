@@ -83,6 +83,9 @@
 					// 'imageUpload'
 				]
 			},
+			mediaEmbed: {
+             previewsInData: true
+            },
 			language: 'en',
 			image: {
             // Configure the available styles.

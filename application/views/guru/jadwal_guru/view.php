@@ -62,7 +62,14 @@ thead {
             <div class="card card-danger card-outline">
             <div class="col-md-12">
                 <table class="table table-bordered styled-table">
-                <?php foreach($tahun_aktif->result() as $result) : ?>
+                <?php foreach($tahun_aktif->result() as $result) : 
+                $tahun =$result->tahun_akademik;
+                $mester =  $result->semester;
+                $timezone = new DateTimeZone('Asia/Jakarta');
+                $date = new DateTime();
+                $date->setTimeZone($timezone);
+                $now =$date->format('d-m-Y H:i:s');
+                ?>
                 <tr>
                     <td width="200">Tahun Akademik</td>
                     <td><?php echo $result->tahun_akademik ?></td>
@@ -95,11 +102,11 @@ thead {
             <div class="card card-primary card-outline">
               <!-- /.card-header -->
               <div class="card-body">
-              <button type="button" onclick="printJS({ printable: 'jadwal_guru', type: 'html',  targetStyles: ['*'] })">
+              <button type="button" onclick="document.title = 'Jadwal Guru SMAN 1 SOOKO <?php echo $now;?>';printJS({ printable: 'jadwal_guru',documentTitle:'Jadwal Guru SMAN 1 SOOKO <?php echo $tahun; ?>(<?php echo $mester; ?>)', type: 'html',  targetStyles: ['*'], style: 'table {border-collapse: collapse;border-spacing: 0;}th,td{border: 1px solid black; }td{color:black;}.table{width: 100%;margin-bottom: 1rem;color: #212529;background-color:black}.table-bordered{border: 1px solid black;}'})">
                 Print Jadwal
               </button>
               <!-- <button id="btn-print">Print me</button> -->
-              <table style="border:5px double black;width:100%;" class="table table-sm table-bordered" id="jadwal_guru">
+              <table class="table table-sm table-bordered" id="jadwal_guru">
                 <thead>
                   <tr>
                     <th class="text-center">Hari</th>

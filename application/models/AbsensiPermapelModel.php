@@ -15,13 +15,13 @@ class AbsensiPermapelModel extends CI_Model {
         INNER JOIN siswa s ON s.nis=dp.nis WHERE j.kode_kelas = IFNULL(?,j.kode_kelas) AND t.is_aktif='Y' AND t.semester=mp.semester GROUP BY nis";
 		return $this->db->query($sql, array($kode_kelas));
 	}
-	public function get_kelas_guru_absen($kode_mapel){
+	public function get_kelas_guru_absen($kode_mapel,$nip){
 		$this->db->select('DISTINCT(k.kode_kelas),k.nama_kelas');
 		$this->db->from('jadwal j');
         $this->db->join('mapel_perminggu mp', 'mp.id= j.id_m_perminggu');
         $this->db->join('tahun_akademik t', 'mp.id_t_akademik=t.id');
         $this->db->join('kelas k', 'k.kode_kelas = j.kode_kelas');
-		$this->db->where('j.nip','3509176412630001');
+		$this->db->where('j.nip',$nip);
         $this->db->where('mp.kode_mapel', $kode_mapel);
         $this->db->where('t.is_aktif', 'Y');
         $this->db->where('t.semester=mp.semester');
@@ -35,14 +35,33 @@ class AbsensiPermapelModel extends CI_Model {
         }
 		echo json_encode($json);
 	}
-    public function get_jam_jadwal($kode_mapel,$kode_kelas,$hari){
+    public function get_kelas_guru_absen_all($nip){
+		$this->db->select('DISTINCT(k.kode_kelas),k.nama_kelas');
+		$this->db->from('jadwal j');
+        $this->db->join('mapel_perminggu mp', 'mp.id= j.id_m_perminggu');
+        $this->db->join('tahun_akademik t', 'mp.id_t_akademik=t.id');
+        $this->db->join('kelas k', 'k.kode_kelas = j.kode_kelas');
+		$this->db->where('j.nip',$nip);
+        $this->db->where('t.is_aktif', 'Y');
+        $this->db->where('t.semester=mp.semester');
+        $result = $this->db->order_by('k.kode_kelas', 'ASC')->get()->result();
+        $data=array();
+        foreach($result as $r)
+        {
+         $data['kode_kelas']=$r->kode_kelas;
+         $data['nama_kelas']=$r->nama_kelas;
+         $json[]=$data;
+        }
+		echo json_encode($json);
+	}
+    public function get_jam_jadwal($kode_mapel,$kode_kelas,$hari,$nip){
 		$this->db->select('j.id,TIME_FORMAT(j.jam_mulai, "%H:%i") AS jam_mulai,TIME_FORMAT(j.jam_selesai, "%H:%i") AS jam_selesai');
 		$this->db->from('jadwal j');
         $this->db->join('mapel_perminggu mp', 'mp.id= j.id_m_perminggu');
         $this->db->join('tahun_akademik t', 'mp.id_t_akademik=t.id');
         $this->db->join('kelas k', 'k.kode_kelas = j.kode_kelas');
         $this->db->join('hari_masuk h', 'j.id_hari = h.id');
-		$this->db->where('j.nip','3509176412630001');
+		$this->db->where('j.nip',$nip);
         $this->db->where('mp.kode_mapel', $kode_mapel);
         $this->db->where('t.is_aktif', 'Y');
         $this->db->where('t.semester=mp.semester');
@@ -59,14 +78,14 @@ class AbsensiPermapelModel extends CI_Model {
         }
 		echo json_encode($json);
 	}
-    public function get_hari_jadwal($kode_mapel,$kode_kelas){
+    public function get_hari_jadwal($kode_mapel,$kode_kelas,$nip){
 		$this->db->select('j.id_hari');
 		$this->db->from('jadwal j');
         $this->db->join('mapel_perminggu mp', 'mp.id= j.id_m_perminggu');
         $this->db->join('tahun_akademik t', 'mp.id_t_akademik=t.id');
         $this->db->join('kelas k', 'k.kode_kelas = j.kode_kelas');
         $this->db->join('hari_masuk h', 'j.id_hari = h.id');
-		$this->db->where('j.nip','3509176412630001');
+		$this->db->where('j.nip',$nip);
         $this->db->where('mp.kode_mapel', $kode_mapel);
         $this->db->where('t.is_aktif', 'Y');
         $this->db->where('t.semester=mp.semester');
@@ -106,13 +125,13 @@ class AbsensiPermapelModel extends CI_Model {
         }
         echo json_encode($tanggal_jadwal,true);
 	}
-    public function get_guru_jadwal_pertahunakademik(){
+    public function get_guru_jadwal_pertahunakademik($nip){
         $this->db->select('DISTINCT(m.kode_mapel),m.mapel');
         $this->db->from('jadwal j');
         $this->db->join('mapel_perminggu mp', 'mp.id= j.id_m_perminggu');
         $this->db->join('mapel m', 'mp.kode_mapel=m.kode_mapel');
         $this->db->join('tahun_akademik t', 'mp.id_t_akademik=t.id');
-        $this->db->where('j.nip', '3509176412630001');
+        $this->db->where('j.nip', $nip);
         $this->db->where('t.is_aktif', 'Y');
         $this->db->where('t.semester=mp.semester');
         $this->db->order_by('m.mapel', 'ASC');

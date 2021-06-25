@@ -45,6 +45,7 @@
       success: function(){ 
         swal("Berhasil!", "Data Kategori Ujian Baru Berhasil Ditambahkan.", "success");
         modal_tambah.modal('hide');
+        form[0].reset();
         $('#kategori_ujian').DataTable().clear().destroy();
         refresh_table();
       },

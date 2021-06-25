@@ -11,7 +11,6 @@
     // echo $since_start->h.' hours<br>';
     // echo $since_start->i.' minutes<br>';
     // echo $since_start->s.' seconds<br>';
-
     // date_default_timezone_set('Asia/Kolkata');
     $curDateTime = $datetime;
     $myDate = date("Y-m-d H:i:s", strtotime($result->waktu_selesai));
@@ -288,7 +287,42 @@ var countdownTimer = setInterval('timer()', 1000);
       }
      })
     }
+    $(document).on('click', '#btn_akhir', function (e) {
+      e.preventDefault();
+      id = $(this).data('id');
+      swal({
+        title: "Apa Anda Yakin?",
+        text: "Ujian tidak dapat diulang,setelah di akhiri!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonClass: "btn-danger",
+        confirmButtonText: "Ya, Akhiri!",
+        cancelButtonText: "Batalkan!",
+        closeOnConfirm: false,
+        closeOnCancel: false
+      },
+      function(isConfirm) {
+        if (isConfirm) {
+          $.ajax({
+             url: '<?=site_url('ujian/akhiri_ujian')?>',
+             type: 'POST',
+             dataType: 'json',
+             data: {id: id},
+             error: function() {
+                alert('Something is wrong');
+             },
+             success: function(data) {
+                  swal("Berhasil!", "Data Berhasil Dihapus.", "success");
+                  $('#siswa').DataTable().clear().destroy();
+                  refresh_table();
+             }
+          });
+        } else {
+          swal("Dibatalkan", "Anda Bisa melanjutkan ujian hingga batas waktu yang tersedia", "error");
+        }
+      });
+    });
     function Akhiri(){
-      
+     
     }
 </script>

@@ -381,7 +381,6 @@ body[ data-editor='InlineEditor'] .collaboration-demo__row {
                        {
                           echo '<option value="'.$row->id.'">'.$row->nama_ujian.'</option>';
                        }
-                   
                       ?>
                     <?php endforeach ?>
                   </select>

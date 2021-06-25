@@ -112,6 +112,9 @@ DecoupledEditor
 					// 'imageUpload'
 				]
 			},
+			mediaEmbed: {
+             previewsInData: true
+            },
 			language: 'en',
 			image: {
             // Configure the available styles.
@@ -184,10 +187,10 @@ DecoupledEditor
 		console.warn( 'Build id: j4n5lovjciwu-9g53zugngdh2' );
 		console.error( error );
 	}
+	var base_url = "<?php echo base_url();?>";
 	document.querySelector( '#submit_save' ).addEventListener( 'click', () => {
 	   let judul = $("#judul").val();
 	   const editorData = datack.getData();
-	   alert(editorData);
 	   $.ajax({
        url: '<?=site_url('materi/crud/insert')?>',
        type: 'POST',
@@ -198,6 +201,7 @@ DecoupledEditor
 	   },
        success: function(){ 
         alert('success!');
+		location.href = base_url+`materi`;
        },
        error: function(response){
           alert(response);

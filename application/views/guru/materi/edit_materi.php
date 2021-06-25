@@ -394,21 +394,6 @@ main .message h2 {
   .mgin2{
 	width:97%;
 }
-.image.image_resized {
-    display: block;
-    box-sizing: border-box;
-}
-
-.image.image_resized img {
-    width: 100%;
-}
-
-.image.image_resized > figcaption {
-    display: block;
-}
-.image-style-align-left {
-    float: left;
-}
 }
 
 </style>
@@ -439,11 +424,13 @@ main .message h2 {
             <div class="card card-primary card-outline">
              <?php foreach($materi->result() as $result) : ?>
                 <?php
+				   $id = $result->id;
                    $judul =$result->judul;
                    $content =$result->content;
                 ?>
              <?php endforeach;?>
               <!-- /.card-header -->
+			  <input type="hidden" id="hidden_id" value="<?php echo $id;?>"/>
               <div class="card-body">
 			  <label class="mgin" for="nama_kelas">Terakhir Disimpan(Auto Save Tiap 1 Menit)</label>
 			  <div class="input-group mgin mb-3 mgin2">

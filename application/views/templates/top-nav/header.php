@@ -16,6 +16,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- Theme style -->
   <link rel="stylesheet" href="<?=base_url()?>assets/admin_lte/dist/css/adminlte.min.css">
   <link rel="stylesheet" href="<?=base_url()?>assets/admin_lte/dist/css/mystyles.css">
+  <!-- Sweet Alert -->
+  <script src="https://lipis.github.io/bootstrap-sweetalert/dist/sweetalert.js"></script>
+  <link rel="stylesheet" href="https://lipis.github.io/bootstrap-sweetalert/dist/sweetalert.css" />
+
 </head>
 <body class="hold-transition layout-top-nav">
 <div class="wrapper">

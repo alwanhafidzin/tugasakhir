@@ -8,7 +8,10 @@ class TugasModel extends CI_Model {
 	{
 		return $this->db->insert($this->table, $data);
 	}
-
+	public function share($data)
+	{
+		return $this->db->insert('tugas_share', $data);
+	}
 	public function update($data, $id)
 	{
 		return $this->db->update($this->table, $data, array('id' => $id));
@@ -18,11 +21,11 @@ class TugasModel extends CI_Model {
 	{
 		return $this->db->delete($this->table, array('id' => $id));
 	}
-	public function get_all(){
+	public function get_all($nip){
 		$this->db->select('t.id,t.judul,t.content,t.tgl_dibuat,m.kode_mapel,m.mapel');
 		$this->db->from('tugas t');
 		$this->db->join('mapel m', 't.kode_mapel=m.kode_mapel');
-		$this->db->where('t.nip','3509176412630001');
+		$this->db->where('t.nip',$nip);
 		$this->db->order_by('t.tgl_dibuat','DESC');
 		return $this->db->get();
 	}
@@ -33,6 +36,98 @@ class TugasModel extends CI_Model {
 		$data['array'] = $query->row_array();
 		$data['count'] = $query->num_rows();
 		return $data;
+	}
+	public function get_share_by_id($id)
+	{
+		$this->db->select('t.id,t.judul,t.tgl_dibuat,m.mapel,t.kode_mapel');
+		$this->db->join('mapel m', 'm.kode_mapel=t.kode_mapel');
+		$query = $this->db->get_where('tugas t', array('id' => $id));
+		$data['object'] = $query->row();
+		$data['array'] = $query->row_array();
+		$data['count'] = $query->num_rows();
+		return $data;
+	}
+	public function get_detail_by_id($id)
+	{
+		$this->db->select('g.nama,t.judul,t.content,t.tgl_dibuat,m.mapel');
+		$this->db->join('mapel m','m.kode_mapel=t.kode_mapel');
+		$this->db->join('guru g', 'g.nip=t.nip');
+		$query = $this->db->get_where('tugas t', array('id' => $id));
+		return $query;
+	}
+	public function isTugasExist($id_jadwal,$tanggal,$id_materi) {
+        $this->db->select('*');
+        $this->db->from('tugas_share');
+        $this->db->where('id_jadwal', $id_jadwal);
+		$this->db->where('id_tugas', $id_materi);
+        $this->db->where('tgl_jadwal', $tanggal);
+        return $this->db->get();
+    }
+	function insert_tugas_siswa($id_t_share,$id_t_akademik,$kode_kelas)
+	{
+		$this->db->select('nis');
+		$this->db->from('data_kelas_siswa');
+		$this->db->where('id_tahun_akademik',$id_t_akademik);
+		$this->db->where('kode_kelas',$kode_kelas);
+		$kelas = $this->db->get();
+		foreach ($kelas->result() as $row) {
+			$jadwal = array(
+				'nis'		        	=> $row->nis,
+				'id_t_share'            => $id_t_share,
+				'nilai'                 =>0
+			);
+			$this->db->insert('tugas_share_siswa', $jadwal);
+		}
+	}
+	public function get_tugas_share_guru($id){
+		$this->db->select('t.judul,t.content,g.nama,m.mapel,t.tgl_dibuat,ts.semester,ts.tanggal_jadwal,ts.tgl_share,ts.tgl_selesai,k.kelas,k.nama_kelas,TIME_FORMAT(j.jam_mulai, "%H:%i") AS jam_mulai,TIME_FORMAT(j.jam_selesai, "%H:%i") AS jam_selesai');
+		$this->db->from('tugas_share ts');
+		$this->db->join('tugas t','t.id=ts.id_tugas');
+		$this->db->join('mapel m','m.kode_mapel=t.kode_mapel');
+		$this->db->join('guru g','g.nip=t.nip');
+		$this->db->join('kelas k','k.kode_kelas=ts.kode_kelas');
+		$this->db->join('tahun_akademik ta','ts.id_t_akademik=ta.id');
+		$this->db->join('jadwal j','j.id=ts.id_jadwal');
+		$this->db->where('ts.id',$id);
+		return $this->db->get();
+	}
+	public function get_nilai_t_share($id){
+		$this->db->select('tss.nilai,tss.status,tss.tanggal_pengumpulan,tss.file,tss.file,tss.path,tss.url,tss.status,s.nama,d.no_absen');
+		$this->db->from('tugas_share ts');
+		$this->db->join('siswa','s.nis=ts.nis');
+		$this->db->join('data_kelas_siswa d','d.nis=s.nis');
+		$this->db->join('tugas_share_siswa tss','tss.id_t_share=ts.id');
+		$this->db->where('ts.id',$id);
+		$this->db->where('ts.id_t_akademik=d.id_t_akademik');
+		return $this->db->get();
+	}
+	public function cek_waktu($id){
+		$this->db->select('*');
+		$this->db->from('tugas_share_siswa');
+		$this->db->where('id', $id);
+		$tugas = $this->db->get();
+		foreach ($tugas->result() as $row) {
+			$id_t_share = $row->id_t_share;
+		}
+		$this->db->select('tgl_share,tgl_selesai');
+		$this->db->from('tugas_share');
+		$this->db->where('id',$id_t_share);
+		$tugas_share = $this->db->get();
+		foreach ($tugas_share->result() as $row) {
+			$tgl_share = $row->tgl_share;
+			$tgl_selesai = $row->tgl_selesai;
+		}
+		$timezone = new DateTimeZone('Asia/Jakarta');
+		$date = new DateTime();
+		$date->setTimeZone($timezone);
+		$now =$date->format('Y-m-d H:i:s');
+		if($now <= $tgl_selesai){
+			echo 'kumpulkan';
+		}else if($now > $tgl_selesai){
+			echo 'selesai';
+		}else{
+			echo 'error';
+		}	
 	}
 }
 ?>

@@ -7,66 +7,94 @@ class Materi extends CI_Controller {
 
 	public function __construct(){
 		parent::__construct();
+		$this->load->library('ion_auth');
         $this->load->helper('url');
 		$this->load->library('ssp');
 		$this->load->helper('form');
 		$this->load->model('AgamaModel');
 		$this->load->model('MateriModel');
+		$this->load->model('AbsensiPermapelModel');
+		$this->load->model('WaliKelasModel');
+		$this->load->model('IdentityModel');
 		$this->load->database();
+		if (!$this->ion_auth->logged_in()){
+			redirect('auth/login');
+		}
 	}
 	public function index()
 	{
+		$user = $this->ion_auth->user()->row();
+		$user_id =$user->id;
+		$username = $user->username;
+        $id_user =$this->ion_auth->get_users_groups($user_id)->row()->id;
+		if($id_user==1) {
+			$data['identity'] = $this->IdentityModel->get_admin($user_id);
+		}else if($id_user==2){
+			$data['identity'] = $this->IdentityModel->get_guru($username);
+		}else if($id_user==3){
+			$data['identity'] = $this->IdentityModel->get_siswa($username);
+		}
         $this->load->view('templates/dashboard/header.php');
-        $this->load->view('templates/dashboard/navbar.php');
+        $this->load->view('templates/dashboard/navbar.php',$data);
         $this->load->view('templates/dashboard/sidebar.php');
-		$this->load->view('admin/materi/view.php');
+		$this->load->view('guru/materi/view.php');
 		$this->load->view('templates/dashboard/footer.php');
-		$this->load->view('admin/materi/script.php');
+		$this->load->view('guru/materi/script.php');
 	}
 	public function get_all()
 	{
-		$data['materi'] = $this->MateriModel->get_all();
-		$this->load->view('admin/materi/data_materi',$data);
+		$tahun_aktif = $this->WaliKelasModel->get_tahun_aktif();
+		$data['tahun_aktif'] = $tahun_aktif;
+		$user = $this->ion_auth->user()->row();
+		$nip =$user->username;
+		$data['materi'] = $this->MateriModel->get_all($nip);
+		$data['jadwal_guru_absen'] = $this->AbsensiPermapelModel->get_guru_jadwal_pertahunakademik($nip);
+		$this->load->view('guru/materi/data_materi',$data);
 	}
 	public function tambah()
 	{
         $this->load->view('templates/dashboard/header.php');
         $this->load->view('templates/dashboard/navbar.php');
         $this->load->view('templates/dashboard/sidebar.php');
-		$this->load->view('admin/materi/tambah_materi.php');
+		$this->load->view('guru/materi/tambah_materi.php');
 		$this->load->view('templates/dashboard/footer.php');
-		$this->load->view('admin/materi/script_tambah.php');
+		$this->load->view('guru/materi/script_tambah.php');
 	}
-	public function edit()
+	public function edit($id)
 	{
-		$id=3;
-		$data['materi'] = $this->MateriModel->get_by_id($id);
+		$data['materi'] = $this->MateriModel->get_detail_by_id($id);
         $this->load->view('templates/dashboard/header.php');
         $this->load->view('templates/dashboard/navbar.php');
         $this->load->view('templates/dashboard/sidebar.php');
-		$this->load->view('admin/materi/edit_materi.php',$data);
+		$this->load->view('guru/materi/edit_materi.php',$data);
 		$this->load->view('templates/dashboard/footer.php');
-		$this->load->view('admin/materi/script_materi.php');
+		$this->load->view('guru/materi/script_edit.php');
 	}
-	public function detail()
+	public function detail($id)
 	{
-		$id=6;
-		$data['materi'] = $this->MateriModel->get_by_id($id);
+		$data['materi'] = $this->MateriModel->get_detail_by_id($id);
         $this->load->view('templates/dashboard/header.php');
         $this->load->view('templates/dashboard/navbar.php');
         $this->load->view('templates/dashboard/sidebar.php');
-		$this->load->view('admin/materi/detail_materi.php',$data);
+		$this->load->view('guru/materi/detail_materi.php',$data);
 		$this->load->view('templates/dashboard/footer.php');
-		$this->load->view('admin/materi/script_detail.php');
+		$this->load->view('guru/materi/script_detail.php');
 	}
 	public function crud($mode)
 	{
 		if ($mode == 'insert') {
 			if ($this->input->is_ajax_request()) {
+				$user = $this->ion_auth->user()->row();
+				$nip =$user->username;
+				$timezone = new DateTimeZone('Asia/Jakarta');
+				$date = new DateTime();
+				$date->setTimeZone($timezone);
 				$data = array(
 					'judul' => $_POST['judul'],
 					'content' => $_POST['content'],
-					'nip' => '3509176412630001'
+					'nip' => $nip,
+					'id_m_tipe' => 1,
+					'tgl_dibuat' => $date->format('Y-m-d H:i:s')
 				);
 				$result = $this->MateriModel->insert($data);
 				echo json_encode($result);
@@ -74,7 +102,7 @@ class Materi extends CI_Controller {
 		}
 		else if ($mode == 'update') {
 			if ($this->input->is_ajax_request()) {
-				$id=6;
+				$id=$_POST['id'];
 				$data = array(
 					'judul' => $_POST['judul'],
 					'content' => $_POST['content']
@@ -90,6 +118,39 @@ class Materi extends CI_Controller {
 				echo json_encode($result);
 			}
 		}
+		else if ($mode == 'share') {
+			if ($this->input->is_ajax_request()) {
+				$id_materi = $this->input->post('id');
+				$id_t_akademik = $this->input->post('id_t_akademik');
+				$semester = $this->input->post('semester');
+				$timezone = new DateTimeZone('Asia/Jakarta');
+				$date = new DateTime();
+		        $date->setTimeZone($timezone);
+				$kode_mapel = $this->input->post('mapel');
+				$kode_kelas = $this->input->post('kelas');
+				$tanggal = $this->input->post('tanggal');
+				$id_jadwal = $this->input->post('jam');
+				$exists = $this->MateriModel->isMateriExist($id_jadwal,$tanggal,$id_materi);
+				if($exists->num_rows() > 0){
+					// echo json_encode($exists);
+					echo 'exists';
+				 }else{
+					$data = array(
+						'id_materi' =>$id_materi,
+						'id_t_akademik' =>$id_t_akademik,
+						'semester' =>$semester,
+						'kode_mapel' =>$kode_mapel,
+						'kode_kelas' =>$kode_kelas,
+						'id_jadwal' => $id_jadwal,
+						'tgl_jadwal' =>$tanggal,
+						'tgl_dibagikan' => $date->format('Y-m-d H:i:s')
+					);
+					$this->MateriModel->share($data);
+					// echo json_encode($result);
+					echo 'success';
+				 }
+			}
+		}
 	}	
 	public function upload_dropbox(){
 		$dropboxKey ="tn2w1cd67x3fvq4";
@@ -98,12 +159,13 @@ class Materi extends CI_Controller {
 
 		$app = new DropboxApp($dropboxKey,$dropboxSecret,$dropboxToken);
 		$dropbox = new Dropbox($app);
-		$date = $date = date('d-m-Y H:i');
+	    $timezone = new DateTimeZone('Asia/Jakarta');
+		$date = new DateTime();
+		$date->setTimeZone($timezone);
 		$name=$_FILES['file']['name'];
-		$ext = end((explode(".", $name)));
-		$namedate= $name."_".$date;
         $tempfile = $_FILES['file']['tmp_name'];
-		$nip = '3509176412630001';
+		$user = $this->ion_auth->user()->row();
+		$nip =$user->username;
 		$location = "/"."Materi/".$nip."/".$name;
 		try{
 			$file = $dropbox->simpleUpload( $tempfile,$location, ['autorename' => true]);
@@ -121,7 +183,8 @@ class Materi extends CI_Controller {
 			   'content' => $url,
 			   'nip' => '3509176412630001',
 			   'path' => $location2,
-			   'id_m_tipe' => 2
+			   'id_m_tipe' => 2,
+			   'tgl_dibuat' => $date->format('Y-m-d H:i:s')
 			);
 			$result = $this->MateriModel->insert($data);
 			echo json_encode($result);
@@ -201,6 +264,11 @@ class Materi extends CI_Controller {
 	public function get_by_id() {
 		$id = $this->input->get('id');
 		$data = $this->MateriModel->get_by_id($id);
+		echo json_encode($data);
+	}
+	public function get_share_id() {
+		$id = $this->input->get('id');
+		$data = $this->MateriModel->get_share_id($id);
 		echo json_encode($data);
 	}
 }

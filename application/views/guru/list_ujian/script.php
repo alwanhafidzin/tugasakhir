@@ -2,16 +2,12 @@
     function refresh_table() {
     $.ajax({
         type: 'POST',
-        url: "<?php echo base_url(); ?>/listujiansiswa/get_all",
+        url: "<?php echo base_url(); ?>/listujianguru/get_all",
         cache: false,
         success: function(data) {
           $("#tampil").html(data);
           $('#list_ujian').DataTable({
-          "responsive": true, "lengthChange": true, "autoWidth": false,
-          columnDefs: [
-            { responsivePriority: 1, targets: 0 },
-            { responsivePriority: 2, targets: -1 },
-          ],
+          "responsive": true, "lengthChange": true, "autoWidth": false
           });
         }
       });

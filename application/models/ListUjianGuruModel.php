@@ -1,7 +1,7 @@
 <?php 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class ListUjianSiswaModel extends CI_Model {
+class ListUjianGuruModel extends CI_Model {
 	public $table = 'ujian';
 
     function insert_soal_random($id_d_ujian,$id_k_ujian,$jumlah,$waktu)
@@ -37,12 +37,16 @@ class ListUjianSiswaModel extends CI_Model {
 	{
 		return $this->db->delete($this->table, array('id' => $id));
 	}
-	public function get_all($username){
-		$sql="SELECT * FROM(
-			(
-			SELECT u.id,u.terlambat,k.nama_ujian,m.mapel,t.tipe,u.id_k_ujian,u.jenis,u.waktu,u.tgl_mulai,u.tgl_share,u.jumlah_soal FROM ujian u INNER JOIN kategori_ujian k ON u.id_k_ujian=k.id INNER JOIN mapel m ON m.kode_mapel=k.kode_mapel INNER JOIN tipe_ujian t ON t.id=k.id_t_ujian INNER JOIN jadwal j ON j.id=u.id_jadwal WHERE u.kode_kelas ='10-MIA1') as u,
-			(SELECT COUNT(id) as jumlah,selesai FROM ujian_detail WHERE nis=?) as du)";
-		return $this->db->query($sql, array($username));
+	public function get_all($nip){
+		$this->db->select('u.id,u.terlambat,k.nama_ujian,u.terlambat,m.mapel,t.tipe,u.id_k_ujian,u.jenis,u.waktu');
+		$this->db->from('ujian u');
+        $this->db->join('kategori_ujian k','k.id=u.id_k_ujian');
+        $this->db->join('mapel m','m.kode_mapel=k.kode_mapel');
+        $this->db->join('tipe_ujian t','t.id=k.id_t_ujian');
+		$this->db->where('k.nip',$nip);
+        $this->db->order_by('u.tgl_mulai','DESC');
+        $this->db->order_by('u.terlambat','DESC');
+		return $this->db->get();
 	}
 	public function get_by_id($id)
 	{
@@ -51,6 +55,12 @@ class ListUjianSiswaModel extends CI_Model {
 		$data['array'] = $query->row_array();
 		$data['count'] = $query->num_rows();
 		return $data;
+	}
+	public function get_kategori_ujian($nip){
+		$this->db->select('*');
+		$this->db->from('kategori_ujian');
+		$this->db->where('nip',$nip);
+		return $this->db->get()->result();
 	}
 }
 ?>

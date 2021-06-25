@@ -2,66 +2,26 @@
     <thead>
        <tr>
          <th class="text-center">No</th>
-         <th class="text-center">Nama Quiz</th>
-         <th class="text-center">Tipe Quiz</th>
+         <th class="text-center">Nama Ujian</th>
+         <th class="text-center">Tipe Ujian</th>
          <th class="text-center">Mapel</th>
-         <th class="text-center">Jumlah Soal</th>
-         <th class="text-center">Waktu</th>
-         <th class="text-center">Tanggal Dibagikan</th>
-         <th class="text-center">Tanggal Pengerjaan</th>
-         <th class="text-center">Batas Pengerjaan</th>
-         <th class="text-center">Jadwal</th>
+         <th class="text-center">Batas Akhir</th>
          <th class="text-center">Aksi</th>
         </tr>
     </thead>
     <tbody>
         <?php $no = 1; ?>
-        <?php
-          function hariIndo ($hariInggris) {
-            switch ($hariInggris) {
-              case 'Sunday':
-                return 'Minggu';
-              case 'Monday':
-                return 'Senin';
-              case 'Tuesday':
-                return 'Selasa';
-              case 'Wednesday':
-                return 'Rabu';
-              case 'Thursday':
-                return 'Kamis';
-              case 'Friday':
-                return 'Jumat';
-              case 'Saturday':
-                return 'Sabtu';
-              default:
-                return 'hari tidak valid';
-            }
-          }
-          function url_base64_encode($str = '')
-          {
-            return strtr(base64_encode($str), '+=/', '.-~');
-          }
-        ?>
         <?php foreach($list_ujian->result() as $result) : ?>
         <tr>
             <td class="text-center"><?php echo $no++ ?></td>
             <td class="text-center"><?php echo $result->nama_ujian ?></td>
             <td class="text-center"><?php echo $result->tipe ?></td>
             <td class="text-center"><?php echo $result->mapel ?></td>
-            <td class="text-center"><?php echo $result->jumlah_soal ?></td>
-            <td class="text-center"><?php echo $result->waktu.' menit' ?></td>
-            <td class="text-center"><?php echo hariIndo(date("l", strtotime($result->tgl_share))).' '.date("d-m-Y H:i:s", strtotime($result->tgl_share)) ?></td>
-            <td class="text-center"><?php echo hariIndo(date("l", strtotime($result->tgl_mulai))).' '.date("d-m-Y H:i:s", strtotime($result->tgl_mulai)) ?></td>
-            <td class="text-center"><?php echo hariIndo(date("l", strtotime($result->terlambat))).' '.date("d-m-Y H:i:s", strtotime($result->terlambat)) ?></td>
-            <td class="text-center"><?php echo $result->tipe ?></td>
+            <td class="text-center"><?php echo $result->terlambat ?></td>
             <td class="text-center">
-                <?php if ($result->jumlah==0 && $result->selesai==null){
-                  echo'<button type="button" class="btn btn-primary btn-sm kerjakan"data-id="'.$result->id.'"">Kerjakan</button>';
-                }else if($result->jumlah==1 && $result->selesai=='N'){
-                  echo'<button type="button" class="btn btn-success btn-sm aktifkan"data-id="'.$result->id.'">Lanjutkan</button>';
-                }else if($result->jumlah==1 && $result->selesai=='Y'){
-                  echo'<button type="button" class="btn btn-info btn-sm aktifkan"data-id="'.$result->id.'">Nilai</button>';
-                } ?>
+                <i class="btn btn-xs btn-primary fa fa-eye lihat-ujian" data-id="<?php echo $result->id ?>" data-waktu="<?php echo $result->waktu ?>" data-jenis="<?php echo $result->jenis ?>" data-id_k_ujian="<?php echo $result->id_k_ujian ?>" data-placement="top" title="Lihat"></i>
+                <i class="btn btn-xs btn-primary fa fa-edit edit-data" data-id="<?php echo $result->id ?>" data-placement="top" title="Edit"></i>
+                <i class="btn btn-xs btn-danger fas fa-trash-alt hapus-data" data-id="<?php echo $result->id ?>" data-placement="top" title="Delete"></i>
             </td>
         </tr>
         <?php endforeach;?>
@@ -192,50 +152,4 @@
         }
       });
     });
-    $(".kerjakan").click(function(e) {
-      e.preventDefault();
-      id = $(this).data('id');
-      $.ajax({
-       url: '<?=site_url('ujian/cek_waktu')?>',
-       type: 'GET',
-       data: {
-         id : id
-       },
-      success: function(response){
-        if (response == 'belum')
-          Swal1();
-        else if (response == 'selesai')
-          Swal2();
-        else if (response == 'error')
-        Swal3();
-        },
-      error: function(response){
-          alert('Tidak Terhubung dengan server,periksa koneksi');
-      }
-     })
-    });
-  function Swal1(){
-    swal({
-     title: "Tunggu!",
-     text: "Belum Waktunya Mengerjakan Quiz yang dipilih.Lihat tanggal pengerjaan!",
-     type: "warning",
-     showConfirmButton: true
-    })
-  }
-  function Swal2(){
-    swal({
-     title: "Batas Waktu Berakhir!",
-     text: "Batas waktu untuk pengerjaan telah habis.Silahkan hubungi guru pembuat quiz!",
-     type: "warning",
-     showConfirmButton: true
-    })
-  }
-  function Swal3(){
-    swal({
-     title: "Error!",
-     text: "Sepertinya terjadi kesalahan di server",
-     type: "error",
-     showConfirmButton: false
-    });
-  }
 </script>

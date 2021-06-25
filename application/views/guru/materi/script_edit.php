@@ -77,6 +77,9 @@
 					// 'imageUpload'
 				]
 			},
+			mediaEmbed: {
+             previewsInData: true
+            },
 			language: 'en',
 			// image: {
 			// 	toolbar: [
@@ -190,11 +193,13 @@
 	function ajax_update(){
 		let judul = $("#judul").val();
 		const editorData = datack.getData();
+		let id = $("#hidden_id").val();
 		$.ajax({
         url: '<?=site_url('materi/crud/update')?>',
         type: 'POST',
         dataType: 'json',
         data: {
+			    id: id,
                 judul: judul,
 				content : editorData
             },
