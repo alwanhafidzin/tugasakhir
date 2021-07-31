@@ -12,7 +12,11 @@
         success: function(data) {
           $("#tampil").html(data);
           $('#kelas').DataTable({
-          "responsive": true, "lengthChange": true, "autoWidth": false
+          "responsive": true, "lengthChange": true, "autoWidth": false,
+          columnDefs: [
+            { responsivePriority: 1, targets: 1 },
+            { responsivePriority: 2, targets: -1 },
+          ]
           });
         }
       });
@@ -28,8 +32,8 @@
        dataType: 'json',
        data: form.serialize(),
       success: function(){ 
-        alert('success!');
         modal_tambah.modal('hide');
+        swal("Berhasil!", "Data Kelas Baru Berhasil Ditambahkan.", "success");
         form[0].reset();
         $('#kelas').DataTable().clear().destroy();
         refresh_table();
@@ -41,15 +45,17 @@
         });
       },
       error: function(response){
-          alert(response);
+        swal("Gagal!", "Data Gagal ditambahkan terjadi kesalahan.", "error");
       }
      })
     });
     $('#kode_tingkat').select2({
-      theme: 'bootstrap4'
+      theme: 'bootstrap4',
+      placeholder: "Pilih Tingkat Kelas"
     });
     $('#kode_jurusan').select2({
-      theme: 'bootstrap4'
+      theme: 'bootstrap4',
+      placeholder: "Pilih Jurusan"
     });
     $('#filter_tingkat').select2({
       theme: 'bootstrap4',

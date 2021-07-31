@@ -8,6 +8,7 @@
     <thead>
        <tr>
          <th class="text-center">No</th>
+         <th class="text-center"><input type="checkbox" id="check-all"></th>
          <th class="text-center">Nip</th>
          <th class="text-center">Nama</th>
          <th class="text-center">Foto</th>
@@ -22,6 +23,7 @@
         <?php foreach($guru->result() as $result) : ?>
         <tr>
             <td class="text-center"><?php echo $no++ ?></td>
+            <td class="text-center"><input type='checkbox' class='check-item' value="<?php echo $result->nip ?>"></td>
             <td class="text-center"><?php echo $result->nip ?></td>
             <td class="text-center"><?php echo $result->nama ?></td>
             <td class="text-center"><img width="35" src="<?php echo base_url()?>uploads/guru/<?php echo $result->foto; ?>" /></td>
@@ -277,4 +279,34 @@
       }
      })
     });
+    $("#check-all").click(function(){
+      if($(this).is(":checked"))
+        $(".check-item").prop("checked", true); 
+      else 
+        $(".check-item").prop("checked", false);
+    });
+    function updateStatus(){
+      var arr = [];
+      $('input.check-item:checkbox:checked').each(function () {
+          arr.push($(this).val());
+      });
+      if(arr.length == 0){
+        swal("Gagal!", "Tidak ada data yang dipilih,centang checkbox untuk merubah status", "warning");
+      }else{
+        $.ajax({
+             url: '<?=site_url('guru/crud/update_status')?>',
+             type: 'POST',
+             dataType: 'json',
+             data: {arr:arr},
+             error: function() {
+              swal("Gagal!", "Tidak dapat terhubung ke server.periksa koneksi anda", "error");
+             },
+             success: function(data) {
+                swal("Berhasil!", "Status Guru telah berhasil dirubah.", "success");
+                $('#guru').DataTable().clear().destroy();
+                refresh_table();
+             }
+          });
+      }
+    }
 </script>

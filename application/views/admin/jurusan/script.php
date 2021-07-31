@@ -7,7 +7,11 @@
         success: function(data) {
           $("#tampil").html(data);
           $('#jurusan').DataTable({
-          "responsive": true, "lengthChange": true, "autoWidth": false,  "order": [[ 3, "desc" ]]
+          "responsive": true, "lengthChange": true, "autoWidth": false,  "order": [[ 3, "desc" ]],
+          columnDefs: [
+            { responsivePriority: 1, targets: 1 },
+            { responsivePriority: 2, targets: -1 },
+          ]
           });
         }
       });
@@ -24,13 +28,14 @@
        dataType: 'json',
        data: form.serialize(),
       success: function(){ 
-        alert('success!');
         modal_tambah.modal('hide');
+        form[0].reset();
+        swal("Berhasil!", "Data Jurusan Baru Berhasil Ditambahkan.", "success");
         $('#jurusan').DataTable().clear().destroy();
         refresh_table();
       },
       error: function(response){
-          alert(response);
+        swal("Gagal!", "Data Gagal ditambahkan terjadi kesalahan.", "error");
       }
      })
     });

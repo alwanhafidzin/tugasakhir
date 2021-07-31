@@ -12,7 +12,11 @@
         success: function(data) {
           $("#tampil").html(data);
           $('#gurumapel').DataTable({
-          "responsive": true, "lengthChange": true, "autoWidth": false
+          "responsive": true, "lengthChange": true, "autoWidth": false,
+          columnDefs: [
+            { responsivePriority: 1, targets: 1 },
+            { responsivePriority: 2, targets: -1 },
+          ]
           });
         }
       });
@@ -28,14 +32,14 @@
        dataType: 'json',
        data: form.serialize(),
       success: function(){ 
-        alert('success!');
-        modal_tambah.modal('hide');
         form[0].reset();
+        modal_tambah.modal('hide');
+        swal("Berhasil!", "Data Guru Mapel Baru Berhasil Ditambahkan.", "success");
         $('#gurumapel').DataTable().clear().destroy();
         refresh_table();
       },
       error: function(response){
-          alert(response);
+        swal("Gagal!", "Data Gagal ditambahkan terjadi kesalahan.", "error");
       }
      })
     });
@@ -57,33 +61,12 @@
     });
     $(document).ready(function() {
       $('#filter_jurusan').change(function() {
-        filter_gurumapel();
+        refresh_table();
        });
       });
       $('#filter_mapel').change(function() {
-        filter_gurumapel();
+        refresh_table();
        });
-    function filter_gurumapel() {
-    var id_jurusan = $('#filter_jurusan').val();
-    var id_mapel = $('#filter_mapel').val();
-    $.ajax({
-      url: "<?= base_url('gurumapel/get_all') ?>",
-      data: {
-        jurusan : id_jurusan,
-        mapel : id_mapel
-      },
-      success: function(data) {
-        $('#gurumapel').DataTable().clear().destroy();
-        $("#tampil").html(data);
-        $('#gurumapel').DataTable({
-          "responsive": true, "lengthChange": true, "autoWidth": false
-        });
-      },
-      error: function (request, status, error) {
-        alert(request.responseText);
-    }
-    });
-  }
   function myMapel()
     { 
       let id_mapel = $("#mapel_sl2_tbh").val();

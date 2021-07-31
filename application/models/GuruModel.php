@@ -13,6 +13,11 @@ class GuruModel extends CI_Model {
 	{
 		return $this->db->update($this->table, $data, array('nis' => $id));
 	}
+	public function update_status($ids)
+	{
+		$sql ="UPDATE guru SET status = CASE WHEN status='active'  THEN 'tidak_active' WHEN status='tidak_active' THEN 'active' ELSE status END WHERE nip IN ('".$ids."')";
+		return $this->db->query($sql);
+	}
 
 	public function delete($id)
 	{
@@ -29,10 +34,10 @@ class GuruModel extends CI_Model {
 		  }
         }
 	}
-	public function get_all($id_agama,$gender){
+	public function get_all($id_agama,$gender,$status){
 		$sql ='select g.nip,g.nama,g.foto,g.id_agama,g.gender,g.email,a.agama FROM guru g INNER JOIN agama a ON 
-		g.id_agama = a.id WHERE g.id_agama= IFNULL(?,g.id_agama) AND g.gender= IFNULL(?,g.gender) ORDER BY g.nip ASC';
-		return $this->db->query($sql, array($id_agama,$gender));
+		g.id_agama = a.id WHERE g.id_agama= IFNULL(?,g.id_agama) AND g.gender= IFNULL(?,g.gender) AND g.status= IFNULL(?,g.status) ORDER BY g.nip ASC';
+		return $this->db->query($sql, array($id_agama,$gender,$status));
 	}
 	public function get_agama(){
 		$this->db->select('*');

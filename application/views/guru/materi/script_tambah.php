@@ -200,7 +200,7 @@ DecoupledEditor
 		   content : editorData
 	   },
        success: function(){ 
-        alert('success!');
+		swal("Berhasil!", "Data Materi Editor Baru Telah Ditambahkan.", "success");
 		location.href = base_url+`materi`;
        },
        error: function(response){

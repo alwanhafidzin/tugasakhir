@@ -5,12 +5,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Data List Ujian Guru SMAN 1 SOOKO</h1>
+            <h1>Data List Quiz Share Guru SMAN 1 SOOKO</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Data Sekolah</a></li>
-              <li class="breadcrumb-item active">Jurusan</li>
+              <li class="breadcrumb-item"><a href="#">Data Quiz</a></li>
+              <li class="breadcrumb-item active">Quiz Share</li>
             </ol>
           </div>
         </div>

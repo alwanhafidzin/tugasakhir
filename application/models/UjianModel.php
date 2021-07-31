@@ -55,14 +55,15 @@ class UjianModel extends CI_Model {
         return $this->db->get();
     }
     public function get_ujian_by_id($id){
-        $this->db->select('m.mapel,ke.nama_kelas,tu.tipe,u.tgl_jadwal,u.jumlah_soal,u.waktu,u.tgl_mulai,u.terlambat,u.semester,t.tahun_akademik,g.nama as nama_guru,k.nama_ujian,u.waktu,u.id');
+        $this->db->select('m.mapel,ke.nama_kelas,tu.tipe,u.tgl_jadwal,u.jumlah_soal,u.waktu,u.tgl_mulai,u.terlambat,mp.semester,t.tahun_akademik,g.nama as nama_guru,k.nama_ujian,u.waktu,u.id');
         $this->db->from('ujian u');
 		$this->db->join('kelas ke','ke.kode_kelas=u.kode_kelas');
 		$this->db->join('kategori_ujian k','u.id_k_ujian=k.id');
 		$this->db->join('tipe_ujian tu','tu.id=k.id_t_ujian');
 		$this->db->join('mapel m','k.kode_mapel=m.kode_mapel');
-		$this->db->join('tahun_akademik t','u.id_t_akademik=t.id');
 		$this->db->join('jadwal j','u.id_jadwal=j.id');
+		$this->db->join('mapel_perminggu mp','mp.id=j.id_m_perminggu');
+		$this->db->join('tahun_akademik t','mp.id_t_akademik=t.id');
 		$this->db->join('guru g','g.nip=k.nip');
         $this->db->where('u.id',$id);
         return $this->db->get();
@@ -158,9 +159,11 @@ class UjianModel extends CI_Model {
 		}	
 	}
 	public function get_kelas_ujian($id,$username){
-		$this->db->select('*');
-		$this->db->from('ujian');
-		$this->db->where('id',$id);
+		$this->db->select('mp.id_t_akademik,mp.semester');
+		$this->db->from('ujian u');
+		$this->db->join('jadwal j', 'j.id=u.id_jadwal');
+		$this->db->join('mapel_perminggu mp','j.id_m_perminggu=mp.id');
+		$this->db->where('u.id',$id);
 		$ujian = $this->db->get();
 		foreach ($ujian->result() as $row) {
 			$id_t_akademik = $row->id_t_akademik;
@@ -169,7 +172,7 @@ class UjianModel extends CI_Model {
 		$this->db->select('*');
 		$this->db->from('data_kelas_siswa');
 		$this->db->where('nis',$username);
-		$this->db->where('id_tahun_akademik',$id_t_akademik);
+		$this->db->where('id_tahun_akademik=2');
 		return $this->db->get();
 	}
 	public function cek_token($token,$id){

@@ -15,17 +15,43 @@
     </thead>
     <tbody>
         <?php $no = 1; ?>
+        <?php
+          function hariIndo ($hariInggris) {
+            switch ($hariInggris) {
+              case 'Sunday':
+                return 'Minggu';
+              case 'Monday':
+                return 'Senin';
+              case 'Tuesday':
+                return 'Selasa';
+              case 'Wednesday':
+                return 'Rabu';
+              case 'Thursday':
+                return 'Kamis';
+              case 'Friday':
+                return 'Jumat';
+              case 'Saturday':
+                return 'Sabtu';
+              default:
+                return 'hari tidak valid';
+            }
+          }
+          function url_base64_encode($str = '')
+          {
+            return strtr(base64_encode($str), '+=/', '.-~');
+          }
+        ?>
         <?php foreach($materi->result() as $result) : ?>
         <tr>
             <td class="text-center"><?php echo $no++ ?></td>
             <td class="text-center"><?php echo $result->judul ?></td>
             <td class="text-center"><?php echo $result->jenis ?></td>
-            <td class="text-center"><?php echo $result->tgl_dibuat ?></td>
+            <td class="text-center"><?php echo hariIndo(date("l", strtotime($result->tgl_dibuat))).' '.date("d-m-Y H:i:s", strtotime($result->tgl_dibuat)) ?></td>
             <?php if($result->jenis == "Editor")
             { echo
               '<td class="text-center">
               <i class="btn btn2 btn-xs btn-primary fas fa-share share-data" data-id="'.$result->id.'" data-placement="top" title="Share"></i>
-              <i class="btn btn-xs btn-primary fa fa-eye lihat-data" data-id="'.$result->id.'" data-placement="top" title="Lihat"></i>
+              <i class="btn btn-xs btn-primary fa fa-eye lihat-data" data-id="'.url_base64_encode($result->id).'" data-placement="top" title="Lihat"></i>
               <i class="btn btn-xs btn-primary fa fa-edit edit-data" data-id="'.$result->id.'" data-placement="top" title="Edit"></i>
               <i class="btn btn-xs btn-danger fas fa-trash-alt hapus-data" data-id="'.$result->id.'" data-placement="top" title="Delete"></i>
               </td>'; 
@@ -58,7 +84,7 @@
             <div class="col-lg-12">
                 <div class="form-group">
                     <label for="judul">Judul</label>
-                    <input type="text" autocomplete="off"class="form-control" name="judul" placeholder="Masukkan Judul Materi">
+                    <input type="text" autocomplete="off"class="form-control" name="judul" placeholder="Masukkan Judul Materi" required>
                 </div>
                 <label class="mgin" for="nama_kelas">Upload Materi(Kosongkan bila tidak ingin mengganti file)</label>
                 <div class="input-group mgin mb-3 mgin2">
@@ -268,7 +294,7 @@
       },
       function(isConfirm) {
         if (isConfirm) {
-          Swal2();
+          Swal7();
           $.ajax({
              url: '<?=site_url('materi/delete_upload')?>',
              type: 'POST',

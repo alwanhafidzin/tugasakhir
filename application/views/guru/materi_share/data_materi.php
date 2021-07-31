@@ -56,7 +56,7 @@
             <?php if($result->jenis == "Editor")
             { echo
               '<td class="text-center">
-              <i class="btn btn-xs btn-primary fa fa-eye lihat-data" data-id="'.url_base64_encode($result->id_materi).'" data-placement="top" title="Lihat"></i>
+              <i class="btn btn-xs btn-primary fa fa-eye lihat-data" data-id="'.url_base64_encode($result->id).'" data-placement="top" title="Lihat"></i>
               <i class="btn btn-xs btn-danger fas fa-trash-alt hapus-data" data-id="'.$result->id.'" data-placement="top" title="Delete"></i>
               </td>'; 
             } 

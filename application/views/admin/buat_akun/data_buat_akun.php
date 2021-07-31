@@ -162,13 +162,13 @@
       dataType: 'json',
       data: form.serialize(),
       success: function(data){ 
-        alert('success!');
         modal_guru.modal('hide');
+        swal("Berhasil!", "Akun Guru Berhasil Dibuat,Password Sementara dikirim via email.", "success");
         $('#akun').DataTable().clear().destroy();
         refresh_table();
       },
       error: function(response){
-          alert(response);
+        swal("Gagal!", "Email Gagal Dikirim,Silahakan Cek Koneksi.", "error");
       }
      })
     });
@@ -181,13 +181,13 @@
       dataType: 'json',
       data: form.serialize(),
       success: function(data){ 
-        alert('success!');
         modal_guru.modal('hide');
+        swal("Berhasil!", "Akun Siswa Berhasil Dibuat,Password Sementara dikirim via email.", "success");
         $('#akun').DataTable().clear().destroy();
         refresh_table();
       },
       error: function(response){
-          alert(response);
+        swal("Gagal!", "Email Gagal Dikirim,Silahakan Cek Koneksi.", "error");
       }
      })
     });

@@ -33,8 +33,12 @@
                           echo "disabled";}?>><?php echo $row2->ruangan ?></option>
                          <?php endforeach ?>
                      <?php } ?>
+                     <?php if ($result->kode_ruangan == '1') { ?>
+                      <option value="1" selected>Default</option>
+                     <?php }else{ ?>
                      <option value="1">Default</option>
-                     <?php foreach($ruangan as $row) : ?>
+                     <?php } ?>
+                     <?php foreach($ruangan->result() as $row) : ?>
                        <option value="<?php echo $row->kode_ruangan ?>"<?php if ($row->kode_ruangan == $result->kode_ruangan) {
                        echo "selected";}?>><?php echo $row->ruangan ?></option>
                      <?php endforeach ?>

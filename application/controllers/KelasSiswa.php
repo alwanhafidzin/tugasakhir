@@ -5,15 +5,31 @@ class KelasSiswa extends CI_Controller {
 
 	public function __construct(){
 		parent::__construct();
+		$this->load->library('ion_auth');
         $this->load->helper('url');
 		$this->load->helper('form');
 		$this->load->model('KelasSiswaModel');
 		$this->load->library('upload');
 		$this->load->library('Excel'); 
+		$this->load->model('IdentityModel');
 		$this->load->database();
+		if (!$this->ion_auth->logged_in()){
+			redirect('auth/login');
+		}
 	}
 	public function index()
 	{
+		$user = $this->ion_auth->user()->row();
+		$user_id =$user->id;
+		$username = $user->username;
+        $id_user =$this->ion_auth->get_users_groups($user_id)->row()->id;
+		if($id_user==1) {
+			$data['identity'] = $this->IdentityModel->get_admin($username);
+		}else if($id_user==2){
+			$data['identity'] = $this->IdentityModel->get_guru($username);
+		}else if($id_user==3){
+			$data['identity'] = $this->IdentityModel->get_siswa($username);
+		}
 		$tahun_akademik = $this->KelasSiswaModel->get_tahun_akademik();
 		$data['tahun_akademik'] = $tahun_akademik;
         $kelas = $this->KelasSiswaModel->get_kelas();
@@ -21,7 +37,7 @@ class KelasSiswa extends CI_Controller {
         $siswa = $this->KelasSiswaModel->get_siswa();
 		$data['siswa'] = $siswa;
         $this->load->view('templates/dashboard/header.php');
-        $this->load->view('templates/dashboard/navbar.php');
+        $this->load->view('templates/dashboard/navbar.php',$data);
         $this->load->view('templates/dashboard/sidebar.php');
 		$this->load->view('admin/kelas_siswa/view.php', $data);
 		$this->load->view('templates/dashboard/footer.php');
@@ -33,84 +49,76 @@ class KelasSiswa extends CI_Controller {
 			$tahun_akademik= $_GET['tahunakademik'];
 			$j_kelamin = null;
 			$id_kelas = null;
-			$kelas_siswa = $this->KelasSiswaModel->get_all($tahun_akademik,$j_kelamin,$id_kelas);
 		}else if(empty($_GET['tahunakademik']) && !empty($_GET['jkelamin']) && empty($_GET['kelas']) ){
 			$tahun_akademik= null;
 			$j_kelamin = $_GET['jkelamin'];
 			$id_kelas = null;
-			$kelas_siswa = $this->KelasSiswaModel->get_all($tahun_akademik,$j_kelamin,$id_kelas);
 		}else if(empty($_GET['tahunakademik']) && empty($_GET['jkelamin']) && !empty($_GET['kelas']) ){
 			$tahun_akademik= null;
 			$j_kelamin = null;
 			$id_kelas =  $_GET['kelas'];
-			$kelas_siswa = $this->KelasSiswaModel->get_all($tahun_akademik,$j_kelamin,$id_kelas);
 		}else if(!empty($_GET['tahunakademik']) && !empty($_GET['jkelamin']) && !empty($_GET['kelas']) ){
 			$tahun_akademik= $_GET['tahunakademik'];
 			$j_kelamin = $_GET['jkelamin'];
 			$id_kelas =  $_GET['kelas'];
-			$kelas_siswa = $this->KelasSiswaModel->get_all($tahun_akademik,$j_kelamin,$id_kelas);
 		}else if(!empty($_GET['tahunakademik']) && !empty($_GET['jkelamin']) && empty($_GET['kelas']) ){
 			$tahun_akademik= $_GET['tahunakademik'];
 			$j_kelamin = $_GET['jkelamin'];
 			$id_kelas = null;
-			$kelas_siswa = $this->KelasSiswaModel->get_all($tahun_akademik,$j_kelamin,$id_kelas);
 		}else if(!empty($_GET['tahunakademik']) && empty($_GET['jkelamin']) && !empty($_GET['kelas']) ){
 			$tahun_akademik= $_GET['tahunakademik'];
 			$j_kelamin = null;
 			$id_kelas = $_GET['kelas'];
-			$kelas_siswa = $this->KelasSiswaModel->get_all($tahun_akademik,$j_kelamin,$id_kelas);
 		}else if(empty($_GET['tahunakademik']) && !empty($_GET['jkelamin']) && !empty($_GET['kelas']) ){
 			$tahun_akademik= null;
 			$j_kelamin = $_GET['jkelamin'];
 			$id_kelas =  $_GET['kelas'];
-			$kelas_siswa = $this->KelasSiswaModel->get_all($tahun_akademik,$j_kelamin,$id_kelas);
 		}else if($_GET['tahunakademik']==0 && $_GET['jkelamin']==0 && $_GET['kelas']==0 ){
 			$tahun_akademik= null;
 			$j_kelamin = null;
 			$id_kelas =  null;
-			$kelas_siswa = $this->KelasSiswaModel->get_all($tahun_akademik,$j_kelamin,$id_kelas);
 		}else if($_GET['tahunakademik']==0 && $_GET['jkelamin']==0 && !empty($_GET['kelas']) ){
 			$tahun_akademik= null;
 			$j_kelamin = null;
 			$id_kelas = $_GET['kelas'];
-			$kelas_siswa = $this->KelasSiswaModel->get_all($tahun_akademik,$j_kelamin,$id_kelas);
 		}else if($_GET['tahunakademik']==0 && !empty($_GET['jkelamin']) && $_GET['kelas']==0 ){
 			$tahun_akademik= null;
 			$j_kelamin = $_GET['jkelamin'];
 			$id_kelas =  null;
-			$kelas_siswa = $this->KelasSiswaModel->get_all($tahun_akademik,$j_kelamin,$id_kelas);
 		}else if(!empty($_GET['tahunakademik']) && $_GET['jkelamin']==0 && $_GET['kelas']==0 ){
 			$tahun_akademik= $_GET['tahunakademik'];
 			$j_kelamin = null;
 			$id_kelas =  null;
-			$kelas_siswa = $this->KelasSiswaModel->get_all($tahun_akademik,$j_kelamin,$id_kelas);
 		}else if($_GET['tahunakademik']==0 && $_GET['jkelamin']==0 && !empty($_GET['kelas']) ){
 			$tahun_akademik= null;
 			$j_kelamin = null;
 			$id_kelas =  $_GET['kelas'];
-			$kelas_siswa = $this->KelasSiswaModel->get_all($tahun_akademik,$j_kelamin,$id_kelas);
 		}else if($_GET['tahunakademik']==0 && !empty($_GET['jkelamin']) && $_GET['kelas']==0 ){
 			$tahun_akademik= null;
 			$j_kelamin =  $_GET['jkelamin'];
 			$id_kelas = null;
-			$kelas_siswa = $this->KelasSiswaModel->get_all($tahun_akademik,$j_kelamin,$id_kelas);
 		}else if(!empty($_GET['tahunakademik']) && !empty($_GET['jkelamin']) && $_GET['kelas']==0 ){
 			$tahun_akademik= $_GET['tahunakademik'];
 			$j_kelamin = null;
 			$id_kelas =  null;
-			$kelas_siswa = $this->KelasSiswaModel->get_all($tahun_akademik,$j_kelamin,$id_kelas);
 		}else if($_GET['tahunakademik']==0 && !empty($_GET['jkelamin']) && !empty($_GET['kelas']) ){
 			$tahun_akademik= $_GET['tahunakademik'];
 			$j_kelamin = null;
 			$id_kelas =  null;
-			$kelas_siswa = $this->KelasSiswaModel->get_all($tahun_akademik,$j_kelamin,$id_kelas);
 		}else if(!empty($_GET['tahunakademik']) && $_GET['jkelamin']==0 && !empty($_GET['kelas']) ){
 			$tahun_akademik= $_GET['tahunakademik'];
 			$j_kelamin = null;
 			$id_kelas =  null;
-			$kelas_siswa = $this->KelasSiswaModel->get_all($tahun_akademik,$j_kelamin,$id_kelas);
+		}else if($_GET['tahunakademik']==0 && empty($_GET['jkelamin']) && empty($_GET['kelas']) ){
+			$tahun_akademik= $_GET['tahunakademik'];
+			$j_kelamin = null;
+			$id_kelas =  null;
+		}else if(empty($_GET['tahunakademik']) && empty($_GET['jkelamin']) && empty($_GET['kelas']) ){
+			$tahun_akademik= null;
+			$j_kelamin = null;
+			$id_kelas =  null;
 		}
-		$data['kelas_siswa'] = $kelas_siswa;
+		$data['kelass'] = $this->KelasSiswaModel->get_all($tahun_akademik,$j_kelamin,$id_kelas);
 		$tahun_akademik = $this->KelasSiswaModel->get_tahun_akademik();
 		$data['tahun_akademik'] = $tahun_akademik;
         $kelas = $this->KelasSiswaModel->get_kelas();

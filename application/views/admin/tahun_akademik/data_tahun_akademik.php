@@ -16,12 +16,11 @@
                        <td class="text-center"><?php echo $no++ ?></td>
                        <td class="text-center"><?php echo $result->id ?></td>
                        <td class="text-center"><?php echo $result->tahun_akademik ?></td>
-                       <td class="text-center"><?php if($result->is_aktif == "N"){ echo "Tidak Aktif"; } elseif($result->is_aktif == "Y") {echo "Aktif"; } ?></td>
+                       <td class="text-center"><?php if($result->is_aktif == "N"){ echo '<button type="button" class="btn btn-danger btn-xs">Tidak Aktif</button>'; } elseif($result->is_aktif == "Y") { echo '<button type="button" class="btn btn-success btn-xs">Aktif</button>'; } ?></td>
                        <td class="text-center"><?php echo $result->semester ?></td>
                        <td class="text-center">
                          <button type="button" class="btn btn-warning btn-xs aktifkan"data-id="<?php echo $result->id ?>">Aktifkan</button>
                          <i class="btn btn-xs btn-primary fa fa-edit edit-data" data-id="<?php echo $result->id ?>" data-placement="top" title="Edit"></i>
-                         <i class="btn btn-xs btn-danger fas fa-trash-alt hapus-data" data-id="<?php echo $result->id ?>" id="delete-data" data-placement="top" title="Delete"></i>
                        </td>
                      </tr>
                     <?php endforeach;?>
@@ -84,6 +83,9 @@
         $("#form-edit input[name='tahunakademik']").val(data.object.tahun_akademik);
         $("#status").val(data.object.is_aktif);
         $("#semester").val(data.object.semester);
+        $('#semester').select2({
+          theme: 'bootstrap4',
+        });
         if(document.getElementById("status").value=="N"){
           document.getElementById("semester").disabled = true;
         } else {
@@ -105,34 +107,15 @@
       data: form.serialize(),
       success: function(data){ 
         form[0].reset();
-        alert('success!');
         modal_edit.modal('hide');
+        swal("Berhasil!", "Data Tahun Akademik Berhasil Diedit.", "success");
         $('#tahunakademik').DataTable().clear().destroy();
         refresh_table();
       },
       error: function(response){
-          alert(response);
+         swal("Gagal!", "Data Tahun Akademik tidak berhasil diedit.Terjadi Kesalahan.", "error");
       }
      })
-    });
-    $(".hapus-data").click(function(e) {
-      e.preventDefault();
-      id = $(this).data('id');
-      if (confirm("Anda yakin menghapus data ini?")) {
-        $.ajax({
-          url: '<?=site_url('tahunakademik/crud/delete')?>',
-          type: 'POST',
-          dataType: 'json',
-          data: {id: id},
-          success: function(data){ 
-          $('#tahunakademik').DataTable().clear().destroy();
-          refresh_table();
-          },
-          error: function(response){
-          alert(response);
-          }
-        })
-      }
     });
     $(".aktifkan").click(function(e) {
       e.preventDefault();
@@ -150,8 +133,5 @@
           alert(response);
           }
       })
-    });
-    $('#semester').select2({
-      theme: 'bootstrap4',
     });
 </script>

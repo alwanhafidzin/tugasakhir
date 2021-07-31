@@ -10,12 +10,25 @@ class GuruMapel extends CI_Controller {
 		$this->load->model('GuruMapelModel');
 		$this->load->database();
 		$this->load->library('ion_auth');
+		$this->load->model('IdentityModel');
 		if (!$this->ion_auth->logged_in()){
 			redirect('auth/login');
 		}
 	}
 	public function index()
 	{
+		$user = $this->ion_auth->user()->row();
+		$nip =$user->username;
+		$user_id =$user->id;
+		$username = $user->username;
+        $id_user =$this->ion_auth->get_users_groups($user_id)->row()->id;
+		if($id_user==1) {
+			$data['identity'] = $this->IdentityModel->get_admin($username);
+		}else if($id_user==2){
+			$data['identity'] = $this->IdentityModel->get_guru($username);
+		}else if($id_user==3){
+			$data['identity'] = $this->IdentityModel->get_siswa($username);
+		}
 		$mapel = $this->GuruMapelModel->get_mapel();
 		$data['mapel'] = $mapel;
 		$jurusan = $this->GuruMapelModel->get_jurusan();
@@ -23,7 +36,7 @@ class GuruMapel extends CI_Controller {
         $guru = $this->GuruMapelModel->get_guru();
 		$data['guru'] = $guru;
         $this->load->view('templates/dashboard/header.php');
-        $this->load->view('templates/dashboard/navbar.php');
+        $this->load->view('templates/dashboard/navbar.php',$data);
         $this->load->view('templates/dashboard/sidebar.php');
 		$this->load->view('admin/gurumapel/view.php', $data);
 		$this->load->view('templates/dashboard/footer.php');

@@ -9,8 +9,8 @@
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Data Sekolah</a></li>
-              <li class="breadcrumb-item active">Jurusan</li>
+              <li class="breadcrumb-item"><a href="#">Data Materi</a></li>
+              <li class="breadcrumb-item active">Materi Share</li>
             </ol>
           </div>
         </div>

@@ -31,5 +31,17 @@ class KelompokMapelModel extends CI_Model {
 		$data['count'] = $query->num_rows();
 		return $data;
 	}
+	public function isKelompokMapelRelation($id) {
+		$sql ="SELECT COUNT(id_k_mapel) as jumlah FROM mapel WHERE id_k_mapel=?";
+        $jumlah =$this->db->query($sql, array($id));
+		foreach($jumlah->result() as $result){
+			$jumlah = $result->jumlah;
+		}
+		if($jumlah==0){
+			echo 'hapus';
+		}else if($jumlah > 0){
+			echo 'gagal';
+		}
+    }
 }
 ?>

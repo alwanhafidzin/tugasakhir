@@ -23,7 +23,7 @@
     });
     $('#filter_tipe').select2({
       theme: 'bootstrap4',
-      placeholder: "Filter Tipe Ujian"
+      placeholder: "Filter Tipe Quiz"
     });
     $('#kode_mapel-tbh').select2({
       theme: 'bootstrap4',
@@ -31,7 +31,7 @@
     });
     $('#tipe-tbh').select2({
       theme: 'bootstrap4',
-      placeholder: "Pilih Tipe Ujian"
+      placeholder: "Pilih Tipe Quiz"
     });
     $("#form-tambah").submit(function(e) {
       e.preventDefault();

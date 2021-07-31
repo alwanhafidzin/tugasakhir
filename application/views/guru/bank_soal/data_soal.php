@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="<?=base_url()?>assets/admin_lte/dist/css/contents.css">
 <table id="soal" class="table table-bordered ">
     <thead>
        <tr>
@@ -14,7 +15,7 @@
         <tr>
             <td class="text-center"><?php echo $no++ ?></td>
             <td class="text-center"><?php echo $result->nama_ujian ?></td>
-            <td><?php echo $result->soal ?></td>
+            <td class="ck-content"><?php echo $result->soal ?></td>
             <td class="text-center"><?php echo $result->dibuat_pada ?></td>
             <td class="text-center">
                 <i class="btn btn-xs btn-primary fa fa-edit edit-data" data-id="<?php echo $result->id ?>" data-placement="top" title="Edit"></i>

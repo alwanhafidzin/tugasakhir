@@ -585,12 +585,12 @@ main .message h2 {
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Data Agama SMAN 1 SOOKO</h1>
+            <h1>Tambah Materi Guru SMAN 1 SOOKO</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Data Sekolah</a></li>
-              <li class="breadcrumb-item active">Agama</li>
+              <li class="breadcrumb-item"><a href="#">Data Materi</a></li>
+              <li class="breadcrumb-item active">Buat Materi</li>
             </ol>
           </div>
         </div>

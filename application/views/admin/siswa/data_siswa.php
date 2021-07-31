@@ -8,16 +8,19 @@
     <thead>
        <tr>
          <th class="text-center">No</th>
+         <th class="text-center"><input type="checkbox" id="check-all"></th>
          <th class="text-center">Nis</th>
+         <th class="text-center">Nisn</th>
          <th class="text-center">Nama</th>
          <th class="text-center">Foto</th>
          <th class="text-center">Foto</th>
          <th class="text-center">Foto</th>
+         <th class="text-center">Jenis Kelamin</th>
          <th class="text-center">Tempat Lahir</th>
          <th class="text-center">Tanggal Lahir</th>
          <th class="text-center">Agama</th>
          <th class="text-center">Tahun Masuk</th>
-         <th class="text-center">Jenis Kelamin</th>
+         <th class="text-center">Email</th>
          <th class="text-center">Aksi</th>
         </tr>
     </thead>
@@ -26,17 +29,20 @@
         <?php foreach($siswa->result() as $result) : ?>
         <tr>
             <td class="text-center"><?php echo $no++ ?></td>
+            <td class="text-center"><input type='checkbox' class='check-item' value="<?php echo $result->nis ?>"></td>
             <td class="text-center"><?php echo $result->nis ?></td>
+            <td class="text-center"><?php echo $result->nisn ?></td>
             <td class="text-center"><?php echo $result->nama ?></td>
             <!-- <td class="text-center"><img width="35" src="https://www.dropbox.com/s/ovenli30cicbeiv/profile.jpg?raw=1" /></td> -->
             <td class="text-center"><img width="35" src="<?php echo base_url()?>uploads/siswa/<?php echo $result->foto; ?>" /></td>
             <td class="text-center"><?php echo $result->foto ?></td>
             <td class="text-center"><img width="90" src="<?php echo base_url()?>uploads/siswa/<?php echo $result->foto; ?>" /></td>
+            <td class="text-center"><?php if($result->j_kelamin == "L"){ echo "Laki-Laki"; } elseif($result->j_kelamin == "P") {echo "Perempuan"; } ?></td>
             <td class="text-center"><?php echo $result->tempat_lahir ?></td>
             <td class="text-center"><?php echo $result->tanggal_lahir ?></td>
             <td class="text-center"><?php echo $result->agama ?></td>
             <td class="text-center"><?php echo $result->tahun_masuk ?></td>
-            <td class="text-center"><?php if($result->j_kelamin == "L"){ echo "Laki-Laki"; } elseif($result->j_kelamin == "P") {echo "Perempuan"; } ?></td>
+            <td class="text-center"><?php echo $result->email ?></td>
             <td class="text-center">
                 <i class="btn btn-xs btn-primary fa fa-edit edit-data" data-id="<?php echo $result->nis ?>" data-placement="top" title="Edit"></i>
                 <i class="btn btn-xs btn-danger fas fa-trash-alt hapus-data" data-id="<?php echo $result->nis ?>" data-placement="top" title="Delete"></i>
@@ -59,11 +65,15 @@
             <div class="col-lg-12">
                 <div class="form-group">
                     <label for="nis">NIS</label>
-                    <input type="text" autocomplete="off"disabled='disabled' class="form-control" name="nis" placeholder="Masukkan NIS">
+                    <input type="text" autocomplete="off"disabled='disabled' class="form-control" maxlength="8" name="nis" placeholder="Masukkan NIS" required>
+                </div>
+                <div class="form-group">
+                    <label for="nisn">NISN</label>
+                    <input type="text" autocomplete="off" class="form-control" name="nisn" placeholder="Masukkan NISN" required>
                 </div>
                 <div class="form-group">
                     <label for="nama">Nama Lengkap</label>
-                    <input type="text" autocomplete="off"class="form-control" name="nama" placeholder="Masukkan Nama Lengkap">
+                    <input type="text" autocomplete="off"class="form-control" name="nama" placeholder="Masukkan Nama Lengkap" required>
                 </div>
                 <div class="form-group">
                     <label for="foto">Foto</label></br>
@@ -71,20 +81,24 @@
                     <input type="file" autocomplete="off"class="form-control" name="foto" placeholder="Pilih Foto">
                 </div>
                 <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" autocomplete="off"class="form-control" name="email" placeholder="Masukkan Email" required>
+                </div>
+                <div class="form-group">
                     <label for="tempatlahir">Tempat Lahir</label>
-                    <input type="text" autocomplete="off"class="form-control" name="tempatlahir" placeholder="Masukkan Tempat Lahir">
+                    <input type="text" autocomplete="off"class="form-control" name="tempatlahir" placeholder="Masukkan Tempat Lahir" required>
                 </div>
                 <div class="form-group">
                     <label for="tanggallahir">Tanggal Lahir</label>
-                    <input type="" id="tanggallahird" autocomplete="off" class="form-control" name="tanggallahir" placeholder="Masukkan Tanggal Lahir">
+                    <input type="" id="tanggallahird" autocomplete="off" class="form-control" name="tanggallahir" placeholder="Masukkan Tanggal Lahir" required>
                 </div>
                 <div class="form-group">
                     <label for="tahunmasuk">Tahun Masuk</label>
-                    <input type="year" id="date-tahunmasuk-edit" autocomplete="off" class="form-control" name="tahunmasuk" placeholder="Masukkan Tanggal Lahir">
+                    <input type="year" id="date-tahunmasuk-edit" autocomplete="off" class="form-control" name="tahunmasuk" placeholder="Masukkan Tanggal Lahir" required>
                 </div>
                 <div class="form-group">
                   <label>Agama</label>
-                  <select class="form-control select2" name="agama" id="agamaedit" style="width: 100%;">
+                  <select class="form-control select2" name="agama" id="agamaedit" required style="width: 100%;">
                      <?php foreach($agama as $row) : ?>
                       <option value="<?php echo $row->id ?>"><?php echo $row->agama ?></option>
                      <?php endforeach ?>
@@ -92,7 +106,7 @@
                 </div>
                 <div class="form-group">
                   <label>Jenis Kelamin</label>
-                  <select class="form-control select2" name="jkelamin" id="jkelaminedit" style="width: 100%;">
+                  <select class="form-control select2" name="jkelamin" id="jkelaminedit" required style="width: 100%;">
                       <option value="L">Laki-Laki</option>
                       <option value="P">Perempuan</option>
                   </select>
@@ -123,7 +137,7 @@
               <div class="col-lg-12">
               <div class="form-group">
                     <label for="excel">Import Excel</label>
-                    <input type="file" autocomplete="off"class="form-control" name="excel" placeholder="Pilih Foto">
+                    <input type="file" autocomplete="off"class="form-control" name="excel" placeholder="Pilih Foto" required>
                 </div>
                 <div class="modal-footer justify-content-between">
                   <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
@@ -150,7 +164,7 @@
               <div class="col-lg-12">
               <div class="form-group">
                     <label for="multiple">Upload Multiple</label>
-                    <input type="file" autocomplete="off"class="form-control"name='files[]' multiple="" placeholder="Pilih Foto">
+                    <input type="file" autocomplete="off"class="form-control"name='files[]' multiple="" placeholder="Pilih Foto" required>
                 </div>
                 <div class="modal-footer justify-content-between">
                   <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
@@ -166,6 +180,12 @@
 
 <script>
   //Menampilkan data diedit
+     $("#check-all").click(function(){
+      if($(this).is(":checked"))
+        $(".check-item").prop("checked", true); 
+      else 
+        $(".check-item").prop("checked", false);
+    });
     modal_edit = $("#modal-edit");
     $(".edit-data").click(function(e) {
       id = $(this).data('id');
@@ -200,16 +220,24 @@
              $(this).bootstrapDP('hide');
           });
         });
-
+        $("#form-edit-siswa input[name='id']").val(data.object.nis);
         $("#form-edit-siswa input[name='nis']").val(data.object.nis);
+        $("#form-edit-siswa input[name='nisn']").val(data.object.nisn);
         $("#form-edit-siswa input[name='nama']").val(data.object.nama);
+        $("#form-edit-siswa input[name='email']").val(data.object.email);
         var foto = data.object.foto;
         $('#foto-siswa').attr("src", `<?php echo base_url()?>uploads/siswa/${foto}`);
         $("#form-edit-siswa input[name='tempatlahir']").val(data.object.tempat_lahir);
         $("#form-edit-siswa input[name='tanggallahir']").val(data.object.tanggal_lahir);
         $("#form-edit-siswa input[name='tahunmasuk']").val(data.object.tahun_masuk);
-        $("#agama").val(data.object.id_agama);
-        $("#jkelamin").val(data.object.j_kelamin);
+        $("#agamaedit").val(data.object.id_agama);
+        $("#jkelaminedit").val(data.object.j_kelamin);
+        $('#jkelaminedit').select2({
+          theme: 'bootstrap4'
+        });
+        $('#agamaedit').select2({
+          theme: 'bootstrap4'
+        });
         modal_edit.modal('show').on('shown.bs.modal', function(e) {
           $("#form-edit-kelas input[name='nis']").focus();
         });
@@ -230,7 +258,7 @@
       success: function(data){ 
         form[0].reset();
         modal_edit.modal('hide');
-        swal("Berhasil!", "Data siswa berhasil diedits.", "success");
+        swal("Berhasil!", "Data siswa berhasil diedit.", "success");
         $('#siswa').DataTable().clear().destroy();
         refresh_table();
       },
@@ -322,4 +350,29 @@
       }
      })
     });
+    function updateStatus(){
+      var arr = [];
+      $('input.check-item:checkbox:checked').each(function () {
+          arr.push($(this).val());
+      });
+      // alert(JSON.stringify(arr));
+      if(arr.length == 0){
+        swal("Gagal!", "Tidak ada data yang dipilih,centang checkbox untuk merubah status", "warning");
+      }else{
+        $.ajax({
+             url: '<?=site_url('siswa/crud/update_status')?>',
+             type: 'POST',
+             dataType: 'json',
+             data: {arr:arr},
+             error: function() {
+              swal("Gagal!", "Tidak dapat terhubung ke server.periksa koneksi anda", "error");
+             },
+             success: function(data) {
+                swal("Berhasil!", "Status siswa telah berhasil dirubah.", "success");
+                $('#siswa').DataTable().clear().destroy();
+                refresh_table();
+             }
+          });
+      }
+    }
 </script>

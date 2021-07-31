@@ -21,7 +21,7 @@ class KelasSiswaModel extends CI_Model {
 	public function get_all($tahun_akademik,$j_kelamin,$id_kelas){
 		$sql ='select d.id,d.nis,d.kode_kelas,d.id_tahun_akademik,d.no_absen,s.nama,s.j_kelamin,k.nama_kelas,k.kode_jurusan,j.jurusan,t.tahun_akademik from data_kelas_siswa d INNER JOIN siswa s ON d.nis=s.nis INNER JOIN 
         kelas k ON d.kode_kelas=k.kode_kelas INNER JOIN jurusan j ON j.kode_jurusan=k.kode_jurusan INNER JOIN tahun_akademik t ON t.id=d.id_tahun_akademik WHERE d.id_tahun_akademik = IFNULL(?,d.id_tahun_akademik) AND k.kode_kelas= IFNULL(?,k.kode_kelas) AND s.j_kelamin= IFNULL(?,s.j_kelamin) ORDER BY s.nis ASC';
-		return $this->db->query($sql, array($tahun_akademik, $id_kelas, $j_kelamin));
+		return $this->db->query($sql, array($tahun_akademik ,$id_kelas, $j_kelamin));
 	}
 	public function get_tahun_akademik(){
 		$this->db->select('*');

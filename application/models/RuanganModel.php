@@ -31,5 +31,17 @@ class RuanganModel extends CI_Model {
 		$data['count'] = $query->num_rows();
 		return $data;
 	}
+	public function isRuanganRelation($id) {
+		$sql ="SELECT COUNT(kode_ruangan) as jumlah FROM ruangan_siswa WHERE kode_ruangan=?";
+        $jumlah =$this->db->query($sql, array($id));
+		foreach($jumlah->result() as $result){
+			$jumlah = $result->jumlah;
+		}
+		if($jumlah==0){
+			echo 'hapus';
+		}else if($jumlah > 0){
+			echo 'gagal';
+		}
+    }
 }
 ?>

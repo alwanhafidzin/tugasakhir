@@ -35,12 +35,12 @@
             <input type="hidden" name="id">
             <div class="col-lg-12">
                 <div class="form-group">
-                    <label for="kode_ruangan">Kode Ruangan</label>
-                    <input type="text" class="form-control" autocomplete="off" name="kode_ruangan" placeholder="Masukkan Kode Ruangan">
+                    <label for="kode_ruangan-edit">Kode Ruangan</label>
+                    <input type="text" class="form-control" autocomplete="off" maxlength="10" name="kode_ruangan" id="kode_ruangan-edit" placeholder="Masukkan Kode Ruangan" required>
                 </div>
                 <div class="form-group">
                     <label for="ruangan">Nama Ruangan</label>
-                    <input type="text" class="form-control" autocomplete="off" name="ruangan" placeholder="Masukkan Nama Ruangan">
+                    <input type="text" class="form-control" autocomplete="off" name="ruangan" placeholder="Masukkan Nama Ruangan" required>
                 </div>
             </div>
             <div class="modal-footer justify-content-between">
@@ -60,19 +60,21 @@
     $(".edit-data").click(function(e) {
       id = $(this).data('id');
       $.ajax({
-        url: '<?=site_url('ruangan/get_by_id')?>',
-        type: 'GET',
-        dataType: 'json',
-        data: {id: id},
+          url: '<?=site_url('ruangan/cek_relasi')?>',
+          type: 'GET',
+          data: {
+              id : id
+          },
+          success: function(response){
+              if (response == 'gagal')
+              get_data_relation();
+              else if (response == 'hapus')
+              get_data_no_relation();
+              },
+          error: function(response){
+            swal("Gagal!", "Tidak dapat terhubung ke server.periksa koneksi anda", "error");
+          }
       })
-      .done(function(data) {
-        $("#form-edit input[name='id']").val(data.object.kode_ruangan);
-        $("#form-edit input[name='kode_ruangan']").val(data.object.kode_ruangan);
-        $("#form-edit input[name='ruangan']").val(data.object.ruangan);
-        modal_edit.modal('show').on('shown.bs.modal', function(e) {
-          $("#form-edit input[name='kode_ruangan']").focus();
-        });
-      });
     });
     //Proses Update ke Db
     $("#form-edit").submit(function(e) {
@@ -84,34 +86,104 @@
       dataType: 'json',
       data: form.serialize(),
       success: function(data){ 
-        form[0].reset();
-        alert('success!');
         modal_edit.modal('hide');
+        form[0].reset();
+        swal("Berhasil!", "Data Ruangan Berhasil Diedit.", "success");
         $('#ruangan').DataTable().clear().destroy();
         refresh_table();
       },
       error: function(response){
-          alert(response);
+        swal("Gagal!", "Data Gagal diedit terjadi kesalahan.", "error");
       }
      })
     });
     $(".hapus-data").click(function(e) {
       e.preventDefault();
       id = $(this).data('id');
-      if (confirm("Anda yakin menghapus data ini?")) {
-        $.ajax({
-          url: '<?=site_url('ruangan/crud/delete')?>',
-          type: 'POST',
-          dataType: 'json',
-          data: {id: id},
-          success: function(data){ 
-          $('#ruangan').DataTable().clear().destroy();
-          refresh_table();
+      $.ajax({
+          url: '<?=site_url('ruangan/cek_relasi')?>',
+          type: 'GET',
+          data: {
+              id : id
           },
+          success: function(response){
+              if (response == 'gagal')
+              swal("Peringatan!", "Data yang dipilih tidak dapat dihapus karena berelasi dengan data lainnya,hapus data relasi terlebih dahulu", "warning");
+              else if (response == 'hapus')
+              hapus();
+              },
           error: function(response){
-          alert(response);
+            swal("Gagal!", "Tidak dapat terhubung ke server.periksa koneksi anda", "error");
           }
-        })
-      }
+      })
     });
+    function hapus(){
+      swal({
+        title: "Apa Anda Yakin?",
+        text: "Data yang terhapus,tidak dapat dikembalikan!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonClass: "btn-danger",
+        confirmButtonText: "Ya, Hapus!",
+        cancelButtonText: "Batalkan!",
+        closeOnConfirm: false,
+        closeOnCancel: false
+      },
+      function(isConfirm) {
+        if (isConfirm) {
+          $.ajax({
+             url: '<?=site_url('ruangan/crud/delete')?>',
+             type: 'POST',
+             dataType: 'json',
+             data: {id: id},
+             error: function() {
+              swal("Gagal!", "Data Gagal dihapus terjadi kesalahan.", "error");
+             },
+             success: function(data) {
+                  swal("Berhasil!", "Data Berhasil Dihapus.", "success");
+                  $('#ruangan').DataTable().clear().destroy();
+                  refresh_table();
+             }
+          });
+        } else {
+          swal("Dibatalkan", "Data yang dipilih tidak jadi dihapus", "error");
+        }
+      });
+    }
+    function get_data_no_relation(){
+      $.ajax({
+        url: '<?=site_url('ruangan/get_by_id')?>',
+        type: 'GET',
+        dataType: 'json',
+        data: {id: id},
+      })
+      .done(function(data) {
+        $("#form-edit input[name='id']").val(data.object.kode_ruangan);
+        $("#form-edit input[name='kode_ruangan']").val(data.object.kode_ruangan);
+        $("#form-edit input[name='ruangan']").val(data.object.ruangan);
+        $("#kode_ruangan-edit").prop("disabled", false);
+        $("label[for='kode_ruangan-edit']").text("Kode Ruangan");
+        modal_edit.modal('show').on('shown.bs.modal', function(e) {
+          $("#form-edit input[name='kode_ruangan']").focus();
+        });
+      });
+    }
+    function get_data_relation(){
+      $.ajax({
+        url: '<?=site_url('ruangan/get_by_id')?>',
+        type: 'GET',
+        dataType: 'json',
+        data: {id: id},
+      })
+      .done(function(data) {
+        $("#form-edit input[name='id']").val(data.object.kode_ruangan);
+        $("#form-edit input[name='kode_ruangan']").val(data.object.kode_ruangan);
+        $("#form-edit input[name='ruangan']").val(data.object.ruangan);
+        $("#kode_ruangan-edit").prop("disabled", true);
+        $("label[for='kode_ruangan-edit']").text("Kode Ruangan(Berelasi)");
+        modal_edit.modal('show').on('shown.bs.modal', function(e) {
+          $("#form-edit input[name='kode_ruangan']").focus();
+        });
+      });
+    }
 </script>

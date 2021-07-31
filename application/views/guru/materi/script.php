@@ -17,7 +17,7 @@
       e.preventDefault();
       modal_tambah = $("#modal-tambah");
       modal_tambah.modal('hide');
-      Swal1();
+      Swal6();
       form = $(this);
       $.ajax({
        url: '<?=site_url('materi/upload_dropbox')?>',
@@ -35,11 +35,11 @@
       },
       error: function(response){
           swal.close();
-          alert(response);
+          swal("Gagal!", "Data Gagal ditambahkan terjadi kesalahan.", "error");
       }
      })
     });
-    function Swal1(){
+    function Swal6(){
     swal({
      title: "Status!",
      text: "File Sedang diupload.Harap Tunggu...",
@@ -47,7 +47,7 @@
      showConfirmButton: false
     });
     }
-    function Swal2(){
+    function Swal7(){
     swal({
      title: "Status!",
      text: "File Sedang dihapus.Harap Tunggu...",

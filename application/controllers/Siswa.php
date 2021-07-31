@@ -14,16 +14,28 @@ class Siswa extends CI_Controller {
 		$this->load->model('SiswaModel');
 		$this->load->library('upload');
 		$this->load->library('Excel'); 
+		$this->load->model('IdentityModel');
 		$this->load->database();
 	}
 	public function index()
 	{
+		$user = $this->ion_auth->user()->row();
+		$user_id =$user->id;
+		$username = $user->username;
+        $id_user =$this->ion_auth->get_users_groups($user_id)->row()->id;
+		if($id_user==1) {
+			$data['identity'] = $this->IdentityModel->get_admin($username);
+		}else if($id_user==2){
+			$data['identity'] = $this->IdentityModel->get_guru($username);
+		}else if($id_user==3){
+			$data['identity'] = $this->IdentityModel->get_siswa($username);
+		}
 		$agama = $this->SiswaModel->get_agama();
 		$data['agama'] = $agama;
 		$tahunmasuk = $this->SiswaModel->get_tahun();
 		$data['tahunmasuk'] = $tahunmasuk;
         $this->load->view('templates/dashboard/header.php');
-        $this->load->view('templates/dashboard/navbar.php');
+        $this->load->view('templates/dashboard/navbar.php',$data);
         $this->load->view('templates/dashboard/sidebar.php');
 		$this->load->view('admin/siswa/view.php', $data);
 		$this->load->view('templates/dashboard/footer.php');
@@ -31,88 +43,245 @@ class Siswa extends CI_Controller {
 	}
 	public function get_all()
 	{
-		if(!empty($_GET['tahunmasuk']) && empty($_GET['agama']) && empty($_GET['jkelamin']) ){
-			$tahun_masuk= $_GET['tahunmasuk'];
-			$id_agama = null;
-			$j_kelamin = null;
-			$siswa = $this->SiswaModel->get_all($tahun_masuk,$id_agama,$j_kelamin);
-		}else if(empty($_GET['tahunmasuk']) && !empty($_GET['agama']) && empty($_GET['jkelamin']) ){
+		if(!empty($_GET['tahun_masuk'])){
+			$tahun_masuk= $_GET['tahun_masuk'];
+			if(!empty($_GET['agama']) && empty($_GET['jkelamin']) && empty($_GET['status']) ){
+				$id_agama= $_GET['agama'];
+				$j_kelamin = null;
+				$status = null;
+			}else if(empty($_GET['agama']) && !empty($_GET['jkelamin']) && empty($_GET['status']) ){
+				$id_agama= null;
+				$j_kelamin = $_GET['jkelamin'];
+				$status = null;
+			}else if(empty($_GET['agama']) && empty($_GET['jkelamin']) && !empty($_GET['status']) ){
+				$id_agama= null;
+				$j_kelamin = null;
+				$status =  $_GET['status'];
+			}else if(!empty($_GET['agama']) && !empty($_GET['jkelamin']) && !empty($_GET['status']) ){
+				$id_agama= $_GET['agama'];
+				$j_kelamin = $_GET['jkelamin'];
+				$status =  $_GET['status'];
+			}else if(!empty($_GET['agama']) && !empty($_GET['jkelamin']) && empty($_GET['status']) ){
+				$id_agama= $_GET['agama'];
+				$j_kelamin = $_GET['jkelamin'];
+				$status = null;
+			}else if(!empty($_GET['agama']) && empty($_GET['jkelamin']) && !empty($_GET['status']) ){
+				$id_agama= $_GET['agama'];
+				$j_kelamin = null;
+				$status = $_GET['status'];
+			}else if(empty($_GET['agama']) && !empty($_GET['jkelamin']) && !empty($_GET['status']) ){
+				$id_agama= null;
+				$j_kelamin = $_GET['jkelamin'];
+				$status =  $_GET['status'];
+			}else if($_GET['agama']==0 && $_GET['jkelamin']==0 && $_GET['status']==0 ){
+				$id_agama= null;
+				$j_kelamin = null;
+				$status =  null;
+			}else if($_GET['agama']==0 && $_GET['jkelamin']==0 && !empty($_GET['status']) ){
+				$id_agama= null;
+				$j_kelamin = null;
+				$status = $_GET['status'];
+			}else if($_GET['agama']==0 && !empty($_GET['jkelamin']) && $_GET['status']==0 ){
+				$id_agama= null;
+				$j_kelamin = $_GET['jkelamin'];
+				$status =  null;
+			}else if(!empty($_GET['agama']) && $_GET['jkelamin']==0 && $_GET['status']==0 ){
+				$id_agama= $_GET['agama'];
+				$j_kelamin = null;
+				$status =  null;
+			}else if($_GET['agama']==0 && $_GET['jkelamin']==0 && !empty($_GET['status']) ){
+				$id_agama= null;
+				$j_kelamin = null;
+				$status =  $_GET['status'];
+			}else if($_GET['agama']==0 && !empty($_GET['jkelamin']) && $_GET['status']==0 ){
+				$id_agama= null;
+				$j_kelamin =  $_GET['jkelamin'];
+				$status = null;
+			}else if(!empty($_GET['agama']) && !empty($_GET['jkelamin']) && $_GET['status']==0 ){
+				$id_agama= $_GET['agama'];
+				$j_kelamin = null;
+				$status =  null;
+			}else if($_GET['agama']==0 && !empty($_GET['jkelamin']) && !empty($_GET['status']) ){
+				$id_agama= $_GET['agama'];
+				$j_kelamin = null;
+				$status =  null;
+			}else if(!empty($_GET['agama']) && $_GET['jkelamin']==0 && !empty($_GET['status']) ){
+				$id_agama= $_GET['agama'];
+				$j_kelamin = null;
+				$status =  null;
+			}else if($_GET['agama']==0 && empty($_GET['jkelamin']) && empty($_GET['status']) ){
+				$id_agama= $_GET['agama'];
+				$j_kelamin = null;
+				$status =  null;
+			}else if(empty($_GET['agama']) && empty($_GET['jkelamin']) && empty($_GET['status']) ){
+				$id_agama= $_GET['agama'];
+				$j_kelamin = null;
+				$status = null;
+			}else if(empty($_GET['agama']) && empty($_GET['jkelamin']) && $_GET['status']==0 ){
+				$id_agama= null;
+				$j_kelamin = null;
+				$status = null;
+			}
+		}else if(empty($_GET['tahun_masuk'])){
 			$tahun_masuk= null;
-			$id_agama = $_GET['agama'];
-			$j_kelamin = null;
-			$siswa = $this->SiswaModel->get_all($tahun_masuk,$id_agama,$j_kelamin);
-		}else if(empty($_GET['tahunmasuk']) && empty($_GET['agama']) && !empty($_GET['jkelamin']) ){
+			if(!empty($_GET['agama']) && empty($_GET['jkelamin']) && empty($_GET['status']) ){
+				$id_agama= $_GET['agama'];
+				$j_kelamin = null;
+				$status = null;
+			}else if(empty($_GET['agama']) && !empty($_GET['jkelamin']) && empty($_GET['status']) ){
+				$id_agama= null;
+				$j_kelamin = $_GET['jkelamin'];
+				$status = null;
+			}else if(empty($_GET['agama']) && empty($_GET['jkelamin']) && !empty($_GET['status']) ){
+				$id_agama= null;
+				$j_kelamin = null;
+				$status =  $_GET['status'];
+			}else if(!empty($_GET['agama']) && !empty($_GET['jkelamin']) && !empty($_GET['status']) ){
+				$id_agama= $_GET['agama'];
+				$j_kelamin = $_GET['jkelamin'];
+				$status =  $_GET['status'];
+			}else if(!empty($_GET['agama']) && !empty($_GET['jkelamin']) && empty($_GET['status']) ){
+				$id_agama= $_GET['agama'];
+				$j_kelamin = $_GET['jkelamin'];
+				$status = null;
+			}else if(!empty($_GET['agama']) && empty($_GET['jkelamin']) && !empty($_GET['status']) ){
+				$id_agama= $_GET['agama'];
+				$j_kelamin = null;
+				$status = $_GET['status'];
+			}else if(empty($_GET['agama']) && !empty($_GET['jkelamin']) && !empty($_GET['status']) ){
+				$id_agama= null;
+				$j_kelamin = $_GET['jkelamin'];
+				$status =  $_GET['status'];
+			}else if($_GET['agama']==0 && $_GET['jkelamin']==0 && $_GET['status']==0 ){
+				$id_agama= null;
+				$j_kelamin = null;
+				$status =  null;
+			}else if($_GET['agama']==0 && $_GET['jkelamin']==0 && !empty($_GET['status']) ){
+				$id_agama= null;
+				$j_kelamin = null;
+				$status = $_GET['status'];
+			}else if($_GET['agama']==0 && !empty($_GET['jkelamin']) && $_GET['status']==0 ){
+				$id_agama= null;
+				$j_kelamin = $_GET['jkelamin'];
+				$status =  null;
+			}else if(!empty($_GET['agama']) && $_GET['jkelamin']==0 && $_GET['status']==0 ){
+				$id_agama= $_GET['agama'];
+				$j_kelamin = null;
+				$status =  null;
+			}else if($_GET['agama']==0 && $_GET['jkelamin']==0 && !empty($_GET['status']) ){
+				$id_agama= null;
+				$j_kelamin = null;
+				$status =  $_GET['status'];
+			}else if($_GET['agama']==0 && !empty($_GET['jkelamin']) && $_GET['status']==0 ){
+				$id_agama= null;
+				$j_kelamin =  $_GET['jkelamin'];
+				$status = null;
+			}else if(!empty($_GET['agama']) && !empty($_GET['jkelamin']) && $_GET['status']==0 ){
+				$id_agama= $_GET['agama'];
+				$j_kelamin = null;
+				$status =  null;
+			}else if($_GET['agama']==0 && !empty($_GET['jkelamin']) && !empty($_GET['status']) ){
+				$id_agama= $_GET['agama'];
+				$j_kelamin = null;
+				$status =  null;
+			}else if(!empty($_GET['agama']) && $_GET['jkelamin']==0 && !empty($_GET['status']) ){
+				$id_agama= $_GET['agama'];
+				$j_kelamin = null;
+				$status =  null;
+			}else if($_GET['agama']==0 && empty($_GET['jkelamin']) && empty($_GET['status']) ){
+				$id_agama= $_GET['agama'];
+				$j_kelamin = null;
+				$status =  null;
+			}else if(empty($_GET['agama']) && empty($_GET['jkelamin']) && empty($_GET['status']) ){
+				$id_agama= $_GET['agama'];
+				$j_kelamin = null;
+				$status = null;
+			}else if(empty($_GET['agama']) && empty($_GET['jkelamin']) && $_GET['status']==0 ){
+				$id_agama= null;
+				$j_kelamin = null;
+				$status = null;
+			}
+		}else if($_GET['tahun_masuk']==0){
 			$tahun_masuk= null;
-			$id_agama = null;
-			$j_kelamin =  $_GET['jkelamin'];
-			$siswa = $this->SiswaModel->get_all($tahun_masuk,$id_agama,$j_kelamin);
-		}else if(!empty($_GET['tahunmasuk']) && !empty($_GET['agama']) && !empty($_GET['jkelamin']) ){
-			$tahun_masuk= $_GET['tahunmasuk'];
-			$id_agama = $_GET['agama'];
-			$j_kelamin =  $_GET['jkelamin'];
-			$siswa = $this->SiswaModel->get_all($tahun_masuk,$id_agama,$j_kelamin);
-		}else if(!empty($_GET['tahunmasuk']) && !empty($_GET['agama']) && empty($_GET['jkelamin']) ){
-			$tahun_masuk= $_GET['tahunmasuk'];
-			$id_agama = $_GET['agama'];
-			$j_kelamin = null;
-			$siswa = $this->SiswaModel->get_all($tahun_masuk,$id_agama,$j_kelamin);
-		}else if(!empty($_GET['tahunmasuk']) && empty($_GET['agama']) && !empty($_GET['jkelamin']) ){
-			$tahun_masuk= $_GET['tahunmasuk'];
-			$id_agama = null;
-			$j_kelamin = $_GET['jkelamin'];
-			$siswa = $this->SiswaModel->get_all($tahun_masuk,$id_agama,$j_kelamin);
-		}else if(empty($_GET['tahunmasuk']) && !empty($_GET['agama']) && !empty($_GET['jkelamin']) ){
-			$tahun_masuk= null;
-			$id_agama = $_GET['agama'];
-			$j_kelamin =  $_GET['jkelamin'];
-			$siswa = $this->SiswaModel->get_all($tahun_masuk,$id_agama,$j_kelamin);
-		}else if($_GET['tahunmasuk']==0 && $_GET['agama']==0 && $_GET['jkelamin']==0 ){
-			$tahun_masuk= null;
-			$id_agama = null;
-			$j_kelamin =  null;
-			$siswa = $this->SiswaModel->get_all($tahun_masuk,$id_agama,$j_kelamin);
-		}else if($_GET['tahunmasuk']==0 && $_GET['agama']==0 && !empty($_GET['jkelamin']) ){
-			$tahun_masuk= null;
-			$id_agama = null;
-			$j_kelamin = $_GET['jkelamin'];
-			$siswa = $this->SiswaModel->get_all($tahun_masuk,$id_agama,$j_kelamin);
-		}else if($_GET['tahunmasuk']==0 && !empty($_GET['agama']) && $_GET['jkelamin']==0 ){
-			$tahun_masuk= null;
-			$id_agama = $_GET['agama'];
-			$j_kelamin =  null;
-			$siswa = $this->SiswaModel->get_all($tahun_masuk,$id_agama,$j_kelamin);
-		}else if(!empty($_GET['tahunmasuk']) && $_GET['agama']==0 && $_GET['jkelamin']==0 ){
-			$tahun_masuk= $_GET['tahunmasuk'];
-			$id_agama = null;
-			$j_kelamin =  null;
-			$siswa = $this->SiswaModel->get_all($tahun_masuk,$id_agama,$j_kelamin);
-		}else if($_GET['tahunmasuk']==0 && $_GET['agama']==0 && !empty($_GET['jkelamin']) ){
-			$tahun_masuk= null;
-			$id_agama = null;
-			$j_kelamin =  $_GET['jkelamin'];
-			$siswa = $this->SiswaModel->get_all($tahun_masuk,$id_agama,$j_kelamin);
-		}else if($_GET['tahunmasuk']==0 && !empty($_GET['agama']) && $_GET['jkelamin']==0 ){
-			$tahun_masuk= null;
-			$id_agama =  $_GET['agama'];
-			$j_kelamin = null;
-			$siswa = $this->SiswaModel->get_all($tahun_masuk,$id_agama,$j_kelamin);
-		}else if(!empty($_GET['tahunmasuk']) && !empty($_GET['agama']) && $_GET['jkelamin']==0 ){
-			$tahun_masuk= $_GET['tahunmasuk'];
-			$id_agama = null;
-			$j_kelamin =  null;
-			$siswa = $this->SiswaModel->get_all($tahun_masuk,$id_agama,$j_kelamin);
-		}else if($_GET['tahunmasuk']==0 && !empty($_GET['agama']) && !empty($_GET['jkelamin']) ){
-			$tahun_masuk= $_GET['tahunmasuk'];
-			$id_agama = null;
-			$j_kelamin =  null;
-			$siswa = $this->SiswaModel->get_all($tahun_masuk,$id_agama,$j_kelamin);
-		}else if(!empty($_GET['tahunmasuk']) && $_GET['agama']==0 && !empty($_GET['jkelamin']) ){
-			$tahun_masuk= $_GET['tahunmasuk'];
-			$id_agama = null;
-			$j_kelamin =  null;
-			$siswa = $this->SiswaModel->get_all($tahun_masuk,$id_agama,$j_kelamin);
+			if(!empty($_GET['agama']) && empty($_GET['jkelamin']) && empty($_GET['status']) ){
+				$id_agama= $_GET['agama'];
+				$j_kelamin = null;
+				$status = null;
+			}else if(empty($_GET['agama']) && !empty($_GET['jkelamin']) && empty($_GET['status']) ){
+				$id_agama= null;
+				$j_kelamin = $_GET['jkelamin'];
+				$status = null;
+			}else if(empty($_GET['agama']) && empty($_GET['jkelamin']) && !empty($_GET['status']) ){
+				$id_agama= null;
+				$j_kelamin = null;
+				$status =  $_GET['status'];
+			}else if(!empty($_GET['agama']) && !empty($_GET['jkelamin']) && !empty($_GET['status']) ){
+				$id_agama= $_GET['agama'];
+				$j_kelamin = $_GET['jkelamin'];
+				$status =  $_GET['status'];
+			}else if(!empty($_GET['agama']) && !empty($_GET['jkelamin']) && empty($_GET['status']) ){
+				$id_agama= $_GET['agama'];
+				$j_kelamin = $_GET['jkelamin'];
+				$status = null;
+			}else if(!empty($_GET['agama']) && empty($_GET['jkelamin']) && !empty($_GET['status']) ){
+				$id_agama= $_GET['agama'];
+				$j_kelamin = null;
+				$status = $_GET['status'];
+			}else if(empty($_GET['agama']) && !empty($_GET['jkelamin']) && !empty($_GET['status']) ){
+				$id_agama= null;
+				$j_kelamin = $_GET['jkelamin'];
+				$status =  $_GET['status'];
+			}else if($_GET['agama']==0 && $_GET['jkelamin']==0 && $_GET['status']==0 ){
+				$id_agama= null;
+				$j_kelamin = null;
+				$status =  null;
+			}else if($_GET['agama']==0 && $_GET['jkelamin']==0 && !empty($_GET['status']) ){
+				$id_agama= null;
+				$j_kelamin = null;
+				$status = $_GET['status'];
+			}else if($_GET['agama']==0 && !empty($_GET['jkelamin']) && $_GET['status']==0 ){
+				$id_agama= null;
+				$j_kelamin = $_GET['jkelamin'];
+				$status =  null;
+			}else if(!empty($_GET['agama']) && $_GET['jkelamin']==0 && $_GET['status']==0 ){
+				$id_agama= $_GET['agama'];
+				$j_kelamin = null;
+				$status =  null;
+			}else if($_GET['agama']==0 && $_GET['jkelamin']==0 && !empty($_GET['status']) ){
+				$id_agama= null;
+				$j_kelamin = null;
+				$status =  $_GET['status'];
+			}else if($_GET['agama']==0 && !empty($_GET['jkelamin']) && $_GET['status']==0 ){
+				$id_agama= null;
+				$j_kelamin =  $_GET['jkelamin'];
+				$status = null;
+			}else if(!empty($_GET['agama']) && !empty($_GET['jkelamin']) && $_GET['status']==0 ){
+				$id_agama= $_GET['agama'];
+				$j_kelamin = null;
+				$status =  null;
+			}else if($_GET['agama']==0 && !empty($_GET['jkelamin']) && !empty($_GET['status']) ){
+				$id_agama= $_GET['agama'];
+				$j_kelamin = null;
+				$status =  null;
+			}else if(!empty($_GET['agama']) && $_GET['jkelamin']==0 && !empty($_GET['status']) ){
+				$id_agama= $_GET['agama'];
+				$j_kelamin = null;
+				$status =  null;
+			}else if($_GET['agama']==0 && empty($_GET['jkelamin']) && empty($_GET['status']) ){
+				$id_agama= $_GET['agama'];
+				$j_kelamin = null;
+				$status =  null;
+			}else if(empty($_GET['agama']) && empty($_GET['jkelamin']) && empty($_GET['status']) ){
+				$id_agama= $_GET['agama'];
+				$j_kelamin = null;
+				$status = null;
+			}else if(empty($_GET['agama']) && empty($_GET['jkelamin']) && $_GET['status']==0 ){
+				$id_agama= null;
+				$j_kelamin = null;
+				$status = null;
+			}
 		}
-		$data['siswa'] = $siswa;
+		$data['siswa'] = $this->SiswaModel->get_all($tahun_masuk,$id_agama,$j_kelamin,$status);
 		$agama = $this->SiswaModel->get_agama();
 		$data['agama'] = $agama;
 		$this->load->view('admin/siswa/data_siswa',$data);
@@ -142,6 +311,8 @@ class Siswa extends CI_Controller {
 					$this->image_lib->resize();
 					$data = array(
 						'nis' => $this->input->post('nis'),
+						'nisn' => $this->input->post('nisn'),
+						'email' => $this->input->post('email'),
 						'nama' => $this->input->post('nama'),
 						'foto' => $gbr['file_name'],
 						'tempat_lahir' => $this->input->post('tempatlahir'),
@@ -156,9 +327,10 @@ class Siswa extends CI_Controller {
 		}
 		else if ($mode == 'update') {
 			if ($this->input->is_ajax_request()) {
-				$id = $this->input->post('nis');
+				$id = $this->input->post('id');
 				$data = array(
-					'nis' => $this->input->post('nis'),
+					'nisn' => $this->input->post('nisn'),
+					'email' => $this->input->post('email'),
 					'nama' => $this->input->post('nama'),
                     'j_kelamin' => $this->input->post('jkelamin'),
                     'tempat_lahir' => $this->input->post('tempatlahir'),
@@ -210,6 +382,14 @@ class Siswa extends CI_Controller {
 			if ($this->input->is_ajax_request()) {
 				$id = $this->input->post('id');
 				$result = $this->SiswaModel->delete($id);
+				echo json_encode($result);
+			}
+		}
+		else if ($mode == 'update_status') {
+			if ($this->input->is_ajax_request()) {
+				$arr = $_POST['arr'];
+				$ids = implode("','", $arr);
+				$result = $this->SiswaModel->update_status($ids);
 				echo json_encode($result);
 			}
 		}

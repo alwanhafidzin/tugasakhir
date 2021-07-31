@@ -30,7 +30,7 @@
           <div class="modal-dialog modal-lg">
           <div class="modal-content">
             <div class="modal-header">
-              <h4 class="modal-title">Edit Data Jurusan</h4>
+              <h4 class="modal-title">Edit Data Kelas</h4>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -39,16 +39,16 @@
             <input type="hidden" name="id"/>
               <div class="col-lg-12">
                <div class="form-group">
-                    <label for="kode_kelas">Kode Kelas</label>
-                    <input type="text" autocomplete="off"class="form-control" name="kode_kelas" placeholder="Masukkan Kode Kelas">
+                    <label for="kode_kelas-edit">Kode Kelas</label>
+                    <input type="text" autocomplete="off"class="form-control" name="kode_kelas" id="kode_kelas-edit" maxlength="11" placeholder="Masukkan Kode Kelas" required>
                 </div>
                 <div class="form-group">
                     <label for="nama_kelas">Nama Kelas</label>
-                    <input type="text" autocomplete="off"class="form-control" name="nama_kelas" placeholder="Masukkan Nama ">
+                    <input type="text" autocomplete="off"class="form-control" name="nama_kelas" placeholder="Masukkan Nama " required>
                 </div>
                 <div class="form-group">
                   <label>Tingkatan Kelas</label>
-                  <select class="form-control select2" name="kode_tingkat" id="kode_tingkat" style="width: 100%;">
+                  <select class="form-control select2" name="kode_tingkat" id="kode_tingkat-edit" style="width: 100%;" required>
                      <?php foreach($tingkat_kelas as $row) : ?>
                       <option value="<?php echo $row->kode_tingkat ?>"><?php echo $row->tingkatan ?></option>
                      <?php endforeach ?>
@@ -56,7 +56,7 @@
                 </div>
                 <div class="form-group">
                   <label>Jurusan</label>
-                  <select class="form-control select2" name="kode_jurusan" id="kode_jurusan" style="width: 100%;">
+                  <select class="form-control select2" name="kode_jurusan" id="kode_jurusan-edit" style="width: 100%;" required>
                     <?php foreach($jurusan as $row) : ?>
                       <option value="<?php echo $row->kode_jurusan ?>"><?php echo $row->jurusan ?></option>
                     <?php endforeach ?>
@@ -80,21 +80,22 @@
     $(".edit-data").click(function(e) {
       id = $(this).data('id');
       $.ajax({
-        url: '<?=site_url('kelas/get_by_id')?>',
-        type: 'GET',
-        dataType: 'json',
-        data: {id: id},
+          url: '<?=site_url('kelas/cek_relasi')?>',
+          type: 'GET',
+          data: {
+              id : id
+          },
+          success: function(response){
+              if (response == 'gagal')
+              get_data_relation();
+              else if (response == 'hapus')
+              get_data_no_relation();
+              },
+          error: function(response){
+            swal("Gagal!", "Tidak dapat terhubung ke server.periksa koneksi anda", "error");
+          }
       })
-      .done(function(data) {
-        $("#form-edit-kelas input[name='id']").val(data.object.kode_kelas);
-        $("#form-edit-kelas input[name='kode_kelas']").val(data.object.kode_kelas);
-        $("#form-edit-kelas input[name='nama_kelas']").val(data.object.nama_kelas);
-        $("#kode_tingkat").val(data.object.kode_tingkat);
-        $("#kode_jurusan").val(data.object.kode_jurusan);
-        modal_edit.modal('show').on('shown.bs.modal', function(e) {
-          $("#form-edit-kelas input[name='kode_kelas']").focus();
-        });
-      });
+      
     });
     //Proses Update ke Db
     $("#form-edit-kelas").submit(function(e) {
@@ -107,33 +108,120 @@
       data: form.serialize(),
       success: function(data){ 
         form[0].reset();
-        alert('success!');
+        swal("Berhasil!", "Data Kelas Berhasil Diedit.", "success");
         modal_edit.modal('hide');
         $('#kelas').DataTable().clear().destroy();
         refresh_table();
       },
       error: function(response){
-          alert(response);
+        swal("Gagal!", "Data Gagal diedit terjadi kesalahan.", "error");
       }
      })
     });
     $(".hapus-data").click(function(e) {
       e.preventDefault();
       id = $(this).data('id');
-      if (confirm("Anda yakin menghapus data ini?")) {
-        $.ajax({
-          url: '<?=site_url('kelas/crud/delete')?>',
-          type: 'POST',
-          dataType: 'json',
-          data: {id: id},
-          success: function(data){ 
-          $('#kelas').DataTable().clear().destroy();
-          refresh_table();
+      $.ajax({
+          url: '<?=site_url('kelas/cek_relasi')?>',
+          type: 'GET',
+          data: {
+              id : id
           },
+          success: function(response){
+              if (response == 'gagal')
+              swal("Peringatan!", "Data yang dipilih tidak dapat dihapus karena berelasi dengan data lainnya,hapus data relasi terlebih dahulu", "warning");
+              else if (response == 'hapus')
+              hapus();
+              },
           error: function(response){
-          alert(response);
+            swal("Gagal!", "Tidak dapat terhubung ke server.periksa koneksi anda", "error");
           }
-        })
-      }
+      })
     });
+    function hapus(){
+      swal({
+        title: "Apa Anda Yakin?",
+        text: "Data yang terhapus,tidak dapat dikembalikan!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonClass: "btn-danger",
+        confirmButtonText: "Ya, Hapus!",
+        cancelButtonText: "Batalkan!",
+        closeOnConfirm: false,
+        closeOnCancel: false
+      },
+      function(isConfirm) {
+        if (isConfirm) {
+          $.ajax({
+             url: '<?=site_url('kelas/crud/delete')?>',
+             type: 'POST',
+             dataType: 'json',
+             data: {id: id},
+             error: function() {
+              swal("Gagal!", "Data gagal dihapus,terjadi kesalahan.", "error");
+             },
+             success: function(data) {
+                  swal("Berhasil!", "Data yang dipilih berhasil dihapus.", "success");
+                  $('#kelas').DataTable().clear().destroy();
+                  refresh_table();
+             }
+          });
+        } else {
+          swal("Dibatalkan", "Data yang dipilih tidak jadi dihapus", "error");
+        }
+      });
+    }
+    function get_data_no_relation(){
+      $.ajax({
+        url: '<?=site_url('kelas/get_by_id')?>',
+        type: 'GET',
+        dataType: 'json',
+        data: {id: id},
+      })
+      .done(function(data) {
+        $("#form-edit-kelas input[name='id']").val(data.object.kode_kelas);
+        $("#form-edit-kelas input[name='kode_kelas']").val(data.object.kode_kelas);
+        $("#form-edit-kelas input[name='nama_kelas']").val(data.object.nama_kelas);
+        $("#kode_tingkat-edit").val(data.object.kode_tingkat);
+        $("#kode_jurusan-edit").val(data.object.kode_jurusan);
+        $("#kode_kelas-edit").prop("disabled", false);
+        $('#kode_jurusan-edit').select2({
+          theme: 'bootstrap4'
+        });
+        $('#kode_tingkat-edit').select2({
+          theme: 'bootstrap4'
+        })
+        $("label[for='kode_kelas-edit']").text("Kode Kelas");
+        modal_edit.modal('show').on('shown.bs.modal', function(e) {
+          $("#form-edit-kelas input[name='kode_kelas']").focus();
+        });
+      });
+
+    }
+    function get_data_relation(){
+      $.ajax({
+        url: '<?=site_url('kelas/get_by_id')?>',
+        type: 'GET',
+        dataType: 'json',
+        data: {id: id},
+      })
+      .done(function(data) {
+        $("#form-edit-kelas input[name='id']").val(data.object.kode_kelas);
+        $("#form-edit-kelas input[name='kode_kelas']").val(data.object.kode_kelas);
+        $("#form-edit-kelas input[name='nama_kelas']").val(data.object.nama_kelas);
+        $("#kode_tingkat-edit").val(data.object.kode_tingkat);
+        $("#kode_jurusan-edit").val(data.object.kode_jurusan);
+        $("#kode_kelas-edit").prop("disabled", true);
+        $('#kode_jurusan-edit').select2({
+          theme: 'bootstrap4'
+        });
+        $('#kode_tingkat-edit').select2({
+          theme: 'bootstrap4'
+        });
+        $("label[for='kode_kelas-edit']").text("Kode Kelas(Berelasi)");
+        modal_edit.modal('show').on('shown.bs.modal', function(e) {
+          $("#form-edit-kelas input[name='kode_kelas']").focus();
+        });
+      });
+    }
 </script>

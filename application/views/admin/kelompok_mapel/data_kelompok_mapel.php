@@ -78,33 +78,67 @@
       data: form.serialize(),
       success: function(data){ 
         form[0].reset();
-        alert('success!');
         modal_edit.modal('hide');
         $('#kelompok_mapel').DataTable().clear().destroy();
+        swal("Berhasil!", "Data Kelompok Mapel Berhasil Diedit.", "success");
         refresh_table();
       },
       error: function(response){
-          alert(response);
+        swal("Gagal!", "Data Gagal diedit terjadi kesalahan.", "error");
       }
      })
     });
     $(".hapus-data").click(function(e) {
       e.preventDefault();
       id = $(this).data('id');
-      if (confirm("Anda yakin menghapus data ini?")) {
-        $.ajax({
-          url: '<?=site_url('kelompokmapel/crud/delete')?>',
-          type: 'POST',
-          dataType: 'json',
-          data: {id: id},
-          success: function(data){ 
-          $('#kelompok_mapel').DataTable().clear().destroy();
-          refresh_table();
+      $.ajax({
+          url: '<?=site_url('kelompokmapel/cek_relasi')?>',
+          type: 'GET',
+          data: {
+              id : id
           },
+          success: function(response){
+              if (response == 'gagal')
+              swal("Peringatan!", "Data yang dipilih tidak dapat dihapus karena berelasi dengan data lainnya,hapus data relasi terlebih dahulu", "warning");
+              else if (response == 'hapus')
+              hapus();
+              },
           error: function(response){
-          alert(response);
+            swal("Gagal!", "Tidak dapat terhubung ke server.periksa koneksi anda", "error");
           }
-        })
-      }
+      })
     });
+    function hapus(){
+      swal({
+        title: "Apa Anda Yakin?",
+        text: "Data yang terhapus,tidak dapat dikembalikan!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonClass: "btn-danger",
+        confirmButtonText: "Ya, Hapus!",
+        cancelButtonText: "Batalkan!",
+        closeOnConfirm: false,
+        closeOnCancel: false
+      },
+      function(isConfirm) {
+        if (isConfirm) {
+          $.ajax({
+             url: '<?=site_url('kelompokmapel/crud/delete')?>',
+             type: 'POST',
+             dataType: 'json',
+             data: {id: id},
+             error: function() {
+              swal("Gagal!", "Data Gagal dihapus terjadi kesalahan.", "error");
+             },
+             success: function(data) {
+                  swal("Berhasil!", "Data Berhasil Dihapus.", "success");
+                  $('#jurusan').DataTable().clear().destroy();
+                  refresh_table();
+             }
+          });
+        } else {
+          swal("Dibatalkan", "Data yang dipilih tidak jadi dihapus", "error");
+        }
+      });
+    }
 </script>

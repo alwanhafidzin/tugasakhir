@@ -10,6 +10,7 @@ class AbsensiPermapel extends CI_Controller {
 		$this->load->helper('form');
         $this->load->model('WaliKelasModel');
 		$this->load->model('AbsensiPermapelModel');
+		$this->load->model('IdentityModel');
 		$this->load->database();
 		if (!$this->ion_auth->logged_in()){
 			redirect('auth/login');
@@ -17,14 +18,23 @@ class AbsensiPermapel extends CI_Controller {
 	}
 	public function index()
 	{
-		$tahun_aktif = $this->WaliKelasModel->get_tahun_aktif();
-		$data['tahun_aktif'] = $tahun_aktif;
-		// $data['kelas_guru_absen'] = $this->AbsensiPermapelModel->get_kelas_guru_absen();
 		$user = $this->ion_auth->user()->row();
 		$nip =$user->username;
+		$tahun_aktif = $this->WaliKelasModel->get_tahun_aktif();
+		$data['tahun_aktif'] = $tahun_aktif;
+		$user_id =$user->id;
+		$username = $user->username;
+        $id_user =$this->ion_auth->get_users_groups($user_id)->row()->id;
+		if($id_user==1) {
+			$data['identity'] = $this->IdentityModel->get_admin($user_id);
+		}else if($id_user==2){
+			$data['identity'] = $this->IdentityModel->get_guru($username);
+		}else if($id_user==3){
+			$data['identity'] = $this->IdentityModel->get_siswa($username);
+		}
 		$data['jadwal_guru_absen'] = $this->AbsensiPermapelModel->get_guru_jadwal_pertahunakademik($nip);
         $this->load->view('templates/dashboard/header.php');
-        $this->load->view('templates/dashboard/navbar.php');
+        $this->load->view('templates/dashboard/navbar.php',$data);
         $this->load->view('templates/dashboard/sidebar.php');
 		$this->load->view('guru/absensi_permapel/view.php', $data);
 		$this->load->view('templates/dashboard/footer.php');

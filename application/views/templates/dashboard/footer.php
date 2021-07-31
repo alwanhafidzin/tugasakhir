@@ -76,5 +76,7 @@
 <script src="<?=base_url()?>assets/admin_lte/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
 <script src="<?=base_url()?>assets/admin_lte/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.id.min.js"></script>
 <script src="<?=base_url()?>assets/admin_lte/plugins/print.js-1.5.0/src/js/print.js"></script>
+<script src="<?=base_url()?>assets/admin_lte/plugins/jquery-validation/jquery.validate.min.js"></script>
+<script src="<?=base_url()?>assets/admin_lte/plugins/jquery-validation/additional-methods.min.js"></script>
 </body>
 </html>

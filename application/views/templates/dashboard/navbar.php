@@ -10,7 +10,7 @@
            	$user = $this->ion_auth->user()->row();
             $user_id =$user->id;
             $create = $user->created_on;
-            $id_name =$this->ion_auth->get_users_groups($user_id)->row()->name;
+            $id_name =$this->ion_auth->get_users_groups($user_id)->row()->description;
             $id_user =$this->ion_auth->get_users_groups($user_id)->row()->id;
             foreach($identity->result() as $result){
               $nama = $result->nama;
@@ -25,6 +25,8 @@
               echo '<img src="'.base_url().'uploads/guru/'.$foto.'" class="user-image img-circle elevation-2" alt="User Image">';
             }else if($id_user==3){
               echo '<img src="'.base_url().'uploads/siswa/'.$foto.'" class="user-image img-circle elevation-2" alt="User Image">';
+            }else if($id_user==1){
+              echo '<img src="'.base_url().'uploads/admin/'.$foto.'" class="user-image img-circle elevation-2" alt="User Image">';
             }
           ?>
           <span class="d-none d-md-inline"><?php echo $nama ?></span>
@@ -36,6 +38,8 @@
               echo ' <img src="'.base_url().'uploads/guru/'.$foto.'" class="img-circle elevation-2" alt="User Image">';
             }else if($id_user==3){
               echo ' <img src="'.base_url().'uploads/siswa/'.$foto.'" class="img-circle elevation-2" alt="User Image">';
+            }else if($id_user==1){
+              echo ' <img src="'.base_url().'uploads/admin/'.$foto.'" class="img-circle elevation-2" alt="User Image">';
             }
             ?>
             <p>

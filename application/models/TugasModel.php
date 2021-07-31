@@ -21,6 +21,11 @@ class TugasModel extends CI_Model {
 	{
 		return $this->db->delete($this->table, array('id' => $id));
 	}
+	public function delete_share($id)
+	{
+		$this->db->delete('tugas_share_siswa', array('id_t_share' => $id));
+		return $this->db->delete('tugas_share', array('id' => $id));
+	}
 	public function get_all($nip){
 		$this->db->select('t.id,t.judul,t.content,t.tgl_dibuat,m.kode_mapel,m.mapel');
 		$this->db->from('tugas t');
@@ -49,7 +54,7 @@ class TugasModel extends CI_Model {
 	}
 	public function get_detail_by_id($id)
 	{
-		$this->db->select('g.nama,t.judul,t.content,t.tgl_dibuat,m.mapel');
+		$this->db->select('g.nama,t.judul,t.content,t.tgl_dibuat,m.mapel,g.foto');
 		$this->db->join('mapel m','m.kode_mapel=t.kode_mapel');
 		$this->db->join('guru g', 'g.nip=t.nip');
 		$query = $this->db->get_where('tugas t', array('id' => $id));
@@ -101,6 +106,20 @@ class TugasModel extends CI_Model {
 		$this->db->where('ts.id_t_akademik=d.id_t_akademik');
 		return $this->db->get();
 	}
+	public function get_detail_share_by_id($id)
+	{
+		$this->db->select('t2.id as id_tugas,ts.id,t2.content,t.tahun_akademik,k.nama_kelas,mp.mapel,DATE_FORMAT(ts.tgl_jadwal, "%d-%m-%Y") as tgl_jadwal,TIME_FORMAT(j.jam_mulai, "%H:%i") AS jam_mulai,TIME_FORMAT(j.jam_selesai, "%H:%i") AS jam_selesai,t2.judul,ts.tgl_share,ts.tgl_selesai,g.nama,g.foto,ts.tgl_share');
+		$this->db->from('tugas_share ts');
+		$this->db->join('tugas t2','ts.id_tugas=t2.id');
+		$this->db->join('guru g','g.nip=t2.nip');
+		$this->db->join('kelas k','k.kode_kelas=ts.kode_kelas');
+		$this->db->join('mapel mp','mp.kode_mapel=t2.kode_mapel');
+		$this->db->join('jadwal j','j.id=ts.id_jadwal');
+		$this->db->join('mapel_perminggu mp2','mp2.id=j.id_m_perminggu');
+		$this->db->join('tahun_akademik t','t.id=mp2.id_t_akademik');
+		$query = $this->db->get_where('tugas_share', array('ts.id' => $id));
+		return $query;
+	}
 	public function cek_waktu($id){
 		$this->db->select('*');
 		$this->db->from('tugas_share_siswa');
@@ -128,6 +147,29 @@ class TugasModel extends CI_Model {
 		}else{
 			echo 'error';
 		}	
+	}
+	public function get_all_share_guru($id_t_akademik,$semester,$kode_mapel,$kode_kelas,$nip){
+		$sql ='SELECT t2.id as id_tugas,ts.id,t2.content,t.tahun_akademik,k.nama_kelas,mp.mapel,DATE_FORMAT(ts.tgl_jadwal, "%d-%m-%Y") as tgl_jadwal,TIME_FORMAT(j.jam_mulai, "%H:%i") AS jam_mulai,TIME_FORMAT(j.jam_selesai, "%H:%i") AS jam_selesai,t2.judul,ts.tgl_share,ts.tgl_selesai FROM tugas_share ts INNER JOIN tugas t2 ON ts.id_tugas=t2.id INNER JOIN jadwal j ON j.id=ts.id_jadwal INNER JOIN mapel_perminggu mp2 ON mp2.id=j.id_m_perminggu INNER JOIN tahun_akademik t ON t.id=mp2.id_t_akademik INNER JOIN kelas k ON k.kode_kelas=ts.kode_kelas INNER JOIN mapel mp ON mp.kode_mapel=t2.kode_mapel WHERE mp2.id_t_akademik = IFNULL(?,mp2.id_t_akademik) AND mp2.semester = IFNULL(?,mp2.semester) AND t2.kode_mapel = IFNULL(?,t2.kode_mapel) AND ts.kode_kelas = IFNULL(?,ts.kode_kelas);';
+		return $this->db->query($sql, array($id_t_akademik,$semester,$kode_mapel,$kode_kelas));
+	}
+	public function get_tahun_akademik_share($nip){
+		$this->db->select('DISTINCT(mp.id_t_akademik) as id,t.tahun_akademik');
+		$this->db->from('tugas_share ts');
+		$this->db->join('jadwal j','ts.id_jadwal=j.id');
+		$this->db->join('mapel_perminggu mp','mp.id=j.id_m_perminggu');
+		$this->db->join('tahun_akademik t', 'mp.id_t_akademik=t.id');
+		$this->db->join('tugas t2', 't2.id=ts.id_tugas');
+		$this->db->where('t2.nip',$nip);
+		$this->db->order_by('t.tahun_akademik', 'DESC');
+		return $this->db->get()->result();
+	}
+	public function get_nilai($id){
+		$this->db->select('tss.id,tss.nis,s.nama,tss.tanggal_pengumpulan,tss.nilai,tss.file,tss.path');
+		$this->db->from('tugas_share_siswa tss');
+		$this->db->join('tugas_share ts','tss.id_t_share=ts.id');
+		$this->db->join('siswa s','s.nis=tss.nis');
+		$this->db->where('ts.id',$id);
+		return $this->db->get();
 	}
 }
 ?>

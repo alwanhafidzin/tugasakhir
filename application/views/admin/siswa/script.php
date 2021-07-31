@@ -1,36 +1,46 @@
+<?php
+ $timezone = new DateTimeZone('Asia/Jakarta');
+ $date = new DateTime();
+ $date->setTimeZone($timezone);
+ $now =$date->format('d-m-Y H:i:s');
+?>
 <script>
+    var now = "<?php echo $now ?>";
     function refresh_table() {
     var agama = $('#filter_agama').val();
     var tahunmasuk = $('#filter_tahunmasuk').val();
     var jkelamin = $('#filter_j_kelamin').val();
+    var status = $('#filter_status').val();
     $.ajax({
         url: "<?= base_url('siswa/get_all') ?>",
         data: {
           agama : agama,
-          tahunmasuk : tahunmasuk,
-          jkelamin : jkelamin
+          tahun_masuk : tahunmasuk,
+          jkelamin : jkelamin,
+          status : status
         },
         success: function(data) {
           $("#tampil").html(data);
-          $('#siswa').DataTable({
+          var siswa = $('#siswa').DataTable({
             "responsive": true, "lengthChange": true, "autoWidth": false,
             "initComplete": function (settings, json) {  
             $("#siswa").wrap("<div style='overflow:auto; width:100%;position:relative;'></div>");            
             },
             columnDefs: [
             {
-              targets: 3,
+              targets: 5,
               className: 'zoom'
             },
-            { responsivePriority: 1, targets: 0 },
+            { responsivePriority: 1, targets: 1 },
             { responsivePriority: 2, targets: -1 },
+
             {
-                "targets": [ 4 ,5],
+                "targets": [6,7],
                 "visible": false,
                 "searchable": false
             },
             {
-                targets: [4,5],
+                targets: [6,7],
                 className: 'noVis'
             }
           ],
@@ -44,7 +54,7 @@
           buttons: [{
             extend: 'pdf',
             title: 'Data Siswa SMAN 1 SOOKO',
-            filename: 'customized_pdf_file_name', 
+            filename: `Data Siswa SMAN 1 Sooko  ${now}`, 
             pageSize: 'A4',
             // customize: function (doc) {
             //                doc.defaultStyle.fontSize = 10; //2, 3, 4,etc
@@ -54,7 +64,7 @@
             //            },
             exportOptions: {
                 stripHtml: false,
-                columns: [0,1,2,6,7,8,9,10] 
+                columns: [0,1,2,7,8,9,10,11,12] 
             },
             customize: function(doc) {
               doc.styles.tableBodyEven.alignment = 'center';
@@ -63,9 +73,9 @@
             }, {
             extend: 'excel',
             title: 'Data Siswa SMAN 1 SOOKO',
-            filename: 'data_siswa',
+            filename: `data siswa ${now}`,
             exportOptions: {
-                columns: [0,1,2,4,5,6,7,8,9],
+                columns: [0,1,2,3,5,6,7,8,9,10,11,12],
             },
             customize: function(xlsx) {
             var sheet = xlsx.xl.worksheets['sheet1.xml'];
@@ -89,9 +99,9 @@
 
           }, {
             extend: 'csv',
-            filename: 'Data Siswa SMAN 1 SOOKO',
+            filename: `Data Siswa SMAN 1 SOOKO ${now}`,
             exportOptions: {
-                columns: [0,1,2,4,5,6,7,8,9] 
+                columns: [0,1,2,4,5,6,7,8,9,10,11,12] 
             }
           },{
             extend: 'print',
@@ -100,7 +110,7 @@
             exportOptions: 
             {
               stripHtml: false,
-              columns: [0, 1, 2, 5, 6, 7, 8, 9, 10] 
+              columns: [0, 1, 2, 5, 6, 7, 8, 9, 10,11,12] 
             }
           },{
             extend: 'colvis',
@@ -138,28 +148,24 @@
       //     'foto' : $('[name=foto]').val()
       //  } ,
       success: function(){ 
-        swal("Berhasil!", "Data Siswa Baru Telah Ditambahkan.", "success");
         form[0].reset();
         modal_tambah.modal('hide');
+        swal("Berhasil!", "Data Siswa Baru Telah Ditambahkan.", "success");
         $('#siswa').DataTable().clear().destroy();
         refresh_table();
       },
       error: function(response){
-          alert(response);
+        swal("Gagal!", "Data Gagal ditambahkan terjadi kesalahan.", "error");
       }
      })
     });
     $('#jkelamintbh').select2({
       theme: 'bootstrap4',
+      placeholder: "Pilih Jenis Kelamin"
     });
     $('#agamatbh').select2({
-      theme: 'bootstrap4'
-    });
-    $('#jkelaminedit').select2({
-      theme: 'bootstrap4'
-    });
-    $('#agamaedit').select2({
-      theme: 'bootstrap4'
+      theme: 'bootstrap4',
+      placeholder: "Pilih Agama"
     });
     $('#filter_agama').select2({
       theme: 'bootstrap4',
@@ -171,51 +177,31 @@
       theme: 'bootstrap4',
       placeholder: "Filter Jenis Kelamin"
     });
+    $('#filter_status').select2({
+      theme: 'bootstrap4',
+      placeholder: "Filter Status"
+    });
     $('#filter_tahunmasuk').select2({
       theme: 'bootstrap4',
       placeholder: "Filter Tahun Masuk"
       });
       $(document).ready(function() {
         $('#filter_agama').change(function() {
-          filter_siswa();
+          refresh_table();
         });
         $('#filter_j_kelamin').change(function() {
-         filter_siswa();
+         refresh_table();
         });
         $('#filter_tahunmasuk').change(function() {
-          filter_siswa();
+          refresh_table();
+        });
+        $('#filter_status').change(function() {
+          refresh_table();
         });
       });
       
-    function filter_siswa() {
-    var agama = $('#filter_agama').val();
-    var tahunmasuk = $('#filter_tahunmasuk').val();
-    var jkelamin = $('#filter_j_kelamin').val();
-    $.ajax({
-      url: "<?= base_url('siswa/get_all') ?>",
-      data: {
-        agama : agama,
-        tahunmasuk : tahunmasuk,
-        jkelamin : jkelamin
-      },
-      success: function(data) {
-        $('#siswa').DataTable().clear().destroy();
-        $("#tampil").html(data);
-        $('#siswa').DataTable({
-          columnDefs: [
-            {
-              targets: 3,
-              className: 'zoom'
-            }
-          ],
-          "responsive": true, "lengthChange": true, "autoWidth": false
-        });
-      },
-      error: function (request, status, error) {
-        alert(request.responseText);
-    }
-    });
-  }
+    // Handle form submission event 
+ 
 </script>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <link rel="stylesheet" href="/resources/demos/style.css">

@@ -83,14 +83,31 @@ class Auth extends CI_Controller
 				//if the login is successful
 				//redirect them back to the home page
 				$this->session->set_flashdata('message', $this->ion_auth->messages());
-				redirect('dashboard', 'refresh');
+				if ($this->ion_auth->in_group('admin')) {
+					redirect('dashboard','refresh');
+				}elseif ($this->ion_auth->in_group('guru')) {
+					redirect('profileguru','refresh');
+				}elseif($this->ion_auth->in_group('siswa')) {
+					redirect('profilesiswa','refresh');	
+				}else{
+					redirect('auth/login','refresh');
+				}
 			}
 			if(! $login) { // username is not successful
 				$this->ion_auth_model->identity_column = 'email';
 				// check for email
 				$login = $this->ion_auth->login($this->input->post('identity'), $this->input->post('password'), $remember);
 				$this->session->set_flashdata('message', $this->ion_auth->messages());
-				redirect('dashboard', 'refresh');
+				if ($this->ion_auth->in_group('admin')) {
+					redirect('dashboard','refresh');
+				}elseif ($this->ion_auth->in_group('guru')) {
+					redirect('profileguru','refresh');
+				}elseif($this->ion_auth->in_group('siswa')) {
+					redirect('profilesiswa','refresh');	
+				}else{
+					redirect('auth/login','refresh');
+				}
+				// redirect('dashboard', 'refresh');
 			}
 			else
 			{

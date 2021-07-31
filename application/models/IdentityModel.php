@@ -11,14 +11,17 @@ class IdentityModel extends CI_Model {
 	}
     public function get_guru($username){
 		$this->db->select('*');
-		$this->db->from('guru');
+		$this->db->from('guru g');
+		$this->db->join('agama a','g.id_agama=a.id');
         $this->db->where('nip',$username);
 		return $this->db->get();
 	}
-    public function get_admin($user_id){
-		$this->db->select('*');
-		$this->db->from('users');
-        $this->db->where('nip',$user_id);
+    public function get_admin($username){
+		$this->db->select('b.id,b.username,b.nama,b.gender,b.foto,u.email,a.agama');
+		$this->db->from('biodata_admin b');
+		$this->db->join('users u','u.username=b.username');
+		$this->db->join('agama a','b.id_agama=a.id');
+        $this->db->where('u.username',$username);
 		return $this->db->get();
 	}
 }

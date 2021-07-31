@@ -360,7 +360,7 @@ body[ data-editor='InlineEditor'] .collaboration-demo__row {
             <div class="card card-primary card-outline">
               <!-- /.card-header -->
               <div class="card-body">
-                <button class="btn bg-navy btn-flat margin"data-toggle="modal" data-target="#modal-tambah">Tambah Bank Soal</button>
+                <button class="btn btn-primary bottom col-sm-12 col-md-3 margin"data-toggle="modal" data-target="#modal-tambah">Tambah Bank Soal</button>
               </br></br>
               <div class="row">
               <div class="col-md-2"><b>Filter Data:</b></div>

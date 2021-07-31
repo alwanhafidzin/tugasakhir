@@ -1,21 +1,25 @@
 <script>
     function refresh_table() {
     var agama = $('#filter_agama').val();
-    var gender = $('#gender').val();
+    var gender = $('#filter_gender').val();
+    var status = $('#filter_status').val();
     $.ajax({
         url: "<?= base_url('guru/get_all') ?>",
         data: {
           agama : agama,
-          gender : gender
+          gender : gender,
+          status : status,
         },
         success: function(data) {
           $("#tampil").html(data);
           $('#guru').DataTable({
           columnDefs: [
             {
-              targets: 3,
+              targets: 4,
               className: 'zoom'
-            }
+            },
+            { responsivePriority: 1, targets: 1 },
+            { responsivePriority: 2, targets: -1 },
           ],
           dom: 
           "<'row'<'col-sm-3'l><'col-sm-6 text-center'B><'col-sm-3'f>>" +
@@ -34,7 +38,7 @@
                                                            '15%', '15%', '15%'];
                        },
             exportOptions: {
-                columns: [0,1,2,3,4,5,6] 
+                columns: [0,2,3,4,5,6,7] 
             }
 
             }, {
@@ -42,7 +46,7 @@
             title: 'Data Siswa SMAN 1 SOOKO',
             filename: 'data_siswa',
             exportOptions: {
-                columns: [0,1,2,3,4,5,6] 
+                columns: [0,2,3,4,5,6,7] 
             }
 
           }, {
@@ -103,41 +107,19 @@
       theme: 'bootstrap4',
       placeholder: "Filter Gender"
     });
+    $('#filter_status').select2({
+      theme: 'bootstrap4',
+      placeholder: "Filter Status"
+    });
       $(document).ready(function() {
         $('#filter_agama').change(function() {
-          filter_guru();
+          refresh_table();
         });
         $('#filter_gender').change(function() {
-         filter_guru();
+         refresh_table();
+        });
+        $('#filter_status').change(function() {
+          refresh_table();
         });
       });
-      
-    function filter_guru() {
-    var agama = $('#filter_agama').val();
-    var gender = $('#filter_gender').val();
-    $.ajax({
-      url: "<?= base_url('guru/get_all') ?>",
-      data: {
-        agama : agama,
-        gender : gender
-      },
-      success: function(data) {
-        $('#guru').DataTable().clear().destroy();
-        $("#tampil").html(data);
-        $('#guru').DataTable({
-          columnDefs: [
-            {
-              targets: 3,
-              className: 'zoom'
-            }
-          ],
-          "responsive": true, "lengthChange": true, "autoWidth": false,
-          "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');;
-      },
-      error: function (request, status, error) {
-        alert(request.responseText);
-    }
-    });
-  }
 </script>

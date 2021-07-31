@@ -46,7 +46,7 @@ thead {
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Data Sekolah</a></li>
-              <li class="breadcrumb-item active">Ruang Kelas</li>
+              <li class="breadcrumb-item active">Jadwal Guru</li>
             </ol>
           </div>
         </div>

@@ -11,6 +11,7 @@ class ListUjianGuru extends CI_Controller {
 		$this->load->model('ListUjianGuruModel');
 		$this->load->model('AbsensiPermapelModel');
 		$this->load->model('WaliKelasModel');
+		$this->load->model('IdentityModel');
 		$this->load->database();
 		if (!$this->ion_auth->logged_in()){
 			redirect('auth/login');
@@ -22,9 +23,19 @@ class ListUjianGuru extends CI_Controller {
 		$nip =$user->username;
 		$tahun_aktif = $this->WaliKelasModel->get_tahun_aktif();
 		$data['tahun_aktif'] = $tahun_aktif;
+		$user_id =$user->id;
+		$username = $user->username;
+        $id_user =$this->ion_auth->get_users_groups($user_id)->row()->id;
+		if($id_user==1) {
+			$data['identity'] = $this->IdentityModel->get_admin($user_id);
+		}else if($id_user==2){
+			$data['identity'] = $this->IdentityModel->get_guru($username);
+		}else if($id_user==3){
+			$data['identity'] = $this->IdentityModel->get_siswa($username);
+		}
 		$data['kategori_ujian'] = $this->ListUjianGuruModel->get_kategori_ujian($nip);
         $this->load->view('templates/dashboard/header.php');
-        $this->load->view('templates/dashboard/navbar.php');
+        $this->load->view('templates/dashboard/navbar.php',$data);
         $this->load->view('templates/dashboard/sidebar.php');
 		$this->load->view('guru/list_ujian/view.php',$data);
 		$this->load->view('templates/dashboard/footer.php');

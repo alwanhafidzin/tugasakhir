@@ -9,7 +9,7 @@
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Data Sekolah</a></li>
+              <li class="breadcrumb-item"><a href="#">Data Ruangan</a></li>
               <li class="breadcrumb-item active">Ruangan</li>
             </ol>
           </div>
@@ -26,7 +26,7 @@
             <div class="card card-primary card-outline">
               <!-- /.card-header -->
               <div class="card-body">
-                <button class="btn bg-navy btn-flat margin"data-toggle="modal" data-target="#modal-tambah">Tambah Data</button>
+              <button class="btn btn-primary bottom col-sm-12 col-md-3"data-toggle="modal" data-target="#modal-tambah"><i class="fa fa-plus"></i> Tambah Data</button>
               </br></br>
                 <div id="tampil">
                 <!-- Data tampil disini -->
@@ -48,11 +48,11 @@
             <div class="col-lg-12">
                 <div class="form-group">
                     <label for="kode_ruangan">Kode Ruangan</label>
-                    <input type="text" autocomplete="off"class="form-control" name="kode_ruangan" placeholder="Masukkan Kode Ruangan">
+                    <input type="text" autocomplete="off"class="form-control" name="kode_ruangan" maxlength="10" placeholder="Masukkan Kode Ruangan" required>
                 </div>
                 <div class="form-group">
                     <label for="ruangan">Nama Ruangan</label>
-                    <input type="text" autocomplete="off"class="form-control" name="ruangan" placeholder="Masukkan Nama Ruangan">
+                    <input type="text" autocomplete="off"class="form-control" name="ruangan" placeholder="Masukkan Nama Ruangan" required>
                 </div>
             </div>
             <div class="modal-footer justify-content-between">

@@ -7,7 +7,11 @@
         success: function(data) {
           $("#tampil").html(data);
           $('#kelompokmapel').DataTable({
-          "responsive": true, "lengthChange": true, "autoWidth": false,  "order": [[ 2, "desc" ]]
+          "responsive": true, "lengthChange": true, "autoWidth": false,  "order": [[ 2, "desc" ]],
+          columnDefs: [
+            { responsivePriority: 1, targets: 1 },
+            { responsivePriority: 2, targets: -1 },
+          ]
           });
         }
       });
@@ -24,14 +28,14 @@
        dataType: 'json',
        data: form.serialize(),
       success: function(){ 
-        alert('success!');
         form[0].reset();
         modal_tambah.modal('hide');
+        swal("Berhasil!", "Data Kelompok Mapel Baru Berhasil Ditambahkan.", "success");
         $('#kelompokmapel').DataTable().clear().destroy();
         refresh_table();
       },
       error: function(response){
-          alert(response);
+        swal("Gagal!", "Data Gagal ditambahkan terjadi kesalahan.", "error");
       }
      })
     });

@@ -20,6 +20,10 @@
 table.center-all td,th{
     text-align :center;
 }
+button.bottom {
+      margin-right:5px;
+      margin-bottom:5px;
+    }
 </style>
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
@@ -48,9 +52,10 @@ table.center-all td,th{
             <div class="card card-primary card-outline">
               <!-- /.card-header -->
               <div class="card-body">
-                <button class="btn btn-primary"data-toggle="modal" data-target="#modal-tambah"><i class="fa fa-plus"></i> Tambah Data</button>
-                <button class="btn btn-warning"data-toggle="modal" data-target="#modal-upload"><i class="fa fa-file-import"></i> Import Excel</button>
-                <button class="btn btn-danger"data-toggle="modal" data-target="#modal-multiple"><i class="fa fa-file-upload"></i> Upload Multiple Foto</button>
+              <button class="btn btn-primary bottom col-sm-12 col-md-3"data-toggle="modal" data-target="#modal-tambah"><i class="fa fa-plus"></i> Tambah Data</button>
+                <button class="btn btn-warning bottom col-sm-12 col-md-3"data-toggle="modal" data-target="#modal-upload"><i class="fa fa-file-import"></i> Import Excel</button>
+                <button class="btn btn-danger bottom col-sm-12 col-md-3"data-toggle="modal" data-target="#modal-multiple"><i class="fa fa-file-upload"></i> Upload Multiple Foto</button>
+                <button class="btn btn-success bottom col-sm-12 col-md-2" onclick="updateStatus()" id="ubahstatus"><i class="fa fa-info"></i> Ubah Status</button>
                </br></br>
             <div class="row">
                 <div class="col-md-2"><b>Filter Data:</b></div>
@@ -69,6 +74,14 @@ table.center-all td,th{
                     <option value="0">Perlihatkan Semua</option>
                     <option value="P">Pria</option>
                     <option value="W">Wanita</option>
+                  </select>
+                 </div>
+                 <div class="col-md-3 form-group">
+                  <select class="form-control select2" name="filter_status" id="filter_status" style="width: 100%;">
+                    <option value="">Filter Status</option>
+                    <!-- <option value="0">Perlihatkan Semua</option> -->
+                    <option value="active" selected>Aktif</option>
+                    <option value="tidak_active">Tidak Aktif</option>
                   </select>
                  </div>
             </div>

@@ -9,8 +9,8 @@
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Data Sekolah</a></li>
-              <li class="breadcrumb-item active">Jurusan</li>
+              <li class="breadcrumb-item"><a href="#">Data Materi</a></li>
+              <li class="breadcrumb-item active">Materi</li>
             </ol>
           </div>
         </div>
@@ -26,8 +26,8 @@
             <div class="card card-primary card-outline">
               <!-- /.card-header -->
               <div class="card-body">
-                <button class="btn bg-navy btn-flat buat-materi margin">Buat Materi</button>
-                <button class="btn bg-navy btn-flat margin"data-toggle="modal" data-target="#modal-tambah">Upload Materi</button>
+                <button class="btn btn-primary bottom col-sm-12 col-md-3 buat-materi margin"><i class="fa fa-plus"></i> Buat Materi</button>
+                <button class="btn btn-warning bottom col-sm-12 col-md-3"data-toggle="modal" data-target="#modal-tambah"><i class="fa fa-file-import"></i>Upload Materi</button>
               </br></br>
                 <div id="tampil">
                 <!-- Data tampil disini -->
@@ -49,11 +49,11 @@
             <div class="col-lg-12">
                 <div class="form-group">
                     <label for="judul">Judul</label>
-                    <input type="text" autocomplete="off"class="form-control" name="judul" placeholder="Masukkan Judul Materi">
+                    <input type="text" autocomplete="off"class="form-control" name="judul" placeholder="Masukkan Judul Materi" required>
                 </div>
                 <div class="form-group">
                     <label for="file">Upload Materi</label>
-                    <input type="file" autocomplete="off"class="form-control" name="file" placeholder="Pilih File Materi Yang Akan diupload">
+                    <input type="file" autocomplete="off"class="form-control" name="file" placeholder="Pilih File Materi Yang Akan diupload" required>
                 </div>
             </div>
             <div class="modal-footer justify-content-between">

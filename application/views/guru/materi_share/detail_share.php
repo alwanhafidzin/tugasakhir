@@ -10,6 +10,12 @@
               <?php
                   $judul =$result->judul;
                   $content =$result->content;
+                  $nama_kelas = $result->nama_kelas;
+                  $mapel = $result->mapel;
+                  $nama = $result->nama;
+                  $nama_kelas = $result->nama_kelas;
+                  $semester = $result->semester;
+                  $tahun_akademik = $result->tahun_akademik;
               ?>
             <?php endforeach;?>
             <h1>Materi Pembelajaran</h1>
@@ -17,7 +23,7 @@
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Materi</a></li>
-              <li class="breadcrumb-item active">Lihat Materi</li>
+              <li class="breadcrumb-item active">Lihat Materi Share</li>
             </ol>
           </div>
         </div>
@@ -46,82 +52,93 @@
         </div>
         <!-- /.col -->
         <div class="col-md-3">
-            <a href="<?=site_url('materishare')?>" class="btn btn-primary btn-block mb-3">Kembali Ke List Materi</a>
-
-            <div class="card">
+            <!-- About Me Box -->
+            <div class="card card-primary">
               <div class="card-header">
-                <h3 class="card-title">Folders</h3>
-
-                <div class="card-tools">
-                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                    <i class="fas fa-minus"></i>
-                  </button>
-                </div>
-              </div>
-              <div class="card-body p-0">
-                <ul class="nav nav-pills flex-column">
-                  <li class="nav-item active">
-                    <a href="#" class="nav-link">
-                      <i class="fas fa-inbox"></i> Inbox
-                      <span class="badge bg-primary float-right">12</span>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="#" class="nav-link">
-                      <i class="far fa-envelope"></i> Sent
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="#" class="nav-link">
-                      <i class="far fa-file-alt"></i> Drafts
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="#" class="nav-link">
-                      <i class="fas fa-filter"></i> Junk
-                      <span class="badge bg-warning float-right">65</span>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="#" class="nav-link">
-                      <i class="far fa-trash-alt"></i> Trash
-                    </a>
-                  </li>
-                </ul>
-              </div>
-              <!-- /.card-body -->
-            </div>
-            <!-- /.card -->
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">Labels</h3>
-
-                <div class="card-tools">
-                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                    <i class="fas fa-minus"></i>
-                  </button>
-                </div>
+                <h3 class="card-title">Detail Materi</h3>
               </div>
               <!-- /.card-header -->
-              <div class="card-body p-0">
-                <ul class="nav nav-pills flex-column">
-                  <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="far fa-circle text-danger"></i> Important</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="far fa-circle text-warning"></i> Promotions</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="far fa-circle text-primary"></i> Social</a>
-                  </li>
-                </ul>
+              <div class="card-body">
+                <strong><i class="fas fa-chalkboard-teacher mr-1"></i> Guru </strong>
+
+                <p class="text-muted">
+                <?php echo $nama; ?>
+                </p>
+                <hr>
+                <strong><i class="fas fa-heading mr-1"></i> Judul</strong>
+
+                <p class="text-muted">
+                <?php echo $judul; ?>
+                </p>
+
+                <hr>
+                <?php
+          function hariIndo ($hariInggris) {
+            switch ($hariInggris) {
+              case 'Sunday':
+                return 'Minggu';
+              case 'Monday':
+                return 'Senin';
+              case 'Tuesday':
+                return 'Selasa';
+              case 'Wednesday':
+                return 'Rabu';
+              case 'Thursday':
+                return 'Kamis';
+              case 'Friday':
+                return 'Jumat';
+              case 'Saturday':
+                return 'Sabtu';
+              default:
+                return 'hari tidak valid';
+            }
+          }
+          function url_base64_encode($str = '')
+          {
+            return strtr(base64_encode($str), '+=/', '.-~');
+          }
+        ?>
+                <strong><i class="far fa-calendar-check mr-1"></i> Tanggal Dibagikan</strong>
+
+                <p class="text-muted"><?php echo hariIndo(date("l", strtotime($result->tgl_dibagikan))).' '.date("d-m-Y H:i:s", strtotime($result->tgl_dibagikan)) ?></p>
+                <hr>
+                <strong><i class="fas fa-book-open mr-1"></i> Mapel</strong>
+
+                <p class="text-muted">
+                <?php echo $mapel; ?>
+                </p>
+                <hr>
+                <strong><i class="fas fa-chalkboard mr-1"></i> Kelas</strong>
+
+                <p class="text-muted">
+                <?php echo $nama_kelas; ?>
+                </p>
+                <hr>
+                <strong><i class="fas fa-calendar-alt mr-1"></i> Jadwal</strong>
+
+                <p class="text-muted">
+                <?php echo $judul; ?>
+                </p>
+                <hr>
+                <strong><i class="fas fa-calendar-check mr-1"></i> Tahun Akademik</strong>
+
+                <p class="text-muted">
+                <?php echo $tahun_akademik; ?>
+                </p>
+                <hr>
+                <strong><i class="fas fa-calendar-minus mr-1"></i> Semester</strong>
+
+                <p class="text-muted">
+                <?php echo $semester; ?>
+                </p>
+                <hr>
+                <a href="<?=site_url('materishare')?>" class="btn btn-primary btn-block mb-3">Kembali Ke List Materi Share </a>
               </div>
               <!-- /.card-body -->
             </div>
             <!-- /.card -->
           </div>
           <!-- /.col -->
-      </div>
       <!-- /.row -->
       </div><!-- /.container-fluid -->
     </section>

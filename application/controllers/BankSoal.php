@@ -3,18 +3,34 @@ class BankSoal extends CI_Controller {
 
 	public function __construct(){
 		parent::__construct();
+		$this->load->library('ion_auth');
         $this->load->helper('url');
 		$this->load->helper('form');
 		$this->load->model('KategoriUjianModel');
         $this->load->model('BankSoalModel');
 		$this->load->database();
+		$this->load->model('IdentityModel');
+		if (!$this->ion_auth->logged_in()){
+			redirect('auth/login');
+		}
 	}
 	public function index()
 	{
+		$user = $this->ion_auth->user()->row();
+		$username = $user->username;
+		$user_id =$user->id;
+        $id_user =$this->ion_auth->get_users_groups($user_id)->row()->id;
+		if($id_user==1) {
+			$data['identity'] = $this->IdentityModel->get_admin($user_id);
+		}else if($id_user==2){
+			$data['identity'] = $this->IdentityModel->get_guru($username);
+		}else if($id_user==3){
+			$data['identity'] = $this->IdentityModel->get_siswa($username);
+		}
         $data['kategori_soal'] = $this->BankSoalModel->get_kategori_soal();
         $data['kategori_ujian'] = $this->BankSoalModel->get_kategori_ujian();
         $this->load->view('templates/dashboard/header.php');
-        $this->load->view('templates/dashboard/navbar.php');
+        $this->load->view('templates/dashboard/navbar.php',$data);
         $this->load->view('templates/dashboard/sidebar.php');
 		$this->load->view('guru/bank_soal/view.php',$data);
 		$this->load->view('templates/dashboard/footer.php');
@@ -50,7 +66,9 @@ class BankSoal extends CI_Controller {
 	{
 		if ($mode == 'insert') {
 			if ($this->input->is_ajax_request()) {
-				$datetime = date('Y-m-d H:i:s');
+				$timezone = new DateTimeZone('Asia/Jakarta');
+				$date = new DateTime();
+				$date->setTimeZone($timezone);
 				$data = array(
 					'id_k_ujian' => $_POST['id_k_ujian'],
 					'id_k_soal' => $_POST['id_k_soal'],
@@ -60,8 +78,9 @@ class BankSoal extends CI_Controller {
 					'opsi_c' => $_POST['opsi_c'],
 					'opsi_d' => $_POST['opsi_d'],
 					'opsi_e' => $_POST['opsi_e'],
-					'dibuat_pada' => $datetime,
-					'diupdate_pada' => $datetime
+					'jawaban' => $_POST['kunci_jawaban'],
+					'dibuat_pada' => $date->format('Y-m-d H:i:s'),
+					'diupdate_pada' => $date->format('Y-m-d H:i:s')
 				);
 				$result = $this->BankSoalModel->insert($data);
 				echo json_encode($result);

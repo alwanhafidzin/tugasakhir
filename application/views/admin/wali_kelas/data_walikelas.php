@@ -34,7 +34,7 @@
                          <?php endforeach ?>
                      <?php } ?>
                      <option value="1">Default</option>
-                     <?php foreach($guru as $row) : ?>
+                     <?php foreach($guru->result() as $row) : ?>
                        <option value="<?php echo $row->nip ?>"<?php if ($row->nip == $result->nip) {
                        echo "selected";}?>><?php echo $row->nama ?></option>
                      <?php endforeach ?>

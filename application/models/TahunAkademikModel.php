@@ -13,11 +13,6 @@ class TahunAkademikModel extends CI_Model {
 	{
 		return $this->db->update($this->table, $data, array('id' => $id));
 	}
-
-	public function delete($id)
-	{
-		return $this->db->delete($this->table, array('id' => $id));
-	}
 	public function get_all(){
 		$this->db->select('*');
 		$this->db->from('tahun_akademik');

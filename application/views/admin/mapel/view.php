@@ -9,8 +9,8 @@
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Data Sekolah</a></li>
-              <li class="breadcrumb-item active">Kelas</li>
+              <li class="breadcrumb-item"><a href="">Data Mapel</a></li>
+              <li class="breadcrumb-item active">Mapel</li>
             </ol>
           </div>
         </div>
@@ -26,7 +26,7 @@
             <div class="card card-primary card-outline">
               <!-- /.card-header -->
               <div class="card-body">
-                <button class="btn bg-navy btn-flat margin"data-toggle="modal" data-target="#modal-tambah">Tambah Data</button>
+              <button class="btn btn-primary bottom col-sm-12 col-md-3"data-toggle="modal" data-target="#modal-tambah"><i class="fa fa-plus"></i> Tambah Data</button>
               </br></br>
             <div class="row">
               <div class="col-md-2"><b>Filter Data:</b></div>
@@ -73,15 +73,15 @@
             <div class="col-lg-12">
                 <div class="form-group">
                     <label for="kode_mapel">Kode Mapel</label>
-                    <input type="text" autocomplete="off"class="form-control" name="kode_mapel" placeholder="Masukkan Kode Mapel">
+                    <input type="text" autocomplete="off"class="form-control" name="kode_mapel" maxlength="11" placeholder="Masukkan Kode Mapel" required>
                 </div>
                 <div class="form-group">
                     <label for="mapel">Nama Mapel</label>
-                    <input type="text" autocomplete="off"class="form-control" name="mapel" placeholder="Masukkan Nama Mapel">
+                    <input type="text" autocomplete="off"class="form-control" name="mapel" placeholder="Masukkan Nama Mapel" required>
                 </div>
                 <div class="form-group">
                   <label>Kelompok Mapel</label>
-                  <select class="form-control select2" id="kelompok_mapel_sl2_tbh" name="kelompok_mapel" style="width: 100%;">
+                  <select class="form-control select2" id="kelompok_mapel_sl2_tbh" name="kelompok_mapel" style="width: 100%;" required>
                     <option value="">Pilih Kelompok Mapel</option>
                      <?php foreach($kelompok_mapel as $row) : ?>
                       <option value="<?php echo $row->id ?>"><?php echo $row->kelompok_mapel ?></option>
@@ -90,7 +90,7 @@
                 </div>
                 <div class="form-group">
                   <label>Jurusan</label>
-                  <select class="form-control select2" name="jurusan" id="jurusan_sl2_tbh" style="width: 100%;">
+                  <select class="form-control select2" name="jurusan" id="jurusan_sl2_tbh" style="width: 100%;" required>
                     <option value="">Pilih Jurusan</option>
                     <?php foreach($jurusan as $row) : ?>
                       <option value="<?php echo $row->kode_jurusan ?>"><?php echo $row->jurusan ?></option>

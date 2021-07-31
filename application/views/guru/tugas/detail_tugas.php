@@ -2,6 +2,17 @@
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
+    <?php 
+           	$user = $this->ion_auth->user()->row();
+            $user_id =$user->id;
+            $create = $user->created_on;
+            $id_name =$this->ion_auth->get_users_groups($user_id)->row()->description;
+            $id_user =$this->ion_auth->get_users_groups($user_id)->row()->id;
+            foreach($identity->result() as $result){
+              $nama = $result->nama;
+              $foto = $result->foto;
+            }
+            ?> 
     <section class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
@@ -22,8 +33,8 @@
               <div class="card-header p-2">
                 <ul class="nav nav-pills">
                   <li class="nav-item"><a class="nav-link active" href="#activity" data-toggle="tab">Tugas</a></li>
-                  <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">Detail</a></li>
-                  <li class="nav-item"><a class="nav-link" href="#timeline" data-toggle="tab">Data Share</a></li>
+                  <!-- <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">Detail</a></li>
+                  <li class="nav-item"><a class="nav-link" href="#timeline" data-toggle="tab">Data Share</a></li> -->
                 </ul>
               </div><!-- /.card-header -->
               <?php foreach($tugas->result() as $result) : ?>
@@ -33,6 +44,7 @@
                   $nama = $result->nama;
                   $tgl_dibuat = $result->tgl_dibuat;
                   $mapel = $result->mapel;
+                  $foto = $result->foto;
               ?>
             <?php endforeach;?>
               <div class="card-body">
@@ -42,9 +54,9 @@
                     <!-- Post -->
                     <div class="post clearfix">
                       <div class="user-block">
-                        <img class="img-circle img-bordered-sm" src="<?=base_url()?>assets/admin_lte/dist/img/user7-128x128.jpg" alt="User Image">
+                        <img class="img-circle img-bordered-sm" src="<?php echo base_url()?>uploads/guru/<?php echo $foto; ?>" alt="User Image">
                         <span class="username">
-                          <a href="">Sarah Ross</a>
+                          <a href=""><?php echo $nama; ?></a>
                         </span>
                         <span class="description">Membuat Tugas - 3 days ago</span>
                       </div>

@@ -31,5 +31,17 @@ class TingkatKelasModel extends CI_Model {
 		$data['count'] = $query->num_rows();
 		return $data;
 	}
+	public function isTingkatKelasRelation($id) {
+		$sql ="SELECT COUNT(kode_tingkat) as jumlah FROM kelas WHERE kode_tingkat=?";
+        $jumlah =$this->db->query($sql, array($id));
+		foreach($jumlah->result() as $result){
+			$jumlah = $result->jumlah;
+		}
+		if($jumlah==0){
+			echo 'hapus';
+		}else if($jumlah > 0){
+			echo 'gagal';
+		}
+    }
 }
 ?>

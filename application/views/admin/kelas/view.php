@@ -26,7 +26,7 @@
             <div class="card card-primary card-outline">
               <!-- /.card-header -->
               <div class="card-body">
-                <button class="btn bg-navy btn-flat margin"data-toggle="modal" data-target="#modal-tambah">Tambah Data</button>
+              <button class="btn btn-primary bottom col-sm-12 col-md-3"data-toggle="modal" data-target="#modal-tambah"><i class="fa fa-plus"></i> Tambah Data</button>
               </br></br>
             <div class="row">
               <div class="col-md-2"><b>Filter Data:</b></div>
@@ -73,15 +73,16 @@
             <div class="col-lg-12">
                 <div class="form-group">
                     <label for="kode_kelas">Kode Kelas</label>
-                    <input type="text" autocomplete="off"class="form-control" name="kode_kelas" placeholder="Masukkan Kode Jurusan">
+                    <input type="text" autocomplete="off"class="form-control" maxlength="11" name="kode_kelas" placeholder="Masukkan Kode Kelas" required>
                 </div>
                 <div class="form-group">
                     <label for="nama_kelas">Nama Kelas</label>
-                    <input type="text" autocomplete="off"class="form-control" name="nama_kelas" placeholder="Masukkan Nama ">
+                    <input type="text" autocomplete="off"class="form-control" name="nama_kelas" placeholder="Masukkan Nama" required>
                 </div>
                 <div class="form-group">
                   <label>Tingkatan Kelas</label>
-                  <select class="form-control select2" id="kode_tingkat" name="kode_tingkat" style="width: 100%;">
+                  <select class="form-control select2" id="kode_tingkat" name="kode_tingkat" style="width: 100%;" required>
+                  <option value="">Pilih Tingkat Kelas</option>
                      <?php foreach($tingkat_kelas as $row) : ?>
                       <option value="<?php echo $row->kode_tingkat ?>"><?php echo $row->tingkatan ?></option>
                      <?php endforeach ?>
@@ -89,7 +90,8 @@
                 </div>
                 <div class="form-group">
                   <label>Jurusan</label>
-                  <select class="form-control select2" name="kode_jurusan" id="kode_jurusan" style="width: 100%;">
+                  <select class="form-control select2" name="kode_jurusan" id="kode_jurusan" required style="width: 100%;">
+                  <option value="">Pilih Jurusan</option>
                     <?php foreach($jurusan as $row) : ?>
                       <option value="<?php echo $row->kode_jurusan ?>"><?php echo $row->jurusan ?></option>
                     <?php endforeach ?>

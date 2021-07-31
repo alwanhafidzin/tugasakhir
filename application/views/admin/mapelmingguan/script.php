@@ -12,7 +12,11 @@
         success: function(data) {
           $("#tampil").html(data);
           $('#mapelmingguan').DataTable({
-          "responsive": true, "lengthChange": true, "autoWidth": false
+          "responsive": true, "lengthChange": true, "autoWidth": false,
+          columnDefs: [
+            { responsivePriority: 1, targets: 1 },
+            { responsivePriority: 2, targets: -1 },
+          ]
           });
         }
       });
@@ -28,14 +32,26 @@
        dataType: 'json',
        data: form.serialize(),
       success: function(){ 
-        alert('success!');
-        modal_tambah.modal('hide');
         form[0].reset();
+        modal_tambah.modal('hide');
+        swal("Berhasil!", "Data Jurusan Baru Berhasil Ditambahkan.", "success");
+        $('#mapel_sl2_tbh').select2({
+          theme: 'bootstrap4',
+          placeholder: "Pilih Mapel"
+        });
+        $('#tingkatkelas_sl2_tbh').select2({
+          theme: 'bootstrap4',
+          placeholder: "Pilih Tingkat Kelas"
+        });
+        $('#jurusan_sl2_tbh').select2({
+          theme: 'bootstrap4',
+          placeholder: "Pilih Jurusan"
+        });
         $('#mapelmingguan').DataTable().clear().destroy();
         refresh_table();
       },
       error: function(response){
-          alert(response);
+        swal("Gagal!", "Data Gagal ditambahkan terjadi kesalahan.", "error");
       }
      })
     });
@@ -65,33 +81,12 @@
     });
     $(document).ready(function() {
       $('#filter_jurusan').change(function() {
-        filter_mapelmingguan();
+        refresh_table();
        });
       $('#filter_tingkat').change(function() {
-        filter_mapelmingguan();
+        refresh_table();
       });
     });
-    function filter_mapelmingguan() {
-    var id_jurusan = $('#filter_jurusan').val();
-    var id_tingkatan = $('#filter_tingkat').val();
-    $.ajax({
-      url: "<?= base_url('mapelmingguan/get_all') ?>",
-      data: {
-        jurusan : id_jurusan,
-        kelas : id_tingkatan,
-      },
-      success: function(data) {
-        $('#mapelmingguan').DataTable().clear().destroy();
-        $("#tampil").html(data);
-        $('#mapelmingguan').DataTable({
-          "responsive": true, "lengthChange": true, "autoWidth": false
-        });
-      },
-      error: function (request, status, error) {
-        alert(request.responseText);
-    }
-    });
-  }
     function myJurusan()
     { 
       let id_jurusan = $("#jurusan_sl2_tbh").val();

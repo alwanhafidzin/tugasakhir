@@ -30,7 +30,7 @@
           <div class="modal-dialog modal-lg">
           <div class="modal-content">
             <div class="modal-header">
-              <h4 class="modal-title">Edit Data Jurusan</h4>
+              <h4 class="modal-title">Edit Data Mapel</h4>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -38,16 +38,16 @@
             <form id="form-edit">
               <div class="col-lg-12">
               <div class="form-group">
-                    <label for="kode_mapel">Kode Mapel</label>
-                    <input type="text" autocomplete="off"class="form-control" name="kode_mapel" placeholder="Masukkan Kode Mapel">
+                    <label for="kode_mapel-edit">Kode Mapel</label>
+                    <input type="text" autocomplete="off"class="form-control" maxlength="11" name="kode_mapel" id="kode_mapel-edit" placeholder="Masukkan Kode Mapel" required>
                 </div>
                 <div class="form-group">
                     <label for="mapel">Nama Mapel</label>
-                    <input type="text" autocomplete="off"class="form-control" name="mapel" placeholder="Masukkan Nama Mapel">
+                    <input type="text" autocomplete="off"class="form-control" name="mapel" placeholder="Masukkan Nama Mapel" required>
                 </div>
                 <div class="form-group">
                   <label>Kelompok Mapel</label>
-                  <select class="form-control select2" id="kelompok_mapel_sl2_edit" name="kelompok_mapel" style="width: 100%;">
+                  <select class="form-control select2" id="kelompok_mapel_sl2_edit" name="kelompok_mapel" style="width: 100%;" required>
                      <?php foreach($kelompok_mapel as $row) : ?>
                       <option value="<?php echo $row->id ?>"><?php echo $row->kelompok_mapel ?></option>
                      <?php endforeach ?>
@@ -55,7 +55,7 @@
                 </div>
                 <div class="form-group">
                   <label>Jurusan</label>
-                  <select class="form-control select2" name="jurusan" id="jurusan_sl2_edit" style="width: 100%;">
+                  <select class="form-control select2" name="jurusan" id="jurusan_sl2_edit" style="width: 100%;" required>
                     <?php foreach($jurusan as $row) : ?>
                       <option value="<?php echo $row->kode_jurusan ?>"><?php echo $row->jurusan ?></option>
                     <?php endforeach ?>
@@ -79,26 +79,21 @@
     $(".edit-data").click(function(e) {
       id = $(this).data('id');
       $.ajax({
-        url: '<?=site_url('mapel/get_by_id')?>',
-        type: 'GET',
-        dataType: 'json',
-        data: {id: id},
+          url: '<?=site_url('mapel/cek_relasi')?>',
+          type: 'GET',
+          data: {
+              id : id
+          },
+          success: function(response){
+              if (response == 'gagal')
+              get_data_relation();
+              else if (response == 'hapus')
+              get_data_no_relation();
+              },
+          error: function(response){
+            swal("Gagal!", "Tidak dapat terhubung ke server.periksa koneksi anda", "error");
+          }
       })
-      .done(function(data) {
-        $("#form-edit input[name='kode_mapel']").val(data.object.kode_mapel);
-        $("#form-edit input[name='mapel']").val(data.object.mapel);
-        $("#kelompok_mapel").val(data.object.id_k_mapel);
-        $("#jurusan").val(data.object.kode_jurusan);
-        $('#kelompok_mapel_sl2_edit').select2({
-          theme: 'bootstrap4'
-        });
-        $('#jurusan_sl2_edit').select2({
-          theme: 'bootstrap4'
-        });
-        modal_edit.modal('show').on('shown.bs.modal', function(e) {
-          $("#form-edit input[name='kode_mapel']").focus();
-        });
-      });
     });
     //Proses Update ke Db
     $("#form-edit").submit(function(e) {
@@ -111,33 +106,118 @@
       data: form.serialize(),
       success: function(data){ 
         form[0].reset();
-        alert('success!');
         modal_edit.modal('hide');
+        swal("Berhasil!", "Data Mapel Berhasil Diedit.", "success");
         $('#mapel').DataTable().clear().destroy();
         refresh_table();
       },
       error: function(response){
-          alert(response);
+        swal("Gagal!", "Data Gagal diedit terjadi kesalahan.", "error");
       }
      })
     });
     $(".hapus-data").click(function(e) {
       e.preventDefault();
       id = $(this).data('id');
-      if (confirm("Anda yakin menghapus data ini?")) {
-        $.ajax({
-          url: '<?=site_url('mapel/crud/delete')?>',
-          type: 'POST',
-          dataType: 'json',
-          data: {id: id},
-          success: function(data){ 
-          $('#mapel').DataTable().clear().destroy();
-          refresh_table();
+      $.ajax({
+          url: '<?=site_url('mapel/cek_relasi')?>',
+          type: 'GET',
+          data: {
+              id : id
           },
+          success: function(response){
+              if (response == 'gagal')
+              swal("Peringatan!", "Data yang dipilih tidak dapat dihapus karena berelasi dengan data lainnya,hapus data relasi terlebih dahulu", "warning");
+              else if (response == 'hapus')
+              hapus();
+              },
           error: function(response){
-          alert(response);
+            swal("Gagal!", "Tidak dapat terhubung ke server.periksa koneksi anda", "error");
           }
-        })
-      }
+      })
     });
+    function hapus(){
+      swal({
+        title: "Apa Anda Yakin?",
+        text: "Data yang terhapus,tidak dapat dikembalikan!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonClass: "btn-danger",
+        confirmButtonText: "Ya, Hapus!",
+        cancelButtonText: "Batalkan!",
+        closeOnConfirm: false,
+        closeOnCancel: false
+      },
+      function(isConfirm) {
+        if (isConfirm) {
+          $.ajax({
+             url: '<?=site_url('mapel/crud/delete')?>',
+             type: 'POST',
+             dataType: 'json',
+             data: {id: id},
+             error: function() {
+              swal("Gagal!", "Data Gagal dihapus terjadi kesalahan.", "error");
+             },
+             success: function(data) {
+                  swal("Berhasil!", "Data Berhasil Dihapus.", "success");
+                  $('#mapel').DataTable().clear().destroy();
+                  refresh_table();
+             }
+          });
+        } else {
+          swal("Dibatalkan", "Data yang dipilih tidak jadi dihapus", "error");
+        }
+      });
+    }
+    function get_data_no_relation(){
+      $.ajax({
+        url: '<?=site_url('mapel/get_by_id')?>',
+        type: 'GET',
+        dataType: 'json',
+        data: {id: id},
+      })
+      .done(function(data) {
+        $("#form-edit input[name='kode_mapel']").val(data.object.kode_mapel);
+        $("#form-edit input[name='mapel']").val(data.object.mapel);
+        $("#kelompok_mapel").val(data.object.id_k_mapel);
+        $("#jurusan").val(data.object.kode_jurusan);
+        $("#kode_jurusan-edit").prop("disabled", false);
+        $("label[for='kode_mapel-edit']").text("Kode Mapel");
+        $('#kelompok_mapel_sl2_edit').select2({
+          theme: 'bootstrap4'
+        });
+        $('#jurusan_sl2_edit').select2({
+          theme: 'bootstrap4'
+        });
+        modal_edit.modal('show').on('shown.bs.modal', function(e) {
+          $("#form-edit input[name='kode_mapel']").focus();
+        });
+      });
+
+    }
+    function get_data_relation(){
+      $.ajax({
+        url: '<?=site_url('mapel/get_by_id')?>',
+        type: 'GET',
+        dataType: 'json',
+        data: {id: id},
+      })
+      .done(function(data) {
+        $("#form-edit input[name='kode_mapel']").val(data.object.kode_mapel);
+        $("#form-edit input[name='mapel']").val(data.object.mapel);
+        $("#kelompok_mapel").val(data.object.id_k_mapel);
+        $("#jurusan").val(data.object.kode_jurusan);
+        $("#kode_mapel-edit").prop("disabled", true);
+        $("label[for='kode_mapel-edit']").text("Kode Mapel(Berelasi)");
+        $('#kelompok_mapel_sl2_edit').select2({
+          theme: 'bootstrap4'
+        });
+        $('#jurusan_sl2_edit').select2({
+          theme: 'bootstrap4'
+        });
+        modal_edit.modal('show').on('shown.bs.modal', function(e) {
+          $("#form-edit input[name='kode_mapel']").focus();
+        });
+      });
+    }
 </script>

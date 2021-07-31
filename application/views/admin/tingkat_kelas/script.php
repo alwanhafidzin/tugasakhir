@@ -23,13 +23,14 @@
        dataType: 'json',
        data: form.serialize(),
       success: function(){ 
-        alert('success!');
         modal_tambah.modal('hide');
+        form[0].reset();
+        swal("Berhasil!", "Data Tingkat Kelas Baru Berhasil Ditambahkan.", "success");
         $('#tingkatkelas').DataTable().clear().destroy();
         refresh_table();
       },
       error: function(response){
-          alert(response);
+        swal("Gagal!", "Data Gagal ditambahkan terjadi kesalahan.", "error");
       }
      })
     });

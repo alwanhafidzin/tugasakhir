@@ -120,9 +120,8 @@ class Tugas extends CI_Controller {
 		else if ($mode == 'share') {
 			if ($this->input->is_ajax_request()) {
 				$id_tugas = $this->input->post('id');
-				$id_t_akademik = $this->input->post('id_t_akademik');
-				$semester = $this->input->post('semester');
 				$timezone = new DateTimeZone('Asia/Jakarta');
+				$id_t_akademik = $this->input->post('id_t_akademik');
 				$date = new DateTime();
 		        $date->setTimeZone($timezone);
 				$kode_kelas = $this->input->post('kelas');
@@ -136,8 +135,6 @@ class Tugas extends CI_Controller {
 				 }else{
 					$data = array(
 						'id_tugas' =>$id_tugas,
-						'id_t_akademik' =>$id_t_akademik,
-						'semester' =>$semester,
 						'kode_kelas' =>$kode_kelas,
 						'id_jadwal' => $id_jadwal,
 						'tgl_jadwal' =>$tanggal,

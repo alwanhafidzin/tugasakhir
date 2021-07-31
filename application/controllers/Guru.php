@@ -12,16 +12,28 @@ class Guru extends CI_Controller {
 		$this->load->library('Excel'); 
 		$this->load->database();
 		$this->load->library('ion_auth');
+		$this->load->model('IdentityModel');
 		if (!$this->ion_auth->logged_in()){
 			redirect('auth/login');
 		}
 	}
 	public function index()
 	{
+		$user = $this->ion_auth->user()->row();
+		$user_id =$user->id;
+		$username = $user->username;
+        $id_user =$this->ion_auth->get_users_groups($user_id)->row()->id;
+		if($id_user==1) {
+			$data['identity'] = $this->IdentityModel->get_admin($username);
+		}else if($id_user==2){
+			$data['identity'] = $this->IdentityModel->get_guru($username);
+		}else if($id_user==3){
+			$data['identity'] = $this->IdentityModel->get_siswa($username);
+		}
 		$agama = $this->GuruModel->get_agama();
 		$data['agama'] = $agama;
         $this->load->view('templates/dashboard/header.php');
-        $this->load->view('templates/dashboard/navbar.php');
+        $this->load->view('templates/dashboard/navbar.php',$data);
         $this->load->view('templates/dashboard/sidebar.php');
 		$this->load->view('admin/guru/view.php', $data);
 		$this->load->view('templates/dashboard/footer.php');
@@ -29,28 +41,84 @@ class Guru extends CI_Controller {
 	}
 	public function get_all()
 	{
-		if(!empty($_GET['agama']) && empty($_GET['gender']) ){
+		if(!empty($_GET['agama']) && empty($_GET['gender']) && empty($_GET['status']) ){
 			$id_agama= $_GET['agama'];
-			$gender= null;
-			$guru = $this->GuruModel->get_all($id_agama,$gender);
-		}else if(empty($_GET['agama']) && !empty($_GET['gender']) ){
+			$gender = null;
+			$status = null;
+		}else if(empty($_GET['agama']) && !empty($_GET['gender']) && empty($_GET['status']) ){
 			$id_agama= null;
-			$gender= $_GET['gender'];
-			$guru = $this->GuruModel->get_all($id_agama,$gender);
-		}else if(!empty($_GET['agama']) && !empty($_GET['gender']) ){
+			$gender = $_GET['gender'];
+			$status = null;
+		}else if(empty($_GET['agama']) && empty($_GET['gender']) && !empty($_GET['status']) ){
+			$id_agama= null;
+			$gender = null;
+			$status =  $_GET['status'];
+		}else if(!empty($_GET['agama']) && !empty($_GET['gender']) && !empty($_GET['status']) ){
 			$id_agama= $_GET['agama'];
-			$gender= $_GET['gender'];
-			$guru = $this->GuruModel->get_all($id_agama,$gender);
-		}else if(empty($_GET['agama']) && empty($_GET['gender']) ){
+			$gender = $_GET['gender'];
+			$status =  $_GET['status'];
+		}else if(!empty($_GET['agama']) && !empty($_GET['gender']) && empty($_GET['status']) ){
+			$id_agama= $_GET['agama'];
+			$gender = $_GET['gender'];
+			$status = null;
+		}else if(!empty($_GET['agama']) && empty($_GET['gender']) && !empty($_GET['status']) ){
+			$id_agama= $_GET['agama'];
+			$gender = null;
+			$status = $_GET['status'];
+		}else if(empty($_GET['agama']) && !empty($_GET['gender']) && !empty($_GET['status']) ){
 			$id_agama= null;
-			$gender= null;
-			$guru = $this->GuruModel->get_all($id_agama,$gender);
-		}else if($_GET['agama']==0 && $_GET['gender']==0 ){
+			$gender = $_GET['gender'];
+			$status =  $_GET['status'];
+		}else if($_GET['agama']==0 && $_GET['gender']==0 && $_GET['status']==0 ){
 			$id_agama= null;
-			$gender= null;
-			$guru = $this->GuruModel->get_all($id_agama,$gender);
+			$gender = null;
+			$status =  null;
+		}else if($_GET['agama']==0 && $_GET['gender']==0 && !empty($_GET['status']) ){
+			$id_agama= null;
+			$gender = null;
+			$status = $_GET['status'];
+		}else if($_GET['agama']==0 && !empty($_GET['gender']) && $_GET['status']==0 ){
+			$id_agama= null;
+			$gender = $_GET['gender'];
+			$status =  null;
+		}else if(!empty($_GET['agama']) && $_GET['gender']==0 && $_GET['status']==0 ){
+			$id_agama= $_GET['agama'];
+			$gender = null;
+			$status =  null;
+		}else if($_GET['agama']==0 && $_GET['gender']==0 && !empty($_GET['status']) ){
+			$id_agama= null;
+			$gender = null;
+			$status =  $_GET['status'];
+		}else if($_GET['agama']==0 && !empty($_GET['gender']) && $_GET['status']==0 ){
+			$id_agama= null;
+			$gender =  $_GET['gender'];
+			$status = null;
+		}else if(!empty($_GET['agama']) && !empty($_GET['gender']) && $_GET['status']==0 ){
+			$id_agama= $_GET['agama'];
+			$gender = null;
+			$status =  null;
+		}else if($_GET['agama']==0 && !empty($_GET['gender']) && !empty($_GET['status']) ){
+			$id_agama= $_GET['agama'];
+			$gender = null;
+			$status =  null;
+		}else if(!empty($_GET['agama']) && $_GET['gender']==0 && !empty($_GET['status']) ){
+			$id_agama= $_GET['agama'];
+			$gender = null;
+			$status =  null;
+		}else if($_GET['agama']==0 && empty($_GET['gender']) && empty($_GET['status']) ){
+			$id_agama= $_GET['agama'];
+			$gender = null;
+			$status =  null;
+		}else if(empty($_GET['agama']) && empty($_GET['gender']) && empty($_GET['status']) ){
+			$id_agama= $_GET['agama'];
+			$gender = null;
+			$status = null;
+		}else if(empty($_GET['agama']) && empty($_GET['gender']) && $_GET['status']==0 ){
+			$id_agama= null;
+			$gender = null;
+			$status = null;
 		}
-		$data['guru'] = $guru;
+		$data['guru'] = $this->GuruModel->get_all($id_agama,$gender,$status);
 		$agama = $this->GuruModel->get_agama();
 		$data['agama'] = $agama;
 		$this->load->view('admin/guru/data_guru',$data);
@@ -142,6 +210,14 @@ class Guru extends CI_Controller {
 			if ($this->input->is_ajax_request()) {
 				$id = $this->input->post('id');
 				$result = $this->GuruModel->delete($id);
+				echo json_encode($result);
+			}
+		}
+		else if ($mode == 'update_status') {
+			if ($this->input->is_ajax_request()) {
+				$arr = $_POST['arr'];
+				$ids = implode("','", $arr);
+				$result = $this->GuruModel->update_status($ids);
 				echo json_encode($result);
 			}
 		}

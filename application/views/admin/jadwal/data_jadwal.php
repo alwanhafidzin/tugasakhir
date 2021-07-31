@@ -43,7 +43,7 @@
                 <div class="form-group">
                   <select class="form-control select2 hari<?php echo $result->id ?> hari_sl2" onchange="myHari('<?php echo $result->id ?>')" name="hari_sl2" style="width: 100%;">
                      <?php foreach($hari as $row2) : ?>
-                         <option value="<?php echo $row2->id ?>"<?php if ($row2->id == $result->id_hari) {
+                         <option value="<?php echo $row2->id ?>"<?php if ($row2->id == $result->id_detail_hari) {
                          echo "selected";}?>><?php echo $row2->hari ?></option>
                      <?php endforeach ?>
                   </select>

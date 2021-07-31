@@ -26,7 +26,7 @@
           <div class="modal-dialog modal-lg">
           <div class="modal-content">
             <div class="modal-header">
-              <h4 class="modal-title">Edit Data Jurusan</h4>
+              <h4 class="modal-title">Edit Data Tingkat Kelas</h4>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -35,12 +35,12 @@
             <input type="hidden" name="id"/>
             <div class="col-lg-12">
                 <div class="form-group">
-                    <label for="kode_tingkat">Kode Tingkat Kelas</label>
-                    <input type="text" class="form-control" autocomplete="off" name="kode_tingkat" placeholder="Masukkan Kode Tingkat Kelas">
+                    <label for="kode_tingkat-edit">Kode Tingkat Kelas</label>
+                    <input type="text" class="form-control" autocomplete="off" name="kode_tingkat" maxlength="8" id="kode_tingkat-edit" placeholder="Masukkan Kode Tingkat Kelas" required>
                 </div>
                 <div class="form-group">
                     <label for="tingkatan">Nama Tingkat Kelas</label>
-                    <input type="text" class="form-control" autocomplete="off" name="tingkatan" placeholder="Masukkan Nama Tingkat Kelas">
+                    <input type="text" class="form-control" autocomplete="off" name="tingkatan" placeholder="Masukkan Nama Tingkat Kelas" required>
                 </div>
             </div>
             <div class="modal-footer justify-content-between">
@@ -60,19 +60,21 @@
     $(".edit-data").click(function(e) {
       id = $(this).data('id');
       $.ajax({
-        url: '<?=site_url('tingkatkelas/get_by_id')?>',
-        type: 'GET',
-        dataType: 'json',
-        data: {id: id},
+          url: '<?=site_url('tingkatkelas/cek_relasi')?>',
+          type: 'GET',
+          data: {
+              id : id
+          },
+          success: function(response){
+              if (response == 'gagal')
+              get_data_relation();
+              else if (response == 'hapus')
+              get_data_no_relation();
+              },
+          error: function(response){
+            swal("Gagal!", "Tidak dapat terhubung ke server.periksa koneksi anda", "error");
+          }
       })
-      .done(function(data) {
-        $("#form-edit-tingkatan input[name='id']").val(data.object.kode_tingkat);
-        $("#form-edit-tingkatan input[name='kode_tingkat']").val(data.object.kode_tingkat);
-        $("#form-edit-tingkatan input[name='tingkatan']").val(data.object.tingkatan);
-        modal_edit.modal('show').on('shown.bs.modal', function(e) {
-          $("#form-edit-tingkatan input[name='tingkatan']").focus();
-        });
-      });
     });
     //Proses Update ke Db
     $("#form-edit-tingkatan").submit(function(e) {
@@ -85,8 +87,8 @@
       data: form.serialize(),
       success: function(data){ 
         form[0].reset();
-        alert('success!');
         modal_edit.modal('hide');
+        swal("Berhasil!", "Data Tingkat Kelas Berhasil Diedit.", "success");
         $('#tingkatkelas').DataTable().clear().destroy();
         refresh_table();
       },
@@ -98,20 +100,90 @@
     $(".hapus-data").click(function(e) {
       e.preventDefault();
       id = $(this).data('id');
-      if (confirm("Anda yakin menghapus data ini?")) {
-        $.ajax({
-          url: '<?=site_url('tingkatkelas/crud/delete')?>',
-          type: 'POST',
-          dataType: 'json',
-          data: {id: id},
-          success: function(data){ 
-          $('#tingkatkelas').DataTable().clear().destroy();
-          refresh_table();
+      $.ajax({
+          url: '<?=site_url('tingkatkelas/cek_relasi')?>',
+          type: 'GET',
+          data: {
+              id : id
           },
+          success: function(response){
+              if (response == 'gagal')
+              swal("Peringatan!", "Data yang dipilih tidak dapat dihapus karena berelasi dengan data lainnya,hapus data relasi terlebih dahulu", "warning");
+              else if (response == 'hapus')
+              hapus();
+              },
           error: function(response){
-          alert(response);
+            swal("Gagal!", "Tidak dapat terhubung ke server.periksa koneksi anda", "error");
           }
-        })
-      }
+      })
     });
+    function hapus(){
+      swal({
+        title: "Apa Anda Yakin?",
+        text: "Data yang terhapus,tidak dapat dikembalikan!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonClass: "btn-danger",
+        confirmButtonText: "Ya, Hapus!",
+        cancelButtonText: "Batalkan!",
+        closeOnConfirm: false,
+        closeOnCancel: false
+      },
+      function(isConfirm) {
+        if (isConfirm) {
+          $.ajax({
+             url: '<?=site_url('tingkatkelas/crud/delete')?>',
+             type: 'POST',
+             dataType: 'json',
+             data: {id: id},
+             error: function() {
+              swal("Gagal!", "Data Gagal dihapus terjadi kesalahan.", "error");
+             },
+             success: function(data) {
+                  swal("Berhasil!", "Data Berhasil Dihapus.", "success");
+                  $('#jurusan').DataTable().clear().destroy();
+                  refresh_table();
+             }
+          });
+        } else {
+          swal("Dibatalkan", "Data yang dipilih tidak jadi dihapus", "error");
+        }
+      });
+    }
+    function get_data_no_relation(){
+      $.ajax({
+        url: '<?=site_url('tingkatkelas/get_by_id')?>',
+        type: 'GET',
+        dataType: 'json',
+        data: {id: id},
+      })
+      .done(function(data) {
+        $("#form-edit-tingkatan input[name='id']").val(data.object.kode_tingkat);
+        $("#form-edit-tingkatan input[name='kode_tingkat']").val(data.object.kode_tingkat);
+        $("#form-edit-tingkatan input[name='tingkatan']").val(data.object.tingkatan);
+        $("#kode_tingkat-edit").prop("disabled", false);
+        $("label[for='kode_tingkat-edit']").text("Kode Tingkat Kelas");
+        modal_edit.modal('show').on('shown.bs.modal', function(e) {
+          $("#form-edit-tingkatan input[name='tingkatan']").focus();
+        });
+      });
+    }
+    function get_data_relation(){
+      $.ajax({
+        url: '<?=site_url('tingkatkelas/get_by_id')?>',
+        type: 'GET',
+        dataType: 'json',
+        data: {id: id},
+      })
+      .done(function(data) {
+        $("#form-edit-tingkatan input[name='id']").val(data.object.kode_tingkat);
+        $("#form-edit-tingkatan input[name='kode_tingkat']").val(data.object.kode_tingkat);
+        $("#form-edit-tingkatan input[name='tingkatan']").val(data.object.tingkatan);
+        $("#kode_tingkat-edit").prop("disabled", true);
+        $("label[for='kode_tingkat-edit']").text("Kode Tingkat Kelas(Berelasi)");
+        modal_edit.modal('show').on('shown.bs.modal', function(e) {
+          $("#form-edit-tingkatan input[name='tingkatan']").focus();
+        });
+      });
+    }
 </script>

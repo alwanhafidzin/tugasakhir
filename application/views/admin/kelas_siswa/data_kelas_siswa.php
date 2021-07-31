@@ -12,7 +12,7 @@
     </thead>
     <tbody>
         <?php $no = 1; ?>
-        <?php foreach($kelas_siswa->result() as $result) : ?>
+        <?php foreach($kelass->result() as $result) : ?>
         <tr>
             <td class="text-center"><?php echo $no++ ?></td>
             <td class="text-center"><?php echo $result->nis ?></td>

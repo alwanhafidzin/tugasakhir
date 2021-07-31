@@ -265,14 +265,25 @@ class MateriShare extends CI_Controller {
 	}
 	public function detail($encrypt)
 	{
+		$user = $this->ion_auth->user()->row();
+		$user_id =$user->id;
+		$username = $user->username;
+        $id_user =$this->ion_auth->get_users_groups($user_id)->row()->id;
+		if($id_user==1) {
+			$data['identity'] = $this->IdentityModel->get_admin($user_id);
+		}else if($id_user==2){
+			$data['identity'] = $this->IdentityModel->get_guru($username);
+		}else if($id_user==3){
+			$data['identity'] = $this->IdentityModel->get_siswa($username);
+		}
 		function url_base64_decode($str = '')
 		{
 			return base64_decode(strtr($str, '.-~', '+=/'));
 		}
 		$id= url_base64_decode($encrypt);
-		$data['materi'] = $this->MateriModel->get_detail_by_id($id);
+		$data['materi'] = $this->MateriModel->get_detail_share_by_id($id);
         $this->load->view('templates/dashboard/header.php');
-        $this->load->view('templates/dashboard/navbar.php');
+        $this->load->view('templates/dashboard/navbar.php',$data);
         $this->load->view('templates/dashboard/sidebar.php');
 		$this->load->view('guru/materi_share/detail_share.php',$data);
 		$this->load->view('templates/dashboard/footer.php');

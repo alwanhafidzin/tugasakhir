@@ -7,7 +7,11 @@
         success: function(data) {
           $("#tampil").html(data);
           $('#tahunakademik').DataTable({
-          "responsive": true, "lengthChange": true, "autoWidth": false
+          "responsive": true, "lengthChange": true, "autoWidth": false,
+          columnDefs: [
+            { responsivePriority: 1, targets: 1 },
+            { responsivePriority: 2, targets: -1 },
+          ]
           });
         }
       });
@@ -15,6 +19,7 @@
     refresh_table();
     //Tambah Data Agama,Posisi Ajax ada di inspect network
     $("#form-tambah").submit(function(e) {
+      Swal1();
       e.preventDefault();
       ctx_modal = $("#modal-tambah");
       form = $(this);
@@ -24,26 +29,32 @@
        dataType: 'json',
        data: form.serialize(),
       success: function(){ 
-        alert('success!');
+        form[0].reset();
         $('#tahunakademik').DataTable().clear().destroy();
         refresh_table();
       },
       error: function(response){
-          alert(response);
+        swal.close();
+        swal("Gagal!", "Data Gagal ditambahkan terjadi kesalahan.", "error");
       }
     })
     .done(function(data) {
       if (data) {
         ctx_modal.modal('hide');
-        buat_notifikasi({
-          icon: 'done_outline',
-          message: "Data berhasil ditambahkan",
-          type: 'success'
-        });
+        swal("Berhasil!", "Data Tahun Akademik Baru Berhasil Ditambahkan.", "success");
       }
       else {
-        alert('Tidak dapat terhubung dengan database');
+        swal.close();
+        swal("Gagal!", "Data Gagal ditambahkan terjadi kesalahan.", "error");
       }
     });
     });
+    function Swal1(){
+    swal({
+     title: "Status!",
+     text: "Sedang Membuat data keperluan tahun akademik.Harap Tunggu...",
+     type: "warning",
+     showConfirmButton: false
+    });
+    }
 </script>

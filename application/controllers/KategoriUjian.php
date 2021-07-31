@@ -12,6 +12,7 @@ class KategoriUjian extends CI_Controller {
 		$this->load->model('AbsensiPermapelModel');
 		$this->load->model('WaliKelasModel');
 		$this->load->model('UjianModel');
+		$this->load->model('IdentityModel');
 		$this->load->database();
 		if (!$this->ion_auth->logged_in()){
 			redirect('auth/login');
@@ -21,10 +22,20 @@ class KategoriUjian extends CI_Controller {
 	{
 		$user = $this->ion_auth->user()->row();
 		$nip =$user->username;
+		$user_id =$user->id;
+		$username = $user->username;
+        $id_user =$this->ion_auth->get_users_groups($user_id)->row()->id;
+		if($id_user==1) {
+			$data['identity'] = $this->IdentityModel->get_admin($user_id);
+		}else if($id_user==2){
+			$data['identity'] = $this->IdentityModel->get_guru($username);
+		}else if($id_user==3){
+			$data['identity'] = $this->IdentityModel->get_siswa($username);
+		}
 		$data['tipe_ujian'] = $this->KategoriUjianModel->get_tipe_ujian();
 		$data['jadwal_guru_absen'] = $this->AbsensiPermapelModel->get_guru_jadwal_pertahunakademik($nip);
         $this->load->view('templates/dashboard/header.php');
-        $this->load->view('templates/dashboard/navbar.php');
+        $this->load->view('templates/dashboard/navbar.php',$data);
         $this->load->view('templates/dashboard/sidebar.php');
 		$this->load->view('guru/kategori_ujian/view.php',$data);
 		$this->load->view('templates/dashboard/footer.php');
@@ -129,8 +140,6 @@ class KategoriUjian extends CI_Controller {
 				}
 				$token_ujian = getToken(5);
 				$id_k_ujian = $this->input->post('id');
-				$id_t_akademik = $this->input->post('id_t_akademik');
-				$semester = $this->input->post('semester');
 				$timezone = new DateTimeZone('Asia/Jakarta');
 				$date = new DateTime();
 		        $date->setTimeZone($timezone);
@@ -149,8 +158,6 @@ class KategoriUjian extends CI_Controller {
 				 }else{
 					$data = array(
 						'id_k_ujian' =>$id_k_ujian,
-						'id_t_akademik' =>$id_t_akademik,
-						'semester' =>$semester,
 						'kode_kelas' =>$kode_kelas,
 						'id_jadwal' => $id_jadwal,
 						'tgl_jadwal' =>$tanggal,

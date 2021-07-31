@@ -14,7 +14,11 @@
         success: function(data) {
           $("#tampil").html(data);
           $('#kelas_siswa').DataTable({
-          "responsive": true, "lengthChange": true, "autoWidth": false
+          "responsive": true, "lengthChange": true, "autoWidth": false,
+          columnDefs: [
+            { responsivePriority: 1, targets: 1 },
+            { responsivePriority: 2, targets: -1 },
+          ]
           });
         }
       });

@@ -47,7 +47,11 @@
         success: function(data) {
           $("#tampil").html(data);
           $('#agama').DataTable({
-          "responsive": true, "lengthChange": true, "autoWidth": false,  "order": [[ 3, "desc" ]]
+          "responsive": true, "lengthChange": true, "autoWidth": false,  "order": [[ 3, "desc" ]],
+          columnDefs: [
+            { responsivePriority: 1, targets: 1 },
+            { responsivePriority: 2, targets: -1 },
+          ]
           });
         }
       });
@@ -64,25 +68,21 @@
        dataType: 'json',
        data: form.serialize(),
       success: function(){ 
-        alert('success!');
+        form[0].reset();
         $('#agama').DataTable().clear().destroy();
         refresh_table();
       },
       error: function(response){
-          alert(response);
+        swal("Gagal!", "Data Gagal ditambahkan terjadi kesalahan.", "error");
       }
     })
     .done(function(data) {
       if (data) {
         ctx_modal.modal('hide');
-        buat_notifikasi({
-          icon: 'done_outline',
-          message: "Data berhasil ditambahkan",
-          type: 'success'
-        });
+        swal("Berhasil!", "Data Agama Baru Berhasil Ditambahkan.", "success");
       }
       else {
-        alert('Tidak dapat terhubung dengan database');
+        swal("Gagal!", "Data Gagal ditambahkan terjadi kesalahan.", "error");
       }
     });
     });

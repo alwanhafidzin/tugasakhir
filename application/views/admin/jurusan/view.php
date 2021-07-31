@@ -26,7 +26,7 @@
             <div class="card card-primary card-outline">
               <!-- /.card-header -->
               <div class="card-body">
-                <button class="btn bg-navy btn-flat margin"data-toggle="modal" data-target="#modal-tambah">Tambah Data</button>
+              <button class="btn btn-primary bottom col-sm-12 col-md-3"data-toggle="modal" data-target="#modal-tambah"><i class="fa fa-plus"></i> Tambah Data</button>
               </br></br>
                 <div id="tampil">
                 <!-- Data tampil disini -->
@@ -48,11 +48,11 @@
             <div class="col-lg-12">
                 <div class="form-group">
                     <label for="kode_jurusan">Kode Jurusan</label>
-                    <input type="text" autocomplete="off"class="form-control" name="kode_jurusan" placeholder="Masukkan Kode Jurusan">
+                    <input type="text" autocomplete="off"class="form-control" name="kode_jurusan" placeholder="Masukkan Kode Jurusan" required>
                 </div>
                 <div class="form-group">
                     <label for="jurusan">Jurusan</label>
-                    <input type="text" autocomplete="off"class="form-control" name="jurusan" placeholder="Masukkan Nama Jurusan">
+                    <input type="text" autocomplete="off"class="form-control" name="jurusan" placeholder="Masukkan Nama Jurusan" required>
                 </div>
             </div>
             <div class="modal-footer justify-content-between">

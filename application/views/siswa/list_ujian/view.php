@@ -26,8 +26,7 @@
             <div class="card card-primary card-outline">
               <!-- /.card-header -->
               <div class="card-body">
-                <button class="btn bg-navy btn-flat margin"data-toggle="modal" data-target="#modal-tambah">Tambah Data</button>
-              </br></br>
+               
                 <div id="tampil">
                 <!-- Data tampil disini -->
                 </div>

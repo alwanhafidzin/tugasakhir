@@ -5,7 +5,6 @@
       <img src="<?=base_url()?>assets/admin_lte/dist/img/sasoo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
       <span class="brand-text font-weight-light">Smansasoo Vlearn</span>
     </a>
-
     <!-- Sidebar -->
     <div class="sidebar">
       <!-- Sidebar user panel (optional) -->
@@ -51,6 +50,14 @@
             </a>
           </li>
           <li class="nav-item">
+            <a href="<?=base_url('profileadmin')?>" class="nav-link <?= $page === 'profileadmin' ? "active" : "" ?>">
+              <i class="nav-icon fas fa-id-card"></i>
+              <p>
+                Profile
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
             <a href="<?=base_url('siswa')?>" class="nav-link <?= $page === 'siswa' ? "active" : "" ?>">
               <i class="nav-icon fas fa-users"></i>
               <p>
@@ -63,6 +70,14 @@
               <i class="nav-icon fas fa-chalkboard-teacher"></i>
               <p>
                 Data Guru
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="<?=base_url('datalain')?>" class="nav-link <?= $page === 'datalain' ? "active" : "" ?>">
+              <i class="nav-icon fas fa-users"></i>
+              <p>
+                Data Akademik Lain
               </p>
             </a>
           </li>
@@ -171,6 +186,29 @@
               </li>
             </ul>
           </li>
+          <li class="nav-item <?= in_array($page, $data_mapel)  ? "active menu-open" : ""  ?>">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-users-cog"></i>
+              <p>
+                Data User
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="<?=base_url('buatakun')?>" class="nav-link <?= $page === 'buatakun' ? "active" : "" ?>">
+                  <i class="fas fa-user-plus nav-icon"></i>
+                  <p>Buat Akun</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="<?=base_url('listuser')?>" class="nav-link <?= $page === 'listuser' ? "active" : "" ?>">
+                  <i class="fas fa-users-cog nav-icon"></i>
+                  <p>List User</p>
+                </a>
+              </li>
+            </ul>
+          </li>
           <li class="nav-item">
             <a href="<?=base_url('walikelas')?>" class="nav-link <?= $page === 'walikelas' ? "active" : "" ?>">
               <i class="nav-icon fas fa-user-tie"></i>
@@ -187,41 +225,164 @@
               </p>
             </a>
           </li>
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <a href="<?=base_url('absensi')?>" class="nav-link <?= $page === 'absensi' ? "active" : "" ?>">
               <i class="nav-icon fas fa-calendar-day"></i>
               <p>
-                Absensi
+                Absensi Harian
+              </p>
+            </a>
+          </li> -->
+          <?php endif; ?>
+          <?php endif; ?>
+          <?php if($this->ion_auth->in_group('guru') ) : ?>
+            <li class="nav-item">
+            <a href="<?=base_url('profileguru')?>" class="nav-link <?= $page === 'profileguru' ? "active" : "" ?>">
+              <i class="nav-icon fas fa-id-card"></i>
+              <p>
+                Profile Guru
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="<?=base_url('jadwalguru')?>" class="nav-link <?= $page === 'jadwalguru' ? "active" : "" ?>">
+              <i class="nav-icon fas fa-calendar-alt"></i>
+              <p>
+                Jadwal Guru
               </p>
             </a>
           </li>
           <li class="nav-item">
             <a href="<?=base_url('absensipermapel')?>" class="nav-link <?= $page === 'absensipermapel' ? "active" : "" ?>">
-              <i class="nav-icon far fa-calendar-check"></i>
+              <i class="nav-icon fas fa-calendar-day"></i>
               <p>
                 Absensi Permapel
               </p>
             </a>
           </li>
-          <li class="nav-item">
-            <a href="<?=base_url('pengguna')?>" class="nav-link <?= $page === 'pengguna' ? "active" : "" ?>">
-              <i class="nav-icon fas fa-users-cog"></i>
+          <li class="nav-item <?= in_array($page, $data_mapel)  ? "active menu-open" : ""  ?>">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-book"></i>
               <p>
-                Data Pengguna
+                Data Materi
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="<?=base_url('materi')?>" class="nav-link <?= $page === 'materi' ? "active" : "" ?>">
+                  <i class="fas fa-project-diagram nav-icon"></i>
+                  <p>Materi</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="<?=base_url('materishare')?>" class="nav-link <?= $page === 'mapel' ? "active" : "" ?>">
+                  <i class="fas fa-book-open nav-icon"></i>
+                  <p>Materi Share</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item <?= in_array($page, $data_mapel)  ? "active menu-open" : ""  ?>">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-book"></i>
+              <p>
+                Data Tugas
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="<?=base_url('tugas')?>" class="nav-link <?= $page === 'tugas' ? "active" : "" ?>">
+                  <i class="fas fa-project-diagram nav-icon"></i>
+                  <p>Tugas</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="<?=base_url('tugasshare')?>" class="nav-link <?= $page === 'tugasshare' ? "active" : "" ?>">
+                  <i class="fas fa-book-open nav-icon"></i>
+                  <p>Tugas Share</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item <?= in_array($page, $data_mapel)  ? "active menu-open" : ""  ?>">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-book"></i>
+              <p>
+                Data Quiz
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="<?=base_url('kategoriujian')?>" class="nav-link <?= $page === 'kategoriujian' ? "active" : "" ?>">
+                  <i class="fas fa-project-diagram nav-icon"></i>
+                  <p>Kategori Quiz</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="<?=base_url('kategorisoal')?>" class="nav-link <?= $page === 'kategorisoal' ? "active" : "" ?>">
+                  <i class="fas fa-book-open nav-icon"></i>
+                  <p>Kategori Soal</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="<?=base_url('banksoal')?>" class="nav-link <?= $page === 'banksoal' ? "active" : "" ?>">
+                  <i class="fas fa-book-reader nav-icon"></i>
+                  <p>Bank Soal</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="<?=base_url('listujianguru')?>" class="nav-link <?= $page === 'listujianguru' ? "active" : "" ?>">
+                  <i class="fas fa-calendar-plus nav-icon"></i>
+                  <p>Quiz Share</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <?php endif; ?>
+          <?php if($this->ion_auth->in_group('siswa') ) : ?>
+            <li class="nav-item">
+            <a href="<?=base_url('profilesiswa')?>" class="nav-link <?= $page === 'profileguru' ? "active" : "" ?>">
+              <i class="nav-icon fas fa-id-card"></i>
+              <p>
+                Profile Siswa
               </p>
             </a>
           </li>
-          <?php endif; ?>
-          <?php if( $this->ion_auth->in_group('tes') ) : ?>
           <li class="nav-item">
-            <a href="<?=base_url('ujian')?>" class="nav-link <?= $page === 'ujian' ? "active" : "" ?>">
-              <i class="nav-icon fas fa-columns"></i>
+            <a href="<?=base_url('jadwalsiswa')?>" class="nav-link <?= $page === 'jadwalsiswa' ? "active" : "" ?>">
+              <i class="nav-icon fas fa-calendar-alt"></i>
               <p>
-                Ujian
+                Jadwal Siswa
               </p>
             </a>
           </li>
-          <?php endif; ?>
+          <li class="nav-item">
+            <a href="<?=base_url('absensipermapel')?>" class="nav-link <?= $page === 'absensipermapel' ? "active" : "" ?>">
+              <i class="nav-icon fas fa-calendar-day"></i>
+              <p>
+                List Materi
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="<?=base_url('absensipermapel')?>" class="nav-link <?= $page === 'absensipermapel' ? "active" : "" ?>">
+              <i class="nav-icon fas fa-calendar-day"></i>
+              <p>
+                List Tugas
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="<?=base_url('listujiansiswa')?>" class="nav-link <?= $page === 'listujiansiswa' ? "active" : "" ?>">
+              <i class="nav-icon fas fa-calendar-day"></i>
+              <p>
+                List Quiz
+              </p>
+            </a>
+          </li>
           <?php endif; ?>
         </ul>
       </nav>

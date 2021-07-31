@@ -69,13 +69,13 @@
             <input type="hidden" name="id"/>
             <div class="col-lg-12">
               <div class="form-group">
-                  <label for="kategorisoal">Nama Ujian</label>
-                  <input type="text" autocomplete="off"class="form-control" name="nama_ujian" placeholder="Masukkan Nama Ujian">
+                  <label for="kategorisoal">Nama Quiz</label>
+                  <input type="text" autocomplete="off"class="form-control" name="nama_ujian" placeholder="Masukkan Nama Ujian" required>
               </div>
               <div class="form-group">
-                 <label for="kategorisoal">Tipe Ujian</label>
-                  <select class="form-control select2" name="id_t_ujian" id="tipe-edit" style="width: 100%;">
-                    <option value="">Pilih Tipe Ujian</option>
+                 <label for="kategorisoal">Tipe Quiz</label>
+                  <select class="form-control select2" name="id_t_ujian" id="tipe-edit" style="width: 100%;" required>
+                    <option value="">Pilih Tipe Quiz</option>
                     <?php foreach($tipe_ujian as $row) : ?>
                       <option value="<?php echo $row->id ?>"><?php echo $row->tipe ?></option>
                      <?php endforeach ?>
@@ -83,7 +83,7 @@
                  </div>
               <div class="form-group">
                 <label for="kategorisoal">Pilih Mapel</label>
-                <select class="form-control select2" name="kode_mapel" id="kode_mapel-edit" style="width: 100%;">
+                <select class="form-control select2" name="kode_mapel" id="kode_mapel-edit" style="width: 100%;"required>
                   <option value="">Pilih Mapel</option>
                   <?php foreach($jadwal_guru_absen as $row) : ?>
                       <option value="<?php echo $row->kode_mapel ?>"><?php echo $row->mapel ?></option>

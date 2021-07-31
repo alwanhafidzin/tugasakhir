@@ -6,6 +6,16 @@ class MapelPermingguModel extends CI_Model {
 
 	function insert_jadwal($jumlah,$id_mapel_perminggu,$kode_jurusan,$kode_tingkat)
 	{
+		$this->db->select('h.id');
+		$this->db->from('hari_masuk_detail h');
+		$this->db->join('tahun_akademik t','t.id=h.id_t_akademik');
+		$this->db->where('t.is_aktif="Y"');
+		$this->db->where('t.semester=h.semester');
+		$this->db->where('h.id_hari=8');
+		$id_hari = $this->db->get();
+		foreach($id_hari->result() as $row){
+			$id_h_detail = $row->id;
+		}
 		$this->db->select('k.kode_kelas');
 		$this->db->from('kelas k');
 		$this->db->join('jurusan j', 'k.kode_jurusan= j.kode_jurusan');
@@ -17,7 +27,7 @@ class MapelPermingguModel extends CI_Model {
 			$jadwal = array(
 				'kode_kelas'			=> $row->kode_kelas,
 				'id_m_perminggu'        => $id_mapel_perminggu,
-				'id_hari'               =>8
+				'id_detail_hari'               =>$id_h_detail
 			);
 			for ($i=0; $i<$jumlah; $i++){
 				$this->db->insert('jadwal', $jadwal);

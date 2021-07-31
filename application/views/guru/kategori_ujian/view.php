@@ -5,12 +5,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Data Kategori Ujian SMAN 1 SOOKO</h1>
+            <h1>Data Kategori Quiz Guru SMAN 1 SOOKO</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Data Sekolah</a></li>
-              <li class="breadcrumb-item active">Jurusan</li>
+              <li class="breadcrumb-item"><a href="#">Data Quiz</a></li>
+              <li class="breadcrumb-item active">Kategori Quiz</li>
             </ol>
           </div>
         </div>
@@ -26,7 +26,7 @@
             <div class="card card-primary card-outline">
               <!-- /.card-header -->
               <div class="card-body">
-                <button class="btn bg-navy btn-flat margin"data-toggle="modal" data-target="#modal-tambah">Tambah Data</button>
+                <button class="btn btn-primary bottom col-sm-12 col-md-3 margin"data-toggle="modal" data-target="#modal-tambah"><i class="fa fa-plus"></i> Tambah Data</button>
               </br></br>
               <div class="row">
               <div class="col-md-2"><b>Filter Data:</b></div>
@@ -73,7 +73,7 @@
           <div class="modal-dialog modal-lg">
           <div class="modal-content">
             <div class="modal-header">
-              <h4 class="modal-title">Tambah Data Kategori Ujian</h4>
+              <h4 class="modal-title">Tambah Data Kategori Quiz</h4>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -81,13 +81,13 @@
             <form id="form-tambah" method="post">
             <div class="col-lg-12">
               <div class="form-group">
-                  <label for="kategorisoal">Nama Ujian</label>
-                  <input type="text" autocomplete="off"class="form-control" name="nama_ujian" placeholder="Masukkan Nama Ujian">
+                  <label for="kategorisoal">Nama Quiz</label>
+                  <input type="text" autocomplete="off"class="form-control" name="nama_ujian" placeholder="Masukkan Nama Quiz" required>
               </div>
               <div class="form-group">
-                 <label for="kategorisoal">Tipe Ujian</label>
-                  <select class="form-control select2" name="id_t_ujian" id="tipe-tbh" style="width: 100%;">
-                    <option value="">Pilih Tipe Ujian</option>
+                 <label for="kategorisoal">Tipe Quiz</label>
+                  <select class="form-control select2" name="id_t_ujian" id="tipe-tbh" style="width: 100%;" required>
+                    <option value="">Pilih Tipe Quiz</option>
                     <?php foreach($tipe_ujian as $row) : ?>
                       <option value="<?php echo $row->id ?>"><?php echo $row->tipe ?></option>
                      <?php endforeach ?>
@@ -95,7 +95,7 @@
                  </div>
               <div class="form-group">
                 <label for="kategorisoal">Pilih Mapel</label>
-                <select class="form-control select2" name="kode_mapel" id="kode_mapel-tbh" style="width: 100%;">
+                <select class="form-control select2" name="kode_mapel" id="kode_mapel-tbh" style="width: 100%;" required>
                   <option value="">Pilih Mapel</option>
                   <?php
                     $first = true;

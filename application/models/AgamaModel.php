@@ -31,5 +31,17 @@ class AgamaModel extends CI_Model {
 		$data['count'] = $query->num_rows();
 		return $data;
 	}
+	public function isAgamaRelation($id) {
+		$sql ="SELECT ((SELECT COUNT(id_agama) as jumlah FROM siswa WHERE id_agama=?)+(SELECT COUNT(id_agama)as jumlah FROM guru WHERE id_agama=?)+(SELECT COUNT(id_agama) as jumlah FROM biodata_admin WHERE id_agama=?)) as jumlah";
+        $jumlah =$this->db->query($sql, array($id ,$id, $id));
+		foreach($jumlah->result() as $result){
+			$jumlah = $result->jumlah;
+		}
+		if($jumlah==0){
+			echo 'hapus';
+		}else if($jumlah > 0){
+			echo 'gagal';
+		}
+    }
 }
 ?>

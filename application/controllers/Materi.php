@@ -53,8 +53,19 @@ class Materi extends CI_Controller {
 	}
 	public function tambah()
 	{
+		$user = $this->ion_auth->user()->row();
+		$user_id =$user->id;
+		$username = $user->username;
+        $id_user =$this->ion_auth->get_users_groups($user_id)->row()->id;
+		if($id_user==1) {
+			$data['identity'] = $this->IdentityModel->get_admin($user_id);
+		}else if($id_user==2){
+			$data['identity'] = $this->IdentityModel->get_guru($username);
+		}else if($id_user==3){
+			$data['identity'] = $this->IdentityModel->get_siswa($username);
+		}
         $this->load->view('templates/dashboard/header.php');
-        $this->load->view('templates/dashboard/navbar.php');
+        $this->load->view('templates/dashboard/navbar.php',$data);
         $this->load->view('templates/dashboard/sidebar.php');
 		$this->load->view('guru/materi/tambah_materi.php');
 		$this->load->view('templates/dashboard/footer.php');
@@ -70,11 +81,27 @@ class Materi extends CI_Controller {
 		$this->load->view('templates/dashboard/footer.php');
 		$this->load->view('guru/materi/script_edit.php');
 	}
-	public function detail($id)
+	public function detail($encrypt)
 	{
+		$user = $this->ion_auth->user()->row();
+		$user_id =$user->id;
+		$username = $user->username;
+        $id_user =$this->ion_auth->get_users_groups($user_id)->row()->id;
+		if($id_user==1) {
+			$data['identity'] = $this->IdentityModel->get_admin($user_id);
+		}else if($id_user==2){
+			$data['identity'] = $this->IdentityModel->get_guru($username);
+		}else if($id_user==3){
+			$data['identity'] = $this->IdentityModel->get_siswa($username);
+		}
+		function url_base64_decode($str = '')
+		{
+			return base64_decode(strtr($str, '.-~', '+=/'));
+		}
+		$id= url_base64_decode($encrypt);
 		$data['materi'] = $this->MateriModel->get_detail_by_id($id);
         $this->load->view('templates/dashboard/header.php');
-        $this->load->view('templates/dashboard/navbar.php');
+        $this->load->view('templates/dashboard/navbar.php',$data);
         $this->load->view('templates/dashboard/sidebar.php');
 		$this->load->view('guru/materi/detail_materi.php',$data);
 		$this->load->view('templates/dashboard/footer.php');
@@ -121,8 +148,6 @@ class Materi extends CI_Controller {
 		else if ($mode == 'share') {
 			if ($this->input->is_ajax_request()) {
 				$id_materi = $this->input->post('id');
-				$id_t_akademik = $this->input->post('id_t_akademik');
-				$semester = $this->input->post('semester');
 				$timezone = new DateTimeZone('Asia/Jakarta');
 				$date = new DateTime();
 		        $date->setTimeZone($timezone);
@@ -137,8 +162,6 @@ class Materi extends CI_Controller {
 				 }else{
 					$data = array(
 						'id_materi' =>$id_materi,
-						'id_t_akademik' =>$id_t_akademik,
-						'semester' =>$semester,
 						'kode_mapel' =>$kode_mapel,
 						'kode_kelas' =>$kode_kelas,
 						'id_jadwal' => $id_jadwal,

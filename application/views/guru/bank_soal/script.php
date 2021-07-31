@@ -895,6 +895,7 @@
     document.querySelector( '#submit_save' ).addEventListener( 'click', () => {
 	   let kategori_ujian = $("#kategori_ujian-tbh").val();
 	   let kategori_soal = $("#kategori_soal-tbh").val();
+	   let kunci_jawaban = $("#kunci_jawaban-tbh").val();
 	   const soal = datack_soal.getData();
 	   const a = datack_a.getData();
 	   const b = datack_b.getData();
@@ -913,7 +914,8 @@
 		   opsi_b : b,
 		   opsi_c : c,
 		   opsi_d : d,
-		   opsi_e :e
+		   opsi_e :e,
+		   kunci_jawaban : kunci_jawaban
 	   },
        success: function(){ 
         modal_tambah.modal('hide');

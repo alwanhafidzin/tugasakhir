@@ -26,12 +26,18 @@ class WaliKelasModel extends CI_Model {
 		return $this->db->get()->result();
 	}
 	public function get_guru(){
-		$this->db->select('g.nip,g.nama');
-		$this->db->from('guru g');
-		$this->db->join('wali_kelas w','g.nip=w.nip','left');
-		$this->db->where('w.nip',NULL);
-		$this->db->order_by('g.nip','ASC');
-		return $this->db->get()->result();
+		// $this->db->select('g.nip,g.nama');
+		// $this->db->from('guru g');
+		// $this->db->join('wali_kelas w','g.nip=w.nip','left');
+		// $this->db->where('w.nip',NULL);
+		// $this->db->order_by('g.nip','ASC');
+		// return $this->db->get()->result();
+		$sql="SELECT g.nama,g.nip
+		FROM guru g
+		WHERE g.nip NOT IN
+			(SELECT w.nip
+			 FROM wali_kelas w INNER JOIN tahun_akademik t ON t.id=w.id_tahun_akademik WHERE t.is_aktif='Y') AND g.status='active'";
+		return $this->db->query($sql);
 	}
 	public function get_guru2(){
 		$this->db->select('*');

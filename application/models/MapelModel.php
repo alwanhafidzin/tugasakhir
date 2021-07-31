@@ -44,5 +44,17 @@ class MapelModel extends CI_Model {
 		$data['count'] = $query->num_rows();
 		return $data;
 	}
+	public function isMapelRelation($id) {
+		$sql ="SELECT COUNT(kode_mapel) as jumlah FROM mapel_perminggu WHERE kode_mapel=?";
+        $jumlah =$this->db->query($sql, array($id));
+		foreach($jumlah->result() as $result){
+			$jumlah = $result->jumlah;
+		}
+		if($jumlah==0){
+			echo 'hapus';
+		}else if($jumlah > 0){
+			echo 'gagal';
+		}
+    }
 }
 ?>

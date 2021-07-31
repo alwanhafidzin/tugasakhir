@@ -1,5 +1,8 @@
 <!-- Datepicker styling default -->
 <style>
+   .tss{
+     margin-top :8px;
+   }
   /* input {
         position: relative;
         width: 150px; height: 20px;
@@ -70,9 +73,12 @@
                 <button class="btn btn-primary bottom col-sm-12 col-md-3"data-toggle="modal" data-target="#modal-tambah"><i class="fa fa-plus"></i> Tambah Data</button>
                 <button class="btn btn-warning bottom col-sm-12 col-md-3"data-toggle="modal" data-target="#modal-upload"><i class="fa fa-file-import"></i> Import Excel</button>
                 <button class="btn btn-danger bottom col-sm-12 col-md-3"data-toggle="modal" data-target="#modal-multiple"><i class="fa fa-file-upload"></i> Upload Multiple Foto</button>
-               </br></br>
-            <div class="row">
+                <button class="btn btn-success bottom col-sm-12 col-md-2" onclick="updateStatus()" id="ubahstatus"><i class="fa fa-info"></i> Ubah Status</button>
+               </br>
+               <div class="row">
               <div class="col-md-2"><b>Filter Data:</b></div>
+              </div>
+            <div class="row">
                  <div class="col-md-3 form-group">
                   <select class="form-control select2" name="filter_tahunmasuk" id="filter_tahunmasuk" style="width: 100%;">
                     <option value="">Filter Tahun Masuk</option>
@@ -99,6 +105,14 @@
                     <option value="P">Perempuan</option>
                   </select>
                  </div>
+                 <div class="col-md-3 form-group">
+                  <select class="form-control select2" name="filter_status" id="filter_status" style="width: 100%;">
+                    <option value="">Filter Status</option>
+                    <!-- <option value="0">Perlihatkan Semua</option> -->
+                    <option value="active" selected>Aktif</option>
+                    <option value="lulus">Lulus</option>
+                  </select>
+                 </div>
             </div>
                 <div id="tampil">
                
@@ -121,31 +135,40 @@
             <div class="col-lg-12">
                 <div class="form-group">
                     <label for="nis">NIS</label>
-                    <input type="text" autocomplete="off"class="form-control" name="nis" placeholder="Masukkan NIS">
+                    <input type="text" autocomplete="off"class="form-control" name="nis" maxlength="8" placeholder="Masukkan NIS" required>
+                </div>
+                <div class="form-group">
+                    <label for="nisn">NISN</label>
+                    <input type="text" autocomplete="off"class="form-control" name="nisn" placeholder="Masukkan NISN" required>
                 </div>
                 <div class="form-group">
                     <label for="nama">Nama Lengkap</label>
-                    <input type="text" autocomplete="off"class="form-control" name="nama" placeholder="Masukkan Nama Lengkap">
+                    <input type="text" autocomplete="off"class="form-control" name="nama" placeholder="Masukkan Nama Lengkap" required>
                 </div>
                 <div class="form-group">
                     <label for="foto">Foto</label>
-                    <input type="file" autocomplete="off"class="form-control" name="foto" placeholder="Pilih Foto">
+                    <input type="file" autocomplete="off"class="form-control" name="foto" placeholder="Pilih Foto" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" autocomplete="off"class="form-control" name="email" placeholder="Masukkan Email" required>
                 </div>
                 <div class="form-group">
                     <label for="tempatlahir">Tempat Lahir</label>
-                    <input type="text" autocomplete="off"class="form-control" name="tempatlahir" placeholder="Masukkan Tempat Lahir">
+                    <input type="text" autocomplete="off"class="form-control" name="tempatlahir" placeholder="Masukkan Tempat Lahir" required>
                 </div>
                 <div class="form-group">
                     <label for="tanggallahir">Tanggal Lahir</label>
-                    <input type="" id="datepicker" autocomplete="off" class="form-control" name="tanggallahir" placeholder="Masukkan Tanggal Lahir">
+                    <input type="" id="datepicker" autocomplete="off" class="form-control" name="tanggallahir" placeholder="Masukkan Tanggal Lahir" required>
                 </div>
                 <div class="form-group">
                     <label for="tahunmasuk">Tahun Masuk</label>
-                    <input type="year"  autocomplete="off" class="form-control" id="date-tahunmasuk" name="tahunmasuk" placeholder="Masukkan Tanggal Lahir">
+                    <input type="year"  autocomplete="off" class="form-control" id="date-tahunmasuk" name="tahunmasuk" placeholder="Masukkan Tanggal Lahir" required>
                 </div>
                 <div class="form-group">
                   <label>Agama</label>
-                  <select class="form-control select2" name="agama" id="agamatbh" style="width: 100%;">
+                  <select class="form-control select2" name="agama" id="agamatbh" required style="width: 100%;">
+                     <option value="">Pilih Agama</option>
                      <?php foreach($agama as $row) : ?>
                       <option value="<?php echo $row->id ?>"><?php echo $row->agama ?></option>
                      <?php endforeach ?>
@@ -153,7 +176,8 @@
                 </div>
                 <div class="form-group">
                   <label>Jenis Kelamin</label>
-                  <select class="form-control select2" name="jkelamin" id="jkelamintbh" style="width: 100%;">
+                  <select class="form-control select2" name="jkelamin" required id="jkelamintbh" style="width: 100%;">
+                      <option value="">Pilih Jenis Kelamin</option>
                       <option value="L">Laki-Laki</option>
                       <option value="P">Perempuan</option>
                   </select>
@@ -169,7 +193,6 @@
       </div>
         <!-- /.modal-dialog -->
       </div>
-
             <!-- /.card -->
           </div>
           <!-- /.col -->

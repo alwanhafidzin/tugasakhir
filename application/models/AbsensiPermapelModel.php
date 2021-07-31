@@ -60,13 +60,14 @@ class AbsensiPermapelModel extends CI_Model {
         $this->db->join('mapel_perminggu mp', 'mp.id= j.id_m_perminggu');
         $this->db->join('tahun_akademik t', 'mp.id_t_akademik=t.id');
         $this->db->join('kelas k', 'k.kode_kelas = j.kode_kelas');
-        $this->db->join('hari_masuk h', 'j.id_hari = h.id');
+        $this->db->join('hari_masuk_detail h', 'j.id_detail_hari = h.id');
+        $this->db->join('hari_masuk h2','h2.id=h.id_hari');
 		$this->db->where('j.nip',$nip);
         $this->db->where('mp.kode_mapel', $kode_mapel);
         $this->db->where('t.is_aktif', 'Y');
         $this->db->where('t.semester=mp.semester');
         $this->db->where('j.kode_kelas', $kode_kelas);
-        $this->db->where('h.hari', $hari);
+        $this->db->where('h2.hari', $hari);
         $result = $this->db->order_by('j.jam_mulai', 'ASC')->get()->result();
         $data=array();
         foreach($result as $r)
@@ -79,12 +80,12 @@ class AbsensiPermapelModel extends CI_Model {
 		echo json_encode($json);
 	}
     public function get_hari_jadwal($kode_mapel,$kode_kelas,$nip){
-		$this->db->select('j.id_hari');
+		$this->db->select('h.id_hari');
 		$this->db->from('jadwal j');
         $this->db->join('mapel_perminggu mp', 'mp.id= j.id_m_perminggu');
         $this->db->join('tahun_akademik t', 'mp.id_t_akademik=t.id');
         $this->db->join('kelas k', 'k.kode_kelas = j.kode_kelas');
-        $this->db->join('hari_masuk h', 'j.id_hari = h.id');
+        $this->db->join('hari_masuk_detail h', 'j.id_detail_hari = h.id');
 		$this->db->where('j.nip',$nip);
         $this->db->where('mp.kode_mapel', $kode_mapel);
         $this->db->where('t.is_aktif', 'Y');
@@ -148,12 +149,13 @@ class AbsensiPermapelModel extends CI_Model {
         $this->db->join('mapel_perminggu mp', 'mp.id= j.id_m_perminggu');
         $this->db->join('tahun_akademik t', 'mp.id_t_akademik=t.id');
         $this->db->join('kelas k', 'k.kode_kelas = j.kode_kelas');
-        $this->db->join('hari_masuk h', 'j.id_hari = h.id');
+        $this->db->join('hari_masuk_detail hd','hd.id=j.id_detail_hari');
         $this->db->join('data_kelas_siswa d', 'd.kode_kelas=j.kode_kelas');
 		$this->db->where('j.nip','3509176412630001');
         $this->db->where('mp.kode_mapel', $kode_mapel);
         $this->db->where('t.is_aktif', 'Y');
         $this->db->where('t.semester=mp.semester');
+        $this->db->group_by('d.nis');
         $this->db->where('j.kode_kelas', $kode_kelas);
 		$kelas_siswa = $this->db->get();
 		foreach ($kelas_siswa->result() as $row) {
