@@ -5,7 +5,8 @@ class IdentityModel extends CI_Model {
 
 	public function get_siswa($username){
 		$this->db->select('*');
-		$this->db->from('siswa');
+		$this->db->from('siswa s');
+		$this->db->join('agama a','s.id_agama=a.id');
         $this->db->where('nis',$username);
 		return $this->db->get();
 	}

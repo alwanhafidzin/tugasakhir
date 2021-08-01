@@ -43,7 +43,7 @@ class MateriModel extends CI_Model {
 	}
 	public function get_detail_by_id($id)
 	{
-		$this->db->select('m.judul,m.content,m.tgl_dibuat,g.nama');
+		$this->db->select('m.id,m.judul,m.content,m.tgl_dibuat,g.nama');
 		$this->db->from('materi m');
 		$this->db->join('guru g','g.nip=m.nip');
 		$query = $this->db->get_where('materi', array('m.id' => $id));

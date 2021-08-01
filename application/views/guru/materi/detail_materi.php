@@ -11,7 +11,6 @@
                   $judul =$result->judul;
                   $content =$result->content;
                   $nama = $result->nama;
-                  $tgl_dibagikan = $result->tgl_dibagikan;
               ?>
             <?php endforeach;?>
             <h1>Materi Pembelajaran</h1>

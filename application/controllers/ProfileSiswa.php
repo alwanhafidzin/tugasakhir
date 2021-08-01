@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class ProfileAdmin extends CI_Controller {
+class ProfileSiswa extends CI_Controller {
 
 	public function __construct(){
 		parent::__construct();
@@ -32,8 +32,8 @@ class ProfileAdmin extends CI_Controller {
         $this->load->view('templates/dashboard/header.php');
         $this->load->view('templates/dashboard/navbar.php',$data);
         $this->load->view('templates/dashboard/sidebar.php');
-		$this->load->view('admin/profile/view.php');
+		$this->load->view('siswa/profile/view.php');
 		$this->load->view('templates/dashboard/footer.php');
-		$this->load->view('admin/profile/script.php',$data);
+		$this->load->view('siswa/profile/script.php',$data);
 	}
 }

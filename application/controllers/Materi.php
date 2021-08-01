@@ -73,9 +73,20 @@ class Materi extends CI_Controller {
 	}
 	public function edit($id)
 	{
+		$user = $this->ion_auth->user()->row();
+		$user_id =$user->id;
+		$username = $user->username;
+        $id_user =$this->ion_auth->get_users_groups($user_id)->row()->id;
+		if($id_user==1) {
+			$data['identity'] = $this->IdentityModel->get_admin($user_id);
+		}else if($id_user==2){
+			$data['identity'] = $this->IdentityModel->get_guru($username);
+		}else if($id_user==3){
+			$data['identity'] = $this->IdentityModel->get_siswa($username);
+		}
 		$data['materi'] = $this->MateriModel->get_detail_by_id($id);
         $this->load->view('templates/dashboard/header.php');
-        $this->load->view('templates/dashboard/navbar.php');
+        $this->load->view('templates/dashboard/navbar.php',$data);
         $this->load->view('templates/dashboard/sidebar.php');
 		$this->load->view('guru/materi/edit_materi.php',$data);
 		$this->load->view('templates/dashboard/footer.php');

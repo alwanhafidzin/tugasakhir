@@ -357,7 +357,7 @@ body[ data-editor='InlineEditor'] .collaboration-demo__row {
             <div class="card card-primary card-outline">
               <!-- /.card-header -->
               <div class="card-body">
-                <button class="btn bg-navy btn-flat margin"data-toggle="modal" data-target="#modal-tambah">Tambah Tugas</button>
+                <button class="btn btn-primary bottom col-sm-12 col-md-3 margin"data-toggle="modal" data-target="#modal-tambah"><i class="fa fa-plus"></i> Buat Tugas</button>
                 <!-- <div class="centered">
                   <div class="row row-editor">
                     <div class="editor">

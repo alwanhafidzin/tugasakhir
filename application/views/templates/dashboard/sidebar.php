@@ -33,6 +33,9 @@
 			$data_sekolah = ["tahunakademik","jurusan", "tingkatkelas", "agama", "kelas", "kelassiswa"];
       $data_mapel = ["kelompokmapel", "mapel", "mapelmingguan", "gurumapel"];
 			$data_ruangan = ["ruangan", "ruangkelas"];
+      $materi = ["materi", "materishare"];
+      $tugas = ["tugas", "tugasshare"];
+      $ujian = ["kategoriujian", "kategorisoal", "banksoal", "listujianguru"];
 			?>
       <!-- Sidebar Menu -->
       <nav class="mt-2">
@@ -260,7 +263,7 @@
               </p>
             </a>
           </li>
-          <li class="nav-item <?= in_array($page, $data_mapel)  ? "active menu-open" : ""  ?>">
+          <li class="nav-item <?= in_array($page, $materi)  ? "active menu-open" : ""  ?>">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-book"></i>
               <p>
@@ -276,16 +279,16 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="<?=base_url('materishare')?>" class="nav-link <?= $page === 'mapel' ? "active" : "" ?>">
+                <a href="<?=base_url('materishare')?>" class="nav-link <?= $page === 'materishare' ? "active" : "" ?>">
                   <i class="fas fa-book-open nav-icon"></i>
                   <p>Materi Share</p>
                 </a>
               </li>
             </ul>
           </li>
-          <li class="nav-item <?= in_array($page, $data_mapel)  ? "active menu-open" : ""  ?>">
+          <li class="nav-item <?= in_array($page, $tugas)  ? "active menu-open" : ""  ?>">
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-book"></i>
+              <i class="nav-icon fas fa-clipboard"></i>
               <p>
                 Data Tugas
                 <i class="right fas fa-angle-left"></i>
@@ -294,21 +297,21 @@
             <ul class="nav nav-treeview">
               <li class="nav-item">
                 <a href="<?=base_url('tugas')?>" class="nav-link <?= $page === 'tugas' ? "active" : "" ?>">
-                  <i class="fas fa-project-diagram nav-icon"></i>
+                  <i class="fas fa-clipboard-check nav-icon"></i>
                   <p>Tugas</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="<?=base_url('tugasshare')?>" class="nav-link <?= $page === 'tugasshare' ? "active" : "" ?>">
-                  <i class="fas fa-book-open nav-icon"></i>
+                  <i class="fas fa-clipboard-list nav-icon"></i>
                   <p>Tugas Share</p>
                 </a>
               </li>
             </ul>
           </li>
-          <li class="nav-item <?= in_array($page, $data_mapel)  ? "active menu-open" : ""  ?>">
+          <li class="nav-item <?= in_array($page, $ujian)  ? "active menu-open" : ""  ?>">
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-book"></i>
+              <i class="nav-icon fas fa-list"></i>
               <p>
                 Data Quiz
                 <i class="right fas fa-angle-left"></i>
@@ -317,25 +320,25 @@
             <ul class="nav nav-treeview">
               <li class="nav-item">
                 <a href="<?=base_url('kategoriujian')?>" class="nav-link <?= $page === 'kategoriujian' ? "active" : "" ?>">
-                  <i class="fas fa-project-diagram nav-icon"></i>
+                  <i class="fas fa-network-wired nav-icon"></i>
                   <p>Kategori Quiz</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="<?=base_url('kategorisoal')?>" class="nav-link <?= $page === 'kategorisoal' ? "active" : "" ?>">
-                  <i class="fas fa-book-open nav-icon"></i>
+                  <i class="fas fa-th-list nav-icon"></i>
                   <p>Kategori Soal</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="<?=base_url('banksoal')?>" class="nav-link <?= $page === 'banksoal' ? "active" : "" ?>">
-                  <i class="fas fa-book-reader nav-icon"></i>
+                  <i class="fas fa-th nav-icon"></i>
                   <p>Bank Soal</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="<?=base_url('listujianguru')?>" class="nav-link <?= $page === 'listujianguru' ? "active" : "" ?>">
-                  <i class="fas fa-calendar-plus nav-icon"></i>
+                  <i class="fas fa-share-square nav-icon"></i>
                   <p>Quiz Share</p>
                 </a>
               </li>
@@ -363,13 +366,21 @@
             <a href="<?=base_url('absensipermapel')?>" class="nav-link <?= $page === 'absensipermapel' ? "active" : "" ?>">
               <i class="nav-icon fas fa-calendar-day"></i>
               <p>
+                Absensi
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="<?=base_url('absensipermapel')?>" class="nav-link <?= $page === 'absensipermapel' ? "active" : "" ?>">
+              <i class="nav-icon fas fa-book"></i>
+              <p>
                 List Materi
               </p>
             </a>
           </li>
           <li class="nav-item">
             <a href="<?=base_url('absensipermapel')?>" class="nav-link <?= $page === 'absensipermapel' ? "active" : "" ?>">
-              <i class="nav-icon fas fa-calendar-day"></i>
+              <i class="nav-icon fas fa-clipboard-list"></i>
               <p>
                 List Tugas
               </p>
@@ -377,7 +388,7 @@
           </li>
           <li class="nav-item">
             <a href="<?=base_url('listujiansiswa')?>" class="nav-link <?= $page === 'listujiansiswa' ? "active" : "" ?>">
-              <i class="nav-icon fas fa-calendar-day"></i>
+              <i class="nav-icon fas fa-list"></i>
               <p>
                 List Quiz
               </p>
