@@ -347,7 +347,7 @@
           <?php endif; ?>
           <?php if($this->ion_auth->in_group('siswa') ) : ?>
             <li class="nav-item">
-            <a href="<?=base_url('profilesiswa')?>" class="nav-link <?= $page === 'profileguru' ? "active" : "" ?>">
+            <a href="<?=base_url('profilesiswa')?>" class="nav-link <?= $page === 'profilesiswa' ? "active" : "" ?>">
               <i class="nav-icon fas fa-id-card"></i>
               <p>
                 Profile Siswa

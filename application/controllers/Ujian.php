@@ -24,8 +24,13 @@ class Ujian extends CI_Controller {
 		$this->load->view('templates/top-nav/footer.php');
 		$this->load->view('guru/kategori_soal/script.php');
 	}
-	public function token($id)
+	public function token($encrypt)
 	{
+		function url_base64_decode($str = '')
+		{
+			return base64_decode(strtr($str, '.-~', '+=/'));
+		}
+		$id= url_base64_decode($encrypt);
 		$user = $this->ion_auth->user()->row();
 		$user_id =$user->id;
 		$username = $user->username;

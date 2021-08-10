@@ -56,11 +56,11 @@
             <td class="text-center"><?php echo $result->tipe ?></td>
             <td class="text-center">
                 <?php if ($result->jumlah==0 && $result->selesai==null){
-                  echo'<button type="button" class="btn btn-primary btn-sm kerjakan"data-id="'.$result->id.'"">Kerjakan</button>';
+                  echo'<button type="button" class="btn btn-primary btn-sm kerjakan"data-id="'.url_base64_encode($result->id).'"">Kerjakan</button>';
                 }else if($result->jumlah==1 && $result->selesai=='N'){
-                  echo'<button type="button" class="btn btn-success btn-sm aktifkan"data-id="'.$result->id.'">Lanjutkan</button>';
+                  echo'<button type="button" class="btn btn-success btn-sm lanjutkan"data-id="'.url_base64_encode($result->id).'">Lanjutkan</button>';
                 }else if($result->jumlah==1 && $result->selesai=='Y'){
-                  echo'<button type="button" class="btn btn-info btn-sm aktifkan"data-id="'.$result->id.'">Nilai</button>';
+                  echo'<button type="button" class="btn btn-info btn-sm aktifkan"data-id="'.url_base64_encode($result->id).'">Nilai</button>';
                 } ?>
             </td>
         </tr>
@@ -120,6 +120,16 @@
           alert(response);
       }
      })
+    });
+    var base_url = "<?php echo base_url();?>";
+  //Menampilkan data diedit
+    $(".kerjakan").click(function(e) {
+      id = $(this).data('id');
+      location.href = base_url+`ujian/token/${id}`;
+    });
+    $(".lanjutkan").click(function(e) {
+      id = $(this).data('id');
+      location.href = base_url+`ujian/token/${id}`;
     });
     $(".edit-data").click(function(e) {
       id = $(this).data('id');
